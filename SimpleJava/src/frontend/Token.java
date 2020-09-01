@@ -159,7 +159,6 @@ public class Token
         }
         
         token.text += '\'';  // append the closing '
-        //source.nextChar();   // and consume it
         
         token.type = TokenType.STRING;
         
