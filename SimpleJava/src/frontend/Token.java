@@ -15,9 +15,11 @@ public class Token
     {
         PROGRAM, BEGIN, END, REPEAT, UNTIL, WRITE, WRITELN, 
         PERIOD, COLON, COLON_EQUALS, SEMICOLON,
-        PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, 
-        EQUALS, LESS_THAN,
-        IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR
+        PLUS, MINUS, STAR, SLASH, MOD, LPAREN, RPAREN, 
+        EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
+        IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR,
+        AND, OR, NOT, CONSTANT, TYPE, VAR, PROCEDURE, FUNCTION, 
+        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF;
     }
     
     /**
@@ -35,6 +37,27 @@ public class Token
         reservedWords.put("UNTIL",   TokenType.UNTIL);
         reservedWords.put("WRITE",   TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
+        reservedWords.put("DIV", TokenType.SLASH);
+        reservedWords.put("MOD", TokenType.MOD);
+        reservedWords.put("AND", TokenType.AND);
+        reservedWords.put("OR", TokenType.OR);
+        reservedWords.put("NOT", TokenType.NOT);
+        reservedWords.put("CONST", TokenType.CONSTANT);
+        reservedWords.put("TYPE", TokenType.TYPE);
+        reservedWords.put("VARIABLE", TokenType.VAR);
+        reservedWords.put("PROCEDURE", TokenType.PROCEDURE);
+        reservedWords.put("FUNCTION", TokenType.FUNCTION);
+        reservedWords.put("WHILE", TokenType.WHILE);
+        reservedWords.put("DO", TokenType.DO);
+        reservedWords.put("FOR", TokenType.FOR);
+        reservedWords.put("TO", TokenType.TO);
+        reservedWords.put("DOWNTO", TokenType.DOWNTO);
+        reservedWords.put("IF", TokenType.IF);
+        reservedWords.put("THEN", TokenType.THEN);
+        reservedWords.put("ELSE", TokenType.ELSE);
+        reservedWords.put("CASE", TokenType.CASE);
+        reservedWords.put("OF", TokenType.OF);
+        
     }
     
     public TokenType type;       // what type of token
@@ -165,7 +188,56 @@ public class Token
             case '*' : token.type = TokenType.STAR;       break;
             case '/' : token.type = TokenType.SLASH;      break;
             case '=' : token.type = TokenType.EQUALS;     break;
-            case '<' : token.type = TokenType.LESS_THAN;  break;
+            case '<' : 
+            {
+            	char nextChar = source.nextChar();
+            	token.text += nextChar;
+            	
+            	// Is it the <> symbol
+            	if(nextChar == '>')
+            	{
+            		token.type = TokenType.NOT_EQUALS;
+            	}
+            	
+            	// Is it the <= symbol
+            	else if(nextChar == '=')
+            	{
+            		token.type = TokenType.LESS_THAN_EQUALS;
+            	}
+            	
+            	// No it is just <
+            	else
+            	{
+            		token.type = TokenType.LESS_THAN;
+            		return token;
+            	}
+            	
+            	break;
+            		
+            }
+                
+            case '>' :
+            {
+            	char nextChar = source.nextChar();
+            	token.text += source.nextChar();
+            	
+            	// Is it the >= symbol
+            	if(nextChar == '=')
+            	{
+            		token.type = TokenType.GREATER_THAN_EQUALS;
+            	}
+            	
+            	// No it's just the > symbol
+            	else
+            	{
+            		token.type = TokenType.GREATER_THAN;
+            		return token;
+            	}
+            	
+            	break;
+            		
+            }
+            
             case '(' : token.type = TokenType.LPAREN;     break;
             case ')' : token.type = TokenType.RPAREN;     break;
             
