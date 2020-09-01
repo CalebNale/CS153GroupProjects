@@ -19,7 +19,7 @@ public class Token
         EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
         IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR,
         AND, OR, NOT, CONSTANT, TYPE, VAR, PROCEDURE, FUNCTION, 
-        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF;
+        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, COMMENT,;
     }
     
     /**
@@ -261,7 +261,17 @@ public class Token
 
                 break;
             }
-            
+            case '{' : // a comment,
+                token.lineNumber =source.lineNumber(); // get the line number in case of error
+                for(char next = source.nextChar();next!='}'; next=source.nextChar()){
+                    if(next==Source.EOF){ // if we reach the end before a closing bracket is found
+                        tokenError(token,"Comment never closed"); // throw an error
+                        break; // and break
+                    }// if
+                }// for
+                token.type = TokenType.COMMENT;
+                break;
+
             case Source.EOF : token.type = TokenType.END_OF_FILE; break;
             
             default: token.type = TokenType.ERROR;
