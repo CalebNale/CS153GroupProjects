@@ -19,7 +19,7 @@ public class Token
         EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
         IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR,
         AND, OR, NOT, CONSTANT, TYPE, VAR, PROCEDURE, FUNCTION, 
-        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, COMMENT,;
+        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF;
     }
     
     /**
@@ -153,13 +153,13 @@ public class Token
 
         // Loop to append the rest of the characters of the string,
         // up to but not including the closing quote.
-        for (char ch = source.nextChar(); ch != '\''; ch = source.nextChar())
+        for (char ch = source.nextChar(); apostrophe(ch, source); ch = source.nextChar())
         {
             token.text += ch;
         }
         
         token.text += '\'';  // append the closing '
-        source.nextChar();   // and consume it
+        //source.nextChar();   // and consume it
         
         token.type = TokenType.STRING;
         
@@ -167,6 +167,23 @@ public class Token
         token.value = token.text.substring(1, token.text.length() - 1);
 
         return token;
+    }
+    
+    /**
+     * Check for double ' in the case of apostrophe and consequently consume the closing '
+     * @param apostro
+     * @param source
+     * @return false if the char is the closing ', true otherwise
+     */
+    public static boolean apostrophe(char apostro, Source source)
+    {
+    	if (apostro != '\'') { return true; }
+    	else
+    	{
+    		char ch = source.nextChar();
+    		if (ch == apostro) { return true; }
+    	}
+    	return false;
     }
     
     /**
@@ -261,17 +278,7 @@ public class Token
 
                 break;
             }
-            case '{' : // a comment,
-                token.lineNumber =source.lineNumber(); // get the line number in case of error
-                for(char next = source.nextChar();next!='}'; next=source.nextChar()){
-                    if(next==Source.EOF){ // if we reach the end before a closing bracket is found
-                        tokenError(token,"Comment never closed"); // throw an error
-                        break; // and break
-                    }// if
-                }// for
-                token.type = TokenType.COMMENT;
-                break;
-
+            
             case Source.EOF : token.type = TokenType.END_OF_FILE; break;
             
             default: token.type = TokenType.ERROR;
