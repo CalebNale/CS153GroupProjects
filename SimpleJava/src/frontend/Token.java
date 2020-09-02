@@ -147,19 +147,18 @@ public class Token
      * @param source the input source.
      * @return the string token.
      */
-    public static Token string(char firstChar, Source source)
+	public static Token string(char firstChar, Source source)
     {
         Token token = new Token(firstChar);  // the leading '
 
         // Loop to append the rest of the characters of the string,
         // up to but not including the closing quote.
-        for (char ch = source.nextChar(); ch != '\''; ch = source.nextChar())
+        for (char ch = source.nextChar(); apostrophe(ch, source); ch = source.nextChar())
         {
             token.text += ch;
         }
         
         token.text += '\'';  // append the closing '
-        source.nextChar();   // and consume it
         
         token.type = TokenType.STRING;
         
@@ -167,6 +166,23 @@ public class Token
         token.value = token.text.substring(1, token.text.length() - 1);
 
         return token;
+    }
+    
+    /**
+     * Check for double ' in the case of apostrophe and consequently consume the closing '
+     * @param apostro
+     * @param source
+     * @return false if the char is the closing ', true otherwise
+     */
+    public static boolean apostrophe(char apostro, Source source)
+    {
+    	if (apostro != '\'') { return true; }
+    	else
+    	{
+    		char ch = source.nextChar(); //consume to check next char
+    		if (ch == apostro) { return true; } //if double ' ... 
+    	}
+    	return false;
     }
     
     /**
