@@ -156,6 +156,11 @@ public class Token
         // up to but not including the closing quote.
         for (char ch = source.nextChar(); apostrophe(ch, source); ch = source.nextChar())
         {
+	    if(ch==Source.EOF){ // if we reach the end before a closing comment is found
+                tokenError(token,"String not closed"); // throw an error
+            break; // and break
+            }// if
+		
             token.text += ch;
             charCount++;
         }
