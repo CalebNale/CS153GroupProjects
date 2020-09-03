@@ -315,7 +315,7 @@ public class Token
                         break; // and break
                     }// if
                 }// for
-                token.type = TokenType.COMMENT;
+                token.type = null;
                 break;
 
             case Source.EOF : token.type = TokenType.END_OF_FILE; break;
