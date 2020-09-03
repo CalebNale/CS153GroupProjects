@@ -59,7 +59,9 @@ public class Simple
              token.type != END_OF_FILE; 
              token = scanner.nextToken())
         {
-            System.out.printf("%12s : %s\n", token.type, token.text);
+            if(token.type != null) { // make sure the data send back is relevant
+                System.out.printf("%12s : %s\n", token.type, token.text);
+            }
         }
     }
     
