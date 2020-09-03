@@ -14,12 +14,13 @@ public class Token
     public enum TokenType
     {
         PROGRAM, BEGIN, END, REPEAT, UNTIL, WRITE, WRITELN, 
-        PERIOD, COLON, COLON_EQUALS, SEMICOLON,
+        PERIOD, COMMA, COLON, COLON_EQUALS, SEMICOLON,
         PLUS, MINUS, STAR, SLASH, MOD, LPAREN, RPAREN, 
         EQUALS, NOT_EQUALS, LESS_THAN, LESS_THAN_EQUALS, GREATER_THAN, GREATER_THAN_EQUALS,
-        IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR,
+        IDENTIFIER, INTEGER, REAL, CHARACTER, STRING, END_OF_FILE, ERROR,
         AND, OR, NOT, CONSTANT, TYPE, VAR, PROCEDURE, FUNCTION, 
-        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, COMMENT,;
+        WHILE, DO, FOR, TO, DOWNTO, IF, THEN, ELSE, CASE, OF, COMMENT, CARET, LEFT_SQ_BRACKET, 
+        RIGHT_SQ_BRACKET, RANGE
     }
     
     /**
@@ -44,7 +45,7 @@ public class Token
         reservedWords.put("NOT", TokenType.NOT);
         reservedWords.put("CONST", TokenType.CONSTANT);
         reservedWords.put("TYPE", TokenType.TYPE);
-        reservedWords.put("VARIABLE", TokenType.VAR);
+        reservedWords.put("VAR", TokenType.VAR);
         reservedWords.put("PROCEDURE", TokenType.PROCEDURE);
         reservedWords.put("FUNCTION", TokenType.FUNCTION);
         reservedWords.put("WHILE", TokenType.WHILE);
@@ -142,31 +143,38 @@ public class Token
     }
     
     /**
-     * Construct a string token and set its value.
+     * Construct a string or character token and set its value.
      * @param firstChar the first character of the token.
      * @param source the input source.
-     * @return the string token.
+     * @return the string or character token.
      */
 	public static Token string(char firstChar, Source source)
     {
         Token token = new Token(firstChar);  // the leading '
-
+        int charCount = 0;
         // Loop to append the rest of the characters of the string,
         // up to but not including the closing quote.
         for (char ch = source.nextChar(); apostrophe(ch, source); ch = source.nextChar())
         {
             token.text += ch;
+            charCount++;
         }
         
         token.text += '\'';  // append the closing '
         
-        token.type = TokenType.STRING;
-        
+        if(charCount == 1){
+            token.type = TokenType.CHARACTER;
+        }
+        else{
+            token.type = TokenType.STRING;
+        }
+
         // Don't include the leading and trailing ' in the value.
         token.value = token.text.substring(1, token.text.length() - 1);
 
         return token;
     }
+    
     
     /**
      * Check for double ' in the case of apostrophe and consequently consume the closing '
@@ -197,27 +205,45 @@ public class Token
         
         switch (firstChar)
         {
-            case '.' : token.type = TokenType.PERIOD;     break;
-            case ';' : token.type = TokenType.SEMICOLON;  break;
-            case '+' : token.type = TokenType.PLUS;       break;
-            case '-' : token.type = TokenType.MINUS;      break;
-            case '*' : token.type = TokenType.STAR;       break;
-            case '/' : token.type = TokenType.SLASH;      break;
-            case '=' : token.type = TokenType.EQUALS;     break;
+            case ',' : token.type = TokenType.COMMA;            break;
+            case ';' : token.type = TokenType.SEMICOLON;        break;
+            case '+' : token.type = TokenType.PLUS;             break;
+            case '-' : token.type = TokenType.MINUS;            break;
+            case '*' : token.type = TokenType.STAR;             break;
+            case '/' : token.type = TokenType.SLASH;            break;
+            case '^' : token.type = TokenType.CARET;            break;
+            case '[' : token.type = TokenType.LEFT_SQ_BRACKET;  break;
+            case ']' : token.type = TokenType.RIGHT_SQ_BRACKET; break;
+            case '=' : token.type = TokenType.EQUALS;           break;
+            case '.' : 
+            {
+                char nextChar = source.nextChar();
+
+                if(nextChar == '.'){
+                    token.text += nextChar;
+                    token.type = TokenType.RANGE;
+                }
+                else{
+                    token.type = TokenType.PERIOD;
+                }
+
+                break;
+            }
             case '<' : 
             {
             	char nextChar = source.nextChar();
-            	token.text += nextChar;
             	
             	// Is it the <> symbol
             	if(nextChar == '>')
             	{
+            	    token.text += nextChar;
             		token.type = TokenType.NOT_EQUALS;
             	}
             	
             	// Is it the <= symbol
             	else if(nextChar == '=')
             	{
+            	    token.text += nextChar;
             		token.type = TokenType.LESS_THAN_EQUALS;
             	}
             	
@@ -234,12 +260,11 @@ public class Token
                 
             case '>' :
             {
-            	char nextChar = source.nextChar();
-            	token.text += source.nextChar();
-            	
+            	char nextChar = source.nextChar();            	
             	// Is it the >= symbol
             	if(nextChar == '=')
             	{
+            	    token.text += source.nextChar();
             		token.type = TokenType.GREATER_THAN_EQUALS;
             	}
             	
@@ -260,11 +285,11 @@ public class Token
             case ':' : 
             {
                 char nextChar = source.nextChar();
-                token.text += nextChar;
                 
                 // Is it the := symbol?
                 if (nextChar == '=') 
                 {
+                    token.text += nextChar;
                     token.type = TokenType.COLON_EQUALS;
                 }
                 
