@@ -98,7 +98,10 @@ public class Parser
         
         relationalOperators.add(EQUALS);
         relationalOperators.add(LESS_THAN);
-        
+        relationalOperators.add(GREATER_THAN);
+        relationalOperators.add(GREATER_THAN_EQUALS);
+        relationalOperators.add(LESS_THAN_EQUALS);
+        relationalOperators.add(NOT_EQUALS);
         simpleExpressionOperators.add(PLUS);
         simpleExpressionOperators.add(MINUS);
         
@@ -117,6 +120,8 @@ public class Parser
             case IDENTIFIER : stmtNode = parseAssignmentStatement(); break;
             case BEGIN :      stmtNode = parseCompoundStatement();   break;
             case REPEAT :     stmtNode = parseRepeatStatement();     break;
+            case WHILE :      stmtNode = parseWhileStatement();      break;
+           // case IF :         stmtNode = parseIfStatement();         break;
             case WRITE :      stmtNode = parseWriteStatement();      break;
             case WRITELN :    stmtNode = parseWritelnStatement();    break;
             case SEMICOLON :  stmtNode = null; break;  // empty statement
@@ -224,7 +229,37 @@ public class Parser
         
         return loopNode;
     }
-    
+
+    /**
+     *
+     * @return loopNode. the node that contains information about the loop for the while statement
+     */
+    private Node parseWhileStatement()
+    {
+        // The current token should now be WHILE.
+
+        // Create a LOOP node.
+        System.out.println("welcome to the parse while statement");
+        Node loopNode = new Node(LOOP); // a while loop is in fact, a loop
+        currentToken = scanner.nextToken();  // consume WHILE
+        Node testNode = new Node(TEST); // create a new node
+        testNode.adopt(parseExpression());  // use testnode to parse the expression the while loop uses
+        loopNode.adopt(testNode);
+        currentToken = scanner.nextToken();  // consume DO
+        if(currentToken.type!= BEGIN){ // if it is just a single line w/o a begin / end
+            loopNode.adopt(parseStatement()); // parse the statement that we are doing at the end of the line
+        }
+        else{ // if it multiple statements in a begin end block
+            currentToken = scanner.nextToken();  // consume Begin
+            System.out.println(currentToken.text);
+            parseStatementList(loopNode, END); // get the statements untill end
+            System.out.println(currentToken.text);
+            currentToken = scanner.nextToken(); // consume ;
+        }
+
+
+        return loopNode;
+    }
     private Node parseWriteStatement()
     {
         // The current token should now be WRITE.
@@ -326,6 +361,10 @@ public class Parser
             Token.TokenType tokenType = currentToken.type;
             Node opNode = tokenType == EQUALS    ? new Node(EQ)
                         : tokenType == LESS_THAN ? new Node(LT)
+                        : tokenType== GREATER_THAN ? new Node(GT)
+                    : tokenType== LESS_THAN_EQUALS ? new Node(LTE)
+                    : tokenType== GREATER_THAN_EQUALS? new Node(GTE)
+                    : tokenType== NOT_EQUALS ? new Node(NE)
                         :                          null;
             
             currentToken = scanner.nextToken();  // consume relational operator
