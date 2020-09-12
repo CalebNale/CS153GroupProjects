@@ -12,6 +12,7 @@ import java.util.HashSet;
 import intermediate.*;
 import static frontend.Token.TokenType.*;
 import static intermediate.Node.NodeType.*;
+import static intermediate.Node.NodeType.IF;
 
 public class Parser
 {
@@ -121,7 +122,7 @@ public class Parser
             case BEGIN :      stmtNode = parseCompoundStatement();   break;
             case REPEAT :     stmtNode = parseRepeatStatement();     break;
             case WHILE :      stmtNode = parseWhileStatement();      break;
-           // case IF :         stmtNode = parseIfStatement();         break;
+            case IF :         stmtNode = parseIfStatement();         break;
             case WRITE :      stmtNode = parseWriteStatement();      break;
             case WRITELN :    stmtNode = parseWritelnStatement();    break;
             case SEMICOLON :  stmtNode = null; break;  // empty statement
@@ -260,6 +261,25 @@ public class Parser
 
         return loopNode;
     }
+
+    private Node parseIfStatement()
+    {
+        Node ifNode = new Node(IF); // create IF Node
+        currentToken = scanner.nextToken(); // consume IF
+        ifNode.adopt(parseExpression()); // adopts expression node following IF
+        if(currentToken.type != THEN) // check if THEN is present
+            syntaxError("Expecting THEN");
+        currentToken = scanner.nextToken(); // consume THEN
+        ifNode.adopt(parseStatement()); // adopt statement node following THEN
+        if(currentToken.type == ELSE) // check if there is else statement
+        {
+            currentToken = scanner.nextToken(); // consume ELSE
+            ifNode.adopt(parseStatement()); // adopt statement node following ELSE
+        }
+
+        return ifNode;
+    }
+
     private Node parseWriteStatement()
     {
         // The current token should now be WRITE.
