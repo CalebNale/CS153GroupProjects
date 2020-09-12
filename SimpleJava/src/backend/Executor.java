@@ -33,6 +33,10 @@ public class Executor
         
         relationals.add(EQ);
         relationals.add(LT);
+        relationals.add(GT);
+        relationals.add(LTE);
+        relationals.add(GTE);
+        relationals.add(NE);
     }
     
     public Executor(Symtab symtab)
