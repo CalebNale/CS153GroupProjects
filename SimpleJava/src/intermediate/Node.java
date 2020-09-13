@@ -15,7 +15,7 @@ public class Node
     {
        PROGRAM, COMPOUND, ASSIGN, WHILE, IF, LOOP, TEST, WRITE, WRITELN, // while, if
         ADD, SUBTRACT, MULTIPLY, DIVIDE, MODULUS, EQ, LT, GT, LTE,GTE,NE, // equals, less than, greater than, less than or equals, gte equals, Not Equals
-        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, NOT, AND, OR
+        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, NOT, AND, OR, NEGATE
     }
 
     public NodeType type;

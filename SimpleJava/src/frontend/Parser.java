@@ -492,9 +492,20 @@ public class Parser
     private Node parseSimpleExpression()
     {
         // The current token should now be an identifier or a number.
-        
+
+        // Check for minus sign
+        Node minusNode = null;
+        if(currentToken.type == MINUS)
+        {
+            minusNode = new Node(NEGATE);
+            currentToken = scanner.nextToken(); // consume minus sign
+        }
         // The simple expression's root node.
         Node simpExprNode = parseTerm();
+
+        // if minus is present, simple expression node gets adopted
+        if(minusNode != null)
+           minusNode.adopt(simpExprNode);
         
         // Keep parsing more terms as long as the current token
         // is a + or - operator.
@@ -513,7 +524,8 @@ public class Parser
             opNode.adopt(parseTerm());
             simpExprNode = opNode;
         }
-        
+        if(minusNode != null) // if minus node exists, return it
+            return minusNode;
         return simpExprNode;
     }
     
