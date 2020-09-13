@@ -33,6 +33,10 @@ public class Executor
         
         relationals.add(EQ);
         relationals.add(LT);
+        relationals.add(GT);
+        relationals.add(LTE);
+        relationals.add(GTE);
+        relationals.add(NE);
     }
     
     public Executor(Symtab symtab)
@@ -48,7 +52,8 @@ public class Executor
             
             case COMPOUND : 
             case ASSIGN :   
-            case LOOP : 
+            case LOOP :
+            case IF :
             case WRITE :
             case WRITELN :  return visitStatement(node);
             
@@ -73,6 +78,7 @@ public class Executor
             case COMPOUND :  return visitCompound(statementNode);
             case ASSIGN :    return visitAssign(statementNode);
             case LOOP :      return visitLoop(statementNode);
+            case IF :        return visitIfStatement(statementNode);
             case WRITE :     return visitWrite(statementNode);
             case WRITELN :   return visitWriteln(statementNode);
             
@@ -118,6 +124,18 @@ public class Executor
             }
         } while (!b);
         
+        return null;
+    }
+
+    private Object visitIfStatement(Node ifNode)
+    {
+        // Evaluate test condition
+        boolean value = (boolean)visit(ifNode.children.get(0));
+
+        if(value) // if true execute THEN child
+            visit(ifNode.children.get(1));
+        else if(ifNode.children.get(2) != null) // check if there is ELSE child
+            visit(ifNode.children.get(2));
         return null;
     }
     
@@ -210,6 +228,10 @@ public class Executor
             {
                 case EQ : value = value1 == value2; break;
                 case LT : value = value1 <  value2; break;
+                case GT : value = value1 > value2;  break;
+                case LTE : value = value1 <= value2; break;
+                case GTE : value = value1 >= value2; break;
+                case NE : value = value1 != value2;  break;
                 
                 default : break;
             }
