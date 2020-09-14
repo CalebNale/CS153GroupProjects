@@ -78,6 +78,7 @@ public class Executor
             case COMPOUND :  return visitCompound(statementNode);
             case ASSIGN :    return visitAssign(statementNode);
             case LOOP :      return visitLoop(statementNode);
+            case FOR :       return visitForLoop(statementNode);
             case IF :        return visitIfStatement(statementNode);
             case WRITE :     return visitWrite(statementNode);
             case WRITELN :   return visitWriteln(statementNode);
@@ -124,6 +125,12 @@ public class Executor
             }
         } while (!b);
         
+        return null;
+    }
+
+    private Object visitForLoop(Node loopNode){
+        
+
         return null;
     }
 
