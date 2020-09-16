@@ -13,8 +13,10 @@ import intermediate.*;
 
 
 import static frontend.Token.TokenType.*;
+import static frontend.Token.TokenType.OR;
 import static intermediate.Node.NodeType.*;
 import static intermediate.Node.NodeType.IF;
+import static intermediate.Node.NodeType.NOT;
 
 public class Parser
 {
@@ -107,9 +109,13 @@ public class Parser
         relationalOperators.add(NOT_EQUALS);
         simpleExpressionOperators.add(PLUS);
         simpleExpressionOperators.add(MINUS);
+        simpleExpressionOperators.add(OR);
         
         termOperators.add(STAR);
         termOperators.add(SLASH);
+        termOperators.add(MOD);
+        termOperators.add(Token.TokenType.AND);
+
     }
     
     private Node parseStatement()
@@ -490,16 +496,28 @@ public class Parser
     private Node parseSimpleExpression()
     {
         // The current token should now be an identifier or a number.
-        
+
+        // Check for minus sign
+        Node minusNode = null;
+        if(currentToken.type == MINUS)
+        {
+            minusNode = new Node(NEGATE);
+            currentToken = scanner.nextToken(); // consume minus sign
+        }
         // The simple expression's root node.
         Node simpExprNode = parseTerm();
+
+        // if minus is present, simple expression node gets adopted
+        if(minusNode != null)
+           minusNode.adopt(simpExprNode);
         
         // Keep parsing more terms as long as the current token
         // is a + or - operator.
         while (simpleExpressionOperators.contains(currentToken.type))
         {
             Node opNode = currentToken.type == PLUS ? new Node(ADD)
-                                                    : new Node(SUBTRACT);
+                    : currentToken.type == MINUS ? new Node(SUBTRACT)
+                    : new Node(Node.NodeType.OR);
             
             currentToken = scanner.nextToken();  // consume the operator
 
@@ -510,7 +528,8 @@ public class Parser
             opNode.adopt(parseTerm());
             simpExprNode = opNode;
         }
-        
+        if(minusNode != null) // if minus node exists, return it
+            return minusNode;
         return simpExprNode;
     }
     
@@ -526,7 +545,10 @@ public class Parser
         while (termOperators.contains(currentToken.type))
         {
             Node opNode = currentToken.type == STAR ? new Node(MULTIPLY)
-                                                    : new Node(DIVIDE);
+                        : currentToken.type == SLASH ? new Node(DIVIDE)
+                        : currentToken.type == MOD   ? new Node(MODULUS)
+                        : new Node(Node.NodeType.AND);
+
             
             currentToken = scanner.nextToken();  // consume the operator
 
@@ -548,7 +570,7 @@ public class Parser
         if      (currentToken.type == IDENTIFIER) return parseVariable();
         else if (currentToken.type == INTEGER)    return parseIntegerConstant();
         else if (currentToken.type == REAL)       return parseRealConstant();
-        
+        else if (currentToken.type == Token.TokenType.NOT) return parseNot();
         else if (currentToken.type == LPAREN)
         {
             currentToken = scanner.nextToken();  // consume (
@@ -565,6 +587,14 @@ public class Parser
         
         else syntaxError("Unexpected token");
         return null;
+    }
+
+    private Node parseNot()
+    {
+        Node notNode = new Node(NOT); // create NOT node
+        currentToken = scanner.nextToken(); // consume not
+        notNode.adopt(parseFactor());
+        return notNode;
     }
     
     private Node parseVariable()

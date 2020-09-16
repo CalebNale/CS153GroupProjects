@@ -31,6 +31,7 @@ public class Executor
         singletons.add(INTEGER_CONSTANT);
         singletons.add(REAL_CONSTANT);
         singletons.add(STRING_CONSTANT);
+        singletons.add(NEGATE);
         
         relationals.add(EQ);
         relationals.add(LT);
@@ -57,6 +58,8 @@ public class Executor
             // case IF :
             // case WRITE :
             case WRITELN :  return visitStatement(node);
+
+            case NOT :      return visitNot(node);
             
             case TEST:      return visitTest(node);
             
@@ -160,9 +163,15 @@ public class Executor
 
         if(value) // if true execute THEN child
             visit(ifNode.children.get(1));
-        else if(ifNode.children.get(2) != null) // check if there is ELSE child
+        else if(ifNode.children.size() == 3) // check if there is ELSE child
             visit(ifNode.children.get(2));
         return null;
+    }
+
+    private Object visitNot(Node notNode)
+    {
+        boolean value = (boolean)visit(notNode.children.get(0));
+        return !value;
     }
     
     private Object visitTest(Node testNode)
@@ -236,9 +245,22 @@ public class Executor
                 case INTEGER_CONSTANT : return visitIntegerConstant(expressionNode);
                 case REAL_CONSTANT    : return visitRealConstant(expressionNode);
                 case STRING_CONSTANT  : return visitStringConstant(expressionNode);
+                case NEGATE           : return visitNegate(expressionNode);
                 
                 default: return null;
             }
+        }
+
+        if((expressionNode.type == AND) || (expressionNode.type == OR))
+        {
+            boolean value = false;
+            boolean value1 = (Boolean) visit(expressionNode.children.get(0));
+            boolean value2 = (Boolean) visit(expressionNode.children.get(1));
+            if(expressionNode.type == AND)
+                value = value1 && value2;
+            else
+                value = value1 || value2;
+            return value;
         }
         
         // Binary expressions.
@@ -258,7 +280,7 @@ public class Executor
                 case LTE : value = value1 <= value2; break;
                 case GTE : value = value1 >= value2; break;
                 case NE : value = value1 != value2;  break;
-                
+
                 default : break;
             }
             
@@ -290,6 +312,12 @@ public class Executor
         }
         
         return Double.valueOf(value);
+    }
+
+    private Object visitNegate(Node negateNode)
+    {
+        Double value = (double)visit(negateNode.children.get(0));
+        return value * -1;
     }
     
     private Object visitVariable(Node variableNode)
