@@ -252,13 +252,15 @@ public class Parser
         // The current token should now be WHILE.
 
         // Create a LOOP node.
-        Node loopNode = new Node(NodeType.WHILE); // a while loop is in fact, a loop
+        Node loopNode = new Node(LOOP); // a while loop is in fact, a loop
         lineNumber = currentToken.lineNumber;
         loopNode.lineNumber = lineNumber;
         currentToken = scanner.nextToken();  // consume WHILE
         
         Node testNode = new Node(TEST); // create a new node
-        testNode.adopt(parseExpression());  // use testnode to parse the expression the while loop uses
+        Node not = new Node(NOT);
+        not.adopt(parseExpression()); 
+        testNode.adopt(not);  // use testnode to parse the expression the while loop uses
         lineNumber = currentToken.lineNumber;
         testNode.lineNumber = lineNumber;
         loopNode.adopt(testNode);
@@ -289,14 +291,12 @@ public class Parser
         assignNode.lineNumber = lineNumber;
         compNode.adopt(assignNode);
         
-        
         Node loopNode = new Node(LOOP);
-        lineNumber = currentToken.lineNumber;
         loopNode.lineNumber = lineNumber;
 
-        Node testNode = new Node(TEST);
+        Node testNode = new Node(TEST); 
+        testNode.lineNumber = lineNumber;
         Node tChildNode = currentToken.type == TO ? new Node(GT) : new Node(LT); // create new Node GT for TO or LT for DOWNTO
-        lineNumber = currentToken.lineNumber;
         tChildNode.lineNumber = lineNumber;
         
         Node variabNode = new Node(VARIABLE);
@@ -305,13 +305,12 @@ public class Parser
         variabNode.text = assignNode.children.get(0).text;
         tChildNode.adopt(variabNode); //assign the same variable to GT or LT node
         
-
         currentToken = scanner.nextToken(); //comsume TO
         tChildNode.adopt(parseExpression());
-
+        
         testNode.adopt(tChildNode);
         loopNode.adopt(testNode);
-
+        
         currentToken = scanner.nextToken(); //consume DO
         if(currentToken.type != BEGIN){ // if it is just a single line w/o a begin / end
             loopNode.adopt(parseStatement()); // parse the statement that we are doing at the end of the line
@@ -323,20 +322,24 @@ public class Parser
         }
 
         Node assignNode2 = new Node(ASSIGN);
+        assignNode2.lineNumber = lineNumber;
 
         Node variabNode2 = new Node(VARIABLE);
+        variabNode2.lineNumber = lineNumber;
         variabNode2.value = assignNode.children.get(0).entry; //get the same variable as the assignment in for loop
         variabNode2.text = assignNode.children.get(0).text;
-
         assignNode2.adopt(variabNode2);
 
         Node operationNode = tChildNode.type == GT ? new Node(ADD) : new Node(SUBTRACT);
+        operationNode.lineNumber = lineNumber;
 
         Node variabNode3 = new Node(VARIABLE);
+        variabNode3.lineNumber = lineNumber;
         variabNode3.value = assignNode.children.get(0).entry; //get the same variable as the assignment in for loop
         variabNode3.text = assignNode.children.get(0).text;
 
         Node integerNode = new Node(INTEGER_CONSTANT);
+        integerNode.lineNumber = lineNumber;
         integerNode.value = (long) 1;
         
         operationNode.adopt(variabNode3);
