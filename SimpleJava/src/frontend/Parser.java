@@ -10,7 +10,7 @@ package frontend;
 import java.util.HashSet;
 
 import intermediate.*;
-
+import intermediate.Node.NodeType;
 
 import static frontend.Token.TokenType.*;
 import static frontend.Token.TokenType.OR;
@@ -278,7 +278,7 @@ public class Parser
 
     private Node parseForStatement(){
 
-        Node compNode = new Node(FORLOOP); //Root node of FOR loop
+        Node compNode = new Node(NodeType.FOR); //Root node of FOR loop
         lineNumber = currentToken.lineNumber;
         compNode.lineNumber = lineNumber;
         

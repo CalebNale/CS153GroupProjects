@@ -52,11 +52,11 @@ public class Executor
         {
             case PROGRAM :  return visitProgram(node);
             
-            // case COMPOUND : 
-            // case ASSIGN :   
-            // case LOOP :     
-            // case IF :
-            // case WRITE :
+            case COMPOUND : 
+            case ASSIGN :   
+            case LOOP :     
+            case IF :
+            case WRITE :
             case WRITELN :  return visitStatement(node);
 
             case NOT :      return visitNot(node);
@@ -83,7 +83,7 @@ public class Executor
             case ASSIGN :    return visitAssign(statementNode);
             case LOOP :      return visitLoop(statementNode);
             case WHILE :     return visitWhileLoop(statementNode);
-            case FORLOOP :   return visitForLoop(statementNode);
+            case FOR :          return visitForLoop(statementNode);
             case IF :        return visitIfStatement(statementNode);
             case WRITE :     return visitWrite(statementNode);
             case WRITELN :   return visitWriteln(statementNode);
