@@ -252,7 +252,7 @@ public class Parser
         // The current token should now be WHILE.
 
         // Create a LOOP node.
-        Node loopNode = new Node(LOOP); // a while loop is in fact, a loop
+        Node loopNode = new Node(NodeType.WHILE); // a while loop is in fact, a loop
         lineNumber = currentToken.lineNumber;
         loopNode.lineNumber = lineNumber;
         currentToken = scanner.nextToken();  // consume WHILE

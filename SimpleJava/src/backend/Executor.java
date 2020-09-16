@@ -134,16 +134,17 @@ public class Executor
     }
 
     private Object visitWhileLoop(Node loopNode){
-        ArrayList<Node>children = loopNode.children;
-        Node test = children.get(0);
-        Iterator<Node> it = children.listIterator(1);
+        // ArrayList<Node>children = loopNode.children;
+        // Node test = children.get(0);
+        // Iterator<Node> it = children.listIterator(1);
+        // System.out.println("here");
 
-        while((boolean) visitTest(test))
-        {
-            while(it.hasNext()){
-                visit(it.next());
-            }
-        }
+        // while((boolean) visit(test))
+        // {
+        //     while(it.hasNext()){
+        //         visit(it.next());
+        //     }
+        // }
         return null;
     }
 
