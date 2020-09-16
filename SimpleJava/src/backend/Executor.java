@@ -9,6 +9,7 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import intermediate.*;
 import static intermediate.Node.NodeType.*;
@@ -50,11 +51,11 @@ public class Executor
         {
             case PROGRAM :  return visitProgram(node);
             
-            case COMPOUND : 
-            case ASSIGN :   
-            case LOOP :
-            case IF :
-            case WRITE :
+            // case COMPOUND : 
+            // case ASSIGN :   
+            // case LOOP :     
+            // case IF :
+            // case WRITE :
             case WRITELN :  return visitStatement(node);
             
             case TEST:      return visitTest(node);
@@ -78,6 +79,7 @@ public class Executor
             case COMPOUND :  return visitCompound(statementNode);
             case ASSIGN :    return visitAssign(statementNode);
             case LOOP :      return visitLoop(statementNode);
+            case WHILE :     return visitWhileLoop(statementNode);
             case FORLOOP :   return visitForLoop(statementNode);
             case IF :        return visitIfStatement(statementNode);
             case WRITE :     return visitWrite(statementNode);
@@ -128,7 +130,24 @@ public class Executor
         return null;
     }
 
+    private Object visitWhileLoop(Node loopNode){
+        ArrayList<Node>children = loopNode.children;
+        Node test = children.get(0);
+        Iterator<Node> it = children.listIterator(1);
+
+        while((boolean) visitTest(test))
+        {
+            while(it.hasNext()){
+                visit(it.next());
+            }
+        }
+        return null;
+    }
+
     private Object visitForLoop(Node loopNode){
+        for(Node node: loopNode.children){
+
+        }
         
 
         return null;

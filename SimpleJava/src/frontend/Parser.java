@@ -10,7 +10,7 @@ package frontend;
 import java.util.HashSet;
 
 import intermediate.*;
-import intermediate.Node.NodeType;
+
 
 import static frontend.Token.TokenType.*;
 import static intermediate.Node.NodeType.*;
@@ -285,6 +285,8 @@ public class Parser
         
         
         Node loopNode = new Node(LOOP);
+        lineNumber = currentToken.lineNumber;
+        loopNode.lineNumber = lineNumber;
 
         Node testNode = new Node(TEST);
         Node tChildNode = currentToken.type == TO ? new Node(GT) : new Node(LT); // create new Node GT for TO or LT for DOWNTO
