@@ -50,7 +50,7 @@ public class Executor
         switch (node.type)
         {
             case PROGRAM :  return visitProgram(node);
-            
+            case SELECT :
             case COMPOUND : 
             case ASSIGN :   
             case LOOP :    
@@ -84,6 +84,7 @@ public class Executor
             case LOOP :      return visitLoop(statementNode);
             case FOR :       return visitForLoop(statementNode);
             case IF :        return visitIfStatement(statementNode);
+            case SELECT :    return visitCaseStatement(statementNode);
             case WRITE :     return visitWrite(statementNode);
             case WRITELN :   return visitWriteln(statementNode);
             
@@ -151,6 +152,20 @@ public class Executor
         else if(ifNode.children.size() == 3) // check if there is ELSE child
             visit(ifNode.children.get(2));
         return null;
+    }
+    
+    private Object visitCaseStatement(Node selectNode)
+    {
+    	Object value = visit(selectNode.children.get(0)); // initial value to be checked against
+    	for (int i = 1; i < selectNode.children.size(); i++) // for each "SELECT BRANCH" node
+    	{
+    		Node select_constants = selectNode.children.get(i).children.get(0); // get "SELECT CONSTANTS" node
+    		for(Node node: select_constants.children){ // for each node in "SELECT CONSTANTS"
+                if (visit(node).equals(value)) // check constant against initial value
+                	visit(selectNode.children.get(i).children.get(1)); // visit assign statement in parent "SELECT BRANCH" node 	
+            }
+    	}
+    	return null;
     }
 
     private Object visitNot(Node notNode)
