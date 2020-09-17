@@ -13,7 +13,7 @@ public class Node
 {
     public enum NodeType
     {
-       PROGRAM, COMPOUND, ASSIGN, IF, LOOP, TEST, WRITE, WRITELN, // while, if
+       PROGRAM, COMPOUND, ASSIGN, IF, SELECT, SELECT_BRANCH, SELECT_CONSTANTS, LOOP, TEST, WRITE, WRITELN, // while, if
         ADD, SUBTRACT, MULTIPLY, DIVIDE, MODULUS, EQ, LT, GT, LTE,GTE,NE, // equals, less than, greater than, less than or equals, gte equals, Not Equals
         VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT, NOT, AND, OR, NEGATE, FOR
     }
