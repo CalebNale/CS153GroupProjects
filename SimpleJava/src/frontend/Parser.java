@@ -395,7 +395,8 @@ public class Parser
     		currentToken = scanner.nextToken(); // consume COLON
     		selectBranch.adopt(selectConstants);
     		selectBranch.adopt(parseStatement());
-    		currentToken = scanner.nextToken(); // consume semicolon
+    		if (currentToken.type == SEMICOLON) // check for semicolon
+    			currentToken = scanner.nextToken(); // consume semicolon
     		selectNode.adopt(selectBranch);
     	}
     	currentToken = scanner.nextToken(); // consume END
