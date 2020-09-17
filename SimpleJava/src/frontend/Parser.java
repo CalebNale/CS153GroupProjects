@@ -374,7 +374,6 @@ public class Parser
     }
     private Node parseCaseStatement()
     {
-    	//System.out.println("entering parse case statement");
     	Node selectNode = new Node(SELECT); // root node for case statement
     	lineNumber = currentToken.lineNumber;
     	selectNode.lineNumber = lineNumber;
@@ -383,36 +382,23 @@ public class Parser
     	currentToken = scanner.nextToken(); // consume OF
     	while(currentToken.type != END)
     	{
-    		//System.out.println("entering first while loop");
     		Node selectBranch = new Node(SELECT_BRANCH); // select branch
     		Node selectConstants = new Node(SELECT_CONSTANTS); // select constants
-    		//int i = 0;
-    		//while ((currentToken.type != COLON) | (i < 5))
     		do
     		{
-    			//i++;
-    			//System.out.println("entering second while loop");
-    			//System.out.println("currentToken.type: " + currentToken.type);
     			selectConstants.adopt(parseExpression());
-    			//System.out.println("pose-parse token type: " + currentToken.type);
     			if (currentToken.type == COMMA)
     			{
-    				currentToken = scanner.nextToken(); // consume 
+    				currentToken = scanner.nextToken(); // consume comma
     			}
     		} while(currentToken.type != COLON);
-    		//System.out.println("exiting second while loop");
-    		//System.out.println("currentToken.type: " + currentToken.type);
     		currentToken = scanner.nextToken(); // consume COLON
-    		//System.out.println("post colon consume currentToken.type: " + currentToken.type);
     		selectBranch.adopt(selectConstants);
     		selectBranch.adopt(parseStatement());
-    		//System.out.println("post assignment parse currentToken.type: " + currentToken.type);
     		currentToken = scanner.nextToken(); // consume semicolon
-    		//System.out.println("post semicolon consume currentToken.type: " + currentToken.type);
     		selectNode.adopt(selectBranch);
     	}
     	currentToken = scanner.nextToken(); // consume END
-    	//System.out.println("exiting first while loop");
     	return selectNode;
     }
 
