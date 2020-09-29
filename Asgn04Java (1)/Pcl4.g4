@@ -17,7 +17,6 @@ statement : compoundStatement
           | writeStatement
           | writelnStatement
           | emptyStatement
-          | compareStatement
           | forStatement
           | ifStatement
           | caseStatement
@@ -37,13 +36,12 @@ rhs : expression ;
 writeStatement   : WRITE writeArgumentsOn ;
 writelnStatement : WRITELN writeArgumentsLn? ;
 
-// while statement, uses comparestatement to compare two
-whileStatement		: WHILE compareStatement DO statementList;
-compareStatement	: expression relOp expression;
+// while statement, 
+whileStatement		: WHILE expression DO statementList;
 // for statement
 forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList ;
 // if statement
-ifStatement: IF compareStatement DO statementList ELSE statementList;
+ifStatement: IF expression DO statementList ELSE statementList;
 // case statement
 caseStatement: CASE expression OF (expression (expression)* ':' statementList )*;
 
@@ -170,4 +168,3 @@ fragment CHARACTER_CHAR : ~('\'')   // any non-quote character
 fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
                      | ~('\'')      // any non-quote character
                      ;
-                     
