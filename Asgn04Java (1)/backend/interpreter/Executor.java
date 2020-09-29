@@ -103,28 +103,6 @@ public class Executor extends Pcl4BaseVisitor<Object>
         return visit(ctx.expression());
     }
 
-    public Object visitCompareStatement(Pcl4Parser.CompareStatementContext ctx)
-    {
-        double left = (Double)visit(ctx.expression(0));
-        double right = (Double)visit(ctx.expression(1));
-        String op = (String)visit(ctx.relOp());
-        boolean value = false;
-        switch(op)
-        {
-            case "=" : value = left == right; break;
-            case "<>": value = left != right; break;
-            case "<" : value = left < right;  break;
-            case "<=": value = left <= right; break;
-            case ">" : value = left > right;  break;
-            case ">=": value = left >= right; break;
-            default : break;
-        }
-
-        return value;
-
-
-
-    }
 
     public Object visitRelOp(Pcl4Parser.RelOpContext ctx)
     {
@@ -133,11 +111,11 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
     public Object visitWhileStatement(Pcl4Parser.WhileStatementContext ctx)
     {
-        boolean testCondition = (Boolean)visit(ctx.compareStatement());
+        boolean testCondition = (Boolean)visit(ctx.expression());
         while(testCondition)
         {
             visit(ctx.statementList());
-            testCondition = (Boolean)visit(ctx.compareStatement());
+            testCondition = (Boolean)visit(ctx.expression());
         }
 
         return null;
