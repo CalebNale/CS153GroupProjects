@@ -18,6 +18,7 @@ statement : compoundStatement
           | writelnStatement
           | emptyStatement
           | forStatement
+          | whileStatement
           | ifStatement
           | caseStatement
           ;
@@ -39,11 +40,11 @@ writelnStatement : WRITELN writeArgumentsLn? ;
 // while statement, 
 whileStatement		: WHILE expression DO statementList;
 // for statement
-forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList ;
+forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList;
 // if statement
-ifStatement: IF expression DO statementList ELSE statementList;
+ifStatement: IF expression (DO | THEN | ) statementList (ELSE statementList)*;
 // case statement
-caseStatement: CASE expression OF (expression (expression)* ':' statementList )*;
+caseStatement: CASE expression OF (expression (',' expression)* ':' statementList )* END;
 
 expression 
     : simpleExpression (relOp simpleExpression)? ;
@@ -161,10 +162,11 @@ WS      : [ \t]+ -> skip ;
 QUOTE     : '\'' ;
 CHARACTER : QUOTE CHARACTER_CHAR QUOTE ;
 STRING    : QUOTE STRING_CHAR* QUOTE ;
-
+COMMA     :',';
 fragment CHARACTER_CHAR : ~('\'')   // any non-quote character
                         ;
 
 fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
                      | ~('\'')      // any non-quote character
                      ;
+                     
