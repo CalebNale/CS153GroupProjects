@@ -99,10 +99,11 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
 
 
-    public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
-        //System.out.println("Visiting WRITELN statement");
-        if(ctx.children.size() > 0)
-            visit(ctx.writeArgumentsLn());
+public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
+        if(ctx.children.size() > 0) {
+            WriteArgumentsLnContext wl = ctx.writeArgumentsLn();
+            if(wl != null) visit(ctx.writeArgumentsLn());
+        }
         System.out.println();
         return null;
     }
