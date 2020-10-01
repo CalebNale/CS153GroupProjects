@@ -1,5 +1,6 @@
 package backend.interpreter;
 
+import java.awt.List;
 import antlr4.*;
 import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
@@ -298,6 +299,52 @@ public class Executor extends Pcl4BaseVisitor<Object>
         }
         
         return null;
+    }
+	
+	    public Object visitCaseStatement(Pcl4Parser.CaseStatementContext ctx)
+    {
+    	
+    	java.util.List<ExpressionContext> values = ctx.expression();
+    	java.util.List<StatementListContext> statements = ctx.statementList();
+    	Object value = visit(values.get(0)); // initial value to be checked against
+    	boolean expressionFlag = false;
+    	boolean statement = false;
+    	int expressionCounter = 1;
+    	int statementCounter = 0;
+    	for (int i = 3; i < ctx.getChildCount(); i++) // for each child
+    	{
+    		if (ctx.getChild(i).getText().contentEquals(","))
+    		{
+    			// if comma, do nothing
+    		}
+    		else if (ctx.getChild(i).getText().contentEquals(":"))
+    		{
+    			statement = true; // next child is a statement
+    		}
+    		else if (statement) // current child is statement
+    		{
+    			if (expressionFlag) // visit statement
+    			{
+    				visit(statements.get(statementCounter));				
+    				expressionFlag = false;
+    			}
+    			statementCounter++;
+    			statement = false;
+    		}
+    		else if(ctx.getChild(i).equals(ctx.END()))
+    		{
+    			return null;
+    		}
+    		else 
+    		{
+    			if (visit(values.get(expressionCounter)).equals(value))
+    			{
+    				expressionFlag = true; // if true, expression == value, and so execute next statement
+    			}
+    			expressionCounter++;	
+    		}	
+    	}
+    	return null;
     }
 
 
