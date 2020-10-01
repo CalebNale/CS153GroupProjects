@@ -189,6 +189,11 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
 
     }
 
+    public Object visitSign(Pcl4Parser.SignContext ctx)
+    {
+        return ctx.getText();
+    }
+
 
 
     public Object visitTerm(Pcl4Parser.TermContext ctx)
