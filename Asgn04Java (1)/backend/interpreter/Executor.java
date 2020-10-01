@@ -323,7 +323,6 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
 
        
         boolean b = (Boolean) visit(ctx.children.get(1));
-        System.out.println("if statement continued" + ctx.children.get(1) );
         if (b)   {
         	;
         
@@ -331,7 +330,7 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
         }
         else if (ctx.children.get(5)  != null) {
         	
-        	return visit((ParseTree) ctx.children.get(5) );
+        	return visit( ctx.children.get(5) );
         }
         
         return null;
