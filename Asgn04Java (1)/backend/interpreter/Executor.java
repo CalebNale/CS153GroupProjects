@@ -51,7 +51,14 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
     public Object visitRepeatStatement(Pcl4Parser.RepeatStatementContext ctx) {
         //System.out.println("Visiting REPEAT statement");
-        return visit(ctx.statementList());
+        boolean testCondition;
+        do
+        {
+            visit(ctx.statementList());
+            testCondition = (Boolean)visit(ctx.expression());
+        }while(!testCondition);
+
+        return null;
     }
 
     public Object visitWriteStatement(Pcl4Parser.WriteStatementContext ctx) {
