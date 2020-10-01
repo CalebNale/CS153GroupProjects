@@ -190,6 +190,7 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
     }
 
 
+
     public Object visitTerm(Pcl4Parser.TermContext ctx)
     {
         //System.out.println("Visiting term");
@@ -241,7 +242,10 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
             return Double.valueOf(value);
         }
 
+
+
     }
+
 
     public Object visitNumberExpression(Pcl4Parser.NumberExpressionContext ctx)
     {
