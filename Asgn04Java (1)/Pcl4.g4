@@ -40,9 +40,9 @@ writelnStatement : WRITELN writeArgumentsLn? ;
 // while statement, 
 whileStatement		: WHILE expression DO statement;
 // for statement
-forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList;
+forStatement: FOR assignmentStatement (TO | DOWNTO) expression DO statement;
 // if statement
-ifStatement: IF expression ( THEN  ) statement(ELSE statement)?;
+ifStatement: IF expression (THEN) statement(ELSE statement)?;
 // case statement
 caseStatement: CASE expression OF (expression (',' expression)* ':' statementList )* END;
 
@@ -169,4 +169,3 @@ fragment CHARACTER_CHAR : ~('\'')   // any non-quote character
 fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
                      | ~('\'')      // any non-quote character
                      ;
-                     
