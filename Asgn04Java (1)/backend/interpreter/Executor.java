@@ -1,7 +1,9 @@
 package backend.interpreter;
 
-import java.awt.List;
 import antlr4.*;
+import antlr4.Pcl4Parser.ExpressionContext;
+import antlr4.Pcl4Parser.StatementListContext;
+import antlr4.Pcl4Parser.WriteArgumentsLnContext;
 import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
 
@@ -49,6 +51,36 @@ public class Executor extends Pcl4BaseVisitor<Object>
         //      " to variable " + variableName);
         return null;
     }
+    
+    public Object visitForStatement(Pcl4Parser.ForStatementContext ctx ) {
+    	String variableName = ctx.assignmentStatement().lhs().variable().getText();
+    	int startVal = ((Double) visit(ctx.assignmentStatement().rhs())).intValue();
+    	SymtabEntry entry;
+    	if(symtab.lookup(variableName) == null) {
+            entry = symtab.enter(variableName);
+            entry.setValue((double)(startVal));
+    	}
+        else
+            entry = symtab.lookup(variableName);
+    	
+    	int to = ctx.TO() != null ? 1 : 0;
+    	int endVal = ((Double) visit(ctx.expression())).intValue();
+    	if(to == 1) {
+    		for(; startVal <= endVal; startVal++) {
+    			entry.setValue((double)startVal);
+    			 visit(ctx.statement());
+    		}
+    	}
+    	
+    	else {
+    		for(; startVal >= endVal; startVal--) {
+    			entry.setValue((double)startVal);
+    			visit(ctx.statement());
+    		}
+    	}
+    	
+    	return null;
+    }
 
     public Object visitRepeatStatement(Pcl4Parser.RepeatStatementContext ctx) {
         //System.out.println("Visiting REPEAT statement");
@@ -93,16 +125,14 @@ public class Executor extends Pcl4BaseVisitor<Object>
     public Object visitWriteArgument(Pcl4Parser.WriteArgumentContext ctx)
     {
         Object value = visit(ctx.expression());
-        System.out.print(value);
+        if(value != null)  System.out.print(value);
         return null;
     }
 
-
-
-public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
+    public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
         if(ctx.children.size() > 0) {
-            WriteArgumentsLnContext wl = ctx.writeArgumentsLn();
-            if(wl != null) visit(ctx.writeArgumentsLn());
+        	WriteArgumentsLnContext wl = ctx.writeArgumentsLn();
+        	if(wl != null) visit(ctx.writeArgumentsLn());
         }
         System.out.println();
         return null;
@@ -194,8 +224,6 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
         return ctx.getText();
     }
 
-
-
     public Object visitTerm(Pcl4Parser.TermContext ctx)
     {
         //System.out.println("Visiting term");
@@ -250,9 +278,7 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
 
 
     }
-
-
-    public Object visitNumberExpression(Pcl4Parser.NumberExpressionContext ctx)
+        public Object visitNumberExpression(Pcl4Parser.NumberExpressionContext ctx)
     {
         //System.out.println("Visit number expression");
         return visit(ctx.number());
@@ -274,9 +300,7 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
 
     public Object visitStringConstant(Pcl4Parser.StringConstantContext ctx)
     {
-        System.out.print("Visiting string: got value");
         String text = ctx.getText();
-        System.out.println(text);
         return text;
     }
 
@@ -327,13 +351,13 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
 
         return null;
     }
-  public Object visitIfStatement(Pcl4Parser.IfStatementContext ctx)
+    
+    public Object visitIfStatement(Pcl4Parser.IfStatementContext ctx)
     {
 
        
         boolean b = (Boolean) visit(ctx.children.get(1));
-        if (b)   {
-        	;
+        if (b)  {
         
         	return visit(ctx.children.get(3));
         }
@@ -389,24 +413,6 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
     		}	
     	}
     	return null;
-    }
-public Object visitForStatement(Pcl4Parser.ForStatementContext ctx ) {
-        int startVal = ((Double) visit(ctx.assignmentStatement().rhs())).intValue();
-        int to = ctx.TO() != null ? 1 : 0;
-        int endVal = ((Double) visit(ctx.expression())).intValue();
-        if(to == 1) {
-            for(; startVal <= endVal; startVal++) {
-                 visit(ctx.statement());
-            }
-        }
-
-        else {
-            for(; startVal >= endVal; startVal--) {
-                visit(ctx.statement());
-            }
-        }
-
-        return null;
     }
 
 }
