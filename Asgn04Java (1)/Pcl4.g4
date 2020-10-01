@@ -42,7 +42,7 @@ whileStatement		: WHILE expression DO statement;
 // for statement
 forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList;
 // if statement
-ifStatement: IF expression (DO | THEN | ) statementList (ELSE statementList)?;
+ifStatement: IF expression (THEN) statementList (ELSE statementList)?;
 // case statement
 caseStatement: CASE expression OF (expression (',' expression)* ':' statementList )* END;
 
