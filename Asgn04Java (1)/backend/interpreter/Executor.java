@@ -346,6 +346,23 @@ public class Executor extends Pcl4BaseVisitor<Object>
     	}
     	return null;
     }
+public Object visitForStatement(Pcl4Parser.ForStatementContext ctx ) {
+        int startVal = ((Double) visit(ctx.assignmentStatement().rhs())).intValue();
+        int to = ctx.TO() != null ? 1 : 0;
+        int endVal = ((Double) visit(ctx.expression())).intValue();
+        if(to == 1) {
+            for(; startVal <= endVal; startVal++) {
+                 visit(ctx.statement());
+            }
+        }
 
+        else {
+            for(; startVal >= endVal; startVal--) {
+                visit(ctx.statement());
+            }
+        }
+
+        return null;
+    }
 
 }
