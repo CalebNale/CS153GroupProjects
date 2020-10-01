@@ -38,7 +38,7 @@ writeStatement   : WRITE writeArgumentsOn ;
 writelnStatement : WRITELN writeArgumentsLn? ;
 
 // while statement, 
-whileStatement		: WHILE expression DO statementList;
+whileStatement		: WHILE expression DO statement;
 // for statement
 forStatement: FOR assignmentStatement (TO| DOWNTO) expression DO statementList;
 // if statement

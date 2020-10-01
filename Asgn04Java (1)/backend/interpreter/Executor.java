@@ -114,7 +114,7 @@ public class Executor extends Pcl4BaseVisitor<Object>
         boolean testCondition = (Boolean)visit(ctx.expression());
         while(testCondition)
         {
-            visit(ctx.statementList());
+            visit(ctx.statement());
             testCondition = (Boolean)visit(ctx.expression());
         }
 
