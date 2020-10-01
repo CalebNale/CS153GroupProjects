@@ -147,18 +147,24 @@ public class Executor extends Pcl4BaseVisitor<Object>
     }
 
     public Object visitSimpleExpression(Pcl4Parser.SimpleExpressionContext ctx) {
+        //System.out.println("Visiting simple expression");
         boolean negative = false;
 
-        if (ctx.sign() != null) {
-            String sign = (String) visitSign(ctx.sign());
-            if (sign.equals("-")) ;
+        if(ctx.sign() != null)
+        {
+            String sign = (String)visitSign(ctx.sign());
+            if(sign.equals("-"));
             negative = true;
         }
-        if (ctx.term().size() == 1) {
-            if (negative)
-                return (Double) visit(ctx.term(0)) * -1;
+        if (ctx.term().size() == 1)
+        {
+            if(negative)
+                return (Double)visit(ctx.term(0)) * -1;
             return visit(ctx.term(0));
-        } else {
+        }
+
+
+        else {
             double left = (Double) visit(ctx.term(0));
             double right = (Double) visit(ctx.term(1));
             String addOp = (String) visit(ctx.addOp(0));
@@ -172,10 +178,13 @@ public class Executor extends Pcl4BaseVisitor<Object>
                     break;
 
             }
-            if (negative)
+            if(negative)
                 return value * -1;
             return value;
+
+
         }
+
     }
 
 
