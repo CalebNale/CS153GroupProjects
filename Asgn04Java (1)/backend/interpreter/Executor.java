@@ -281,7 +281,23 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
         return null;
     }
+public Object visitIfStatement(Pcl4Parser.IfStatementContext ctx)
+    {
 
+        System.out.println("if statement");
+        boolean b = (Boolean) visit(ctx.children.get(1));
+        System.out.println("if statement continued" + ctx.children.get(1) );
+        if (b)   {
+        	System.out.println("if statement again" + ctx.children.get(3));
+        	return visit((ParseTree) ctx.children.get(3));
+        }
+        else if (ctx.children.get(5)  != null) {
+        	System.out.println("if statement again else "+ ctx.children.get(5));
+        	return visit((ParseTree) ctx.children.get(5) );
+        }
+        
+        return null;
+    }
 
 
 }
