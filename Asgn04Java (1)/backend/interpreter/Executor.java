@@ -147,13 +147,20 @@ public class Executor extends Pcl4BaseVisitor<Object>
     }
 
     public Object visitSimpleExpression(Pcl4Parser.SimpleExpressionContext ctx) {
-        //System.out.println("Visiting simple expression");
-        if (ctx.children.size() == 1)
+        boolean negative = false;
+
+        if (ctx.sign() != null) {
+            String sign = (String) visitSign(ctx.sign());
+            if (sign.equals("-")) ;
+            negative = true;
+        }
+        if (ctx.term().size() == 1) {
+            if (negative)
+                return (Double) visit(ctx.term(0)) * -1;
             return visit(ctx.term(0));
-        else {
-            int i = 1;
+        } else {
             double left = (Double) visit(ctx.term(0));
-            double right = (Double) visit(ctx.term(i));
+            double right = (Double) visit(ctx.term(1));
             String addOp = (String) visit(ctx.addOp(0));
             double value = 0;
             switch (addOp) {
@@ -165,12 +172,10 @@ public class Executor extends Pcl4BaseVisitor<Object>
                     break;
 
             }
-
+            if (negative)
+                return value * -1;
             return value;
-
-
         }
-
     }
 
 
@@ -197,13 +202,34 @@ public class Executor extends Pcl4BaseVisitor<Object>
     }
 
     public Object visitNumber(Pcl4Parser.NumberContext ctx) {
-        //System.out.print("Visiting number: got value ");
-        String text = ctx.unsignedNumber().integerConstant()
-                .INTEGER().getText();
-        Integer value = Integer.valueOf(text);
-        //System.out.println(value);
+        // System.out.print("Visiting number: got value ");
+        String text;
+        boolean negative = false;
+        if(ctx.sign() != null)
+        {
+            String sign = (String)visit(ctx.sign());
+            if(sign.equals("-"))
+                negative = true;
+        }
+        if(ctx.unsignedNumber().integerConstant() != null) {
+            text = ctx.unsignedNumber().integerConstant()
+                    .INTEGER().getText();
+            Integer value = Integer.valueOf(text);
+            //System.out.println(value);
+            if(negative)
+                value *= -1;
+            return Double.valueOf(value);
+        }
+        else
+        {
+            text = ctx.unsignedNumber().realConstant().REAL().getText();
+            Double value = Double.valueOf(text);
+            //System.out.println(value);
+            if(negative)
+                value *= -1;
+            return Double.valueOf(value);
+        }
 
-        return Double.valueOf(value);
     }
 
     public Object visitNumberExpression(Pcl4Parser.NumberExpressionContext ctx)
