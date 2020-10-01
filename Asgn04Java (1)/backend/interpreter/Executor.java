@@ -370,25 +370,41 @@ public class Executor extends Pcl4BaseVisitor<Object>
 
         return null;
     }
-    
+
     public Object visitIfStatement(Pcl4Parser.IfStatementContext ctx)
     {
+        System.out.println("Visiting IF");
+        boolean useElse = false;
+        if(ctx.statement().size() == 2)
+            useElse = true;
+        boolean b = (Boolean)visit(ctx.expression());
+        if(b)
+        {
+            System.out.println("Visiting THEN");
+            visit(ctx.statement(0));
+        }
+        else if(useElse)
+        {
+            System.out.println("Visiting ELSE");
+            visit(ctx.statement(1));
+        }
 
-       
-        boolean b = (Boolean) visit(ctx.children.get(1));
-        if (b)  {
-        
-        	return visit(ctx.children.get(3));
-        }
-        else if (ctx.children.get(5)  != null) {
-        	
-        	return visit( ctx.children.get(5) );
-        }
-        
         return null;
+
     }
-	
-	    public Object visitCaseStatement(Pcl4Parser.CaseStatementContext ctx)
+
+    public Object visitNotFactor(Pcl4Parser.NotFactorContext ctx)
+    {
+        return !(Boolean)(visit(ctx.factor()));
+    }
+
+    public Object visitParenthesizedExpression(Pcl4Parser.ParenthesizedExpressionContext ctx)
+    {
+        return visit(ctx.expression());
+    }
+
+
+    public Object visitCaseStatement(Pcl4Parser.CaseStatementContext ctx)
     {
     	
     	java.util.List<ExpressionContext> values = ctx.expression();
