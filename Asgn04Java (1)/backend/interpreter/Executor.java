@@ -199,7 +199,26 @@ public Object visitWritelnStatement(Pcl4Parser.WritelnStatementContext ctx) {
     public Object visitTerm(Pcl4Parser.TermContext ctx)
     {
         //System.out.println("Visiting term");
-        return visitChildren(ctx);
+        if(ctx.factor().size() == 1)
+            return visit(ctx.factor(0));
+        else
+        {
+            double value = 0;
+            double left = (Double)visit(ctx.factor(0));
+            double right = (Double)visit(ctx.factor(1));
+            String mulOp = (String)visit(ctx.mulOp(0));
+            switch(mulOp)
+            {
+                case "*": value = left * right; break;
+                case "/" :
+                case "DIV" : value = left / right; break;
+                case "MOD" : value = left % right; break;
+
+            }
+
+            return value;
+        }
+
     }
 
     public Object visitVariable(Pcl4Parser.VariableContext ctx) {
