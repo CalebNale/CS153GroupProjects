@@ -707,6 +707,47 @@ public class Converter extends PascalBaseVisitor<Object>
         return null;
     }
 
+    @Override
+    public Object visitForStatement(PascalParser.ForStatementContext ctx)
+    {
+        code.emitStart("for(");
+        String variable = (String) visit(ctx.variable());
+        String expr = (String) visit(ctx.expression(0));
+        code.emit(variable + " = " + expr + "; ");
+
+        String op = "";
+        String counter = "";
+        boolean increment = ctx.TO() != null;
+        if(increment)
+        {
+            op = " <= ";
+            counter = "++";
+        }
+        else
+        {
+            op = " >= ";
+            counter = "--";
+        }
+        String expr2 = (String) visit(ctx.expression(1));
+
+        code.emit(variable + op + expr2 + "; ");
+        code.emit(variable + counter);
+        code.emitEnd(")");
+
+        boolean indentNeeded = ctx.statement().compoundStatement() == null;
+        if(indentNeeded)
+        {
+            code.indent();
+            code.emitStart();
+        }
+        visit(ctx.statement());
+        if(indentNeeded)
+            code.dedent();
+
+        return null;
+
+    }
+
     @Override 
     public Object visitExpression(PascalParser.ExpressionContext ctx) 
     {
