@@ -747,7 +747,31 @@ public class Converter extends PascalBaseVisitor<Object>
         return null;
 
     }
-
+    // when calling a procedure, use this
+    @Override 
+    public Object visitProcedureCallStatement(PascalParser.ProcedureCallStatementContext ctx)
+    {
+    	
+    	String Name = (String) visit(ctx.procedureName()); // get the name from the procedure name
+    	code.emitStart(Name + "("); // emit it and a paranthesis
+    	visit(ctx.argumentList()); // go to the arguement list, which emits its own arguements
+    	code.emitEnd(");");
+    	return null;
+    }
+    @Override 
+    public Object visitProcedureName(PascalParser.ProcedureNameContext ctx)
+    {
+    	return ctx.IDENTIFIER(); // return the identifier, which should be the name
+    } 
+    @Override 
+    public Object visitArgumentList(PascalParser.ArgumentListContext ctx)
+    {
+	for(PascalParser.ArgumentContext Name: ctx.argument() ) {
+		code.emit(Name.getText());
+		code.emit(", ");
+		}
+	return null;
+	}
     @Override 
     public Object visitExpression(PascalParser.ExpressionContext ctx) 
     {
