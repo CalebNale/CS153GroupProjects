@@ -3,7 +3,8 @@ package backend.converter;
 import java.util.Hashtable;
 
 import antlr4.*;
-
+import antlr4.PascalParser.AssignmentStatementContext;
+import antlr4.PascalParser.StatementContext;
 import intermediate.symtab.*;
 import intermediate.type.*;
 import intermediate.type.Typespec.Form;
@@ -747,6 +748,92 @@ public class Converter extends PascalBaseVisitor<Object>
         return null;
 
     }
+    
+    @Override
+    public Object visitCaseStatement(PascalParser.CaseStatementContext ctx) 
+    {
+    	code.emitStart("switch(");
+    	code.emit((String) visit(ctx.expression()));
+    	code.emit(") {");
+
+    	
+    	PascalParser.CaseBranchListContext branchListCtx = ctx.caseBranchList();
+    	for (PascalParser.CaseBranchContext branchCtx : branchListCtx.caseBranch()) 
+    	{
+    		PascalParser.CaseConstantListContext constListCtx = branchCtx.caseConstantList();
+    		StatementContext stmtCtx = branchCtx.statement();
+    		if(constListCtx != null && stmtCtx != null) 
+    		{
+    			code.emitStart();
+    			code.indent();
+    			code.emitStart();
+	    		for (PascalParser.CaseConstantContext caseConstCtx : constListCtx.caseConstant())
+				{
+	    			code.emit("case " + (String) caseConstCtx.getText());
+	    			code.emit(": ");
+				}
+
+	    		visit(stmtCtx);
+	    		code.emitStart();
+	    		code.emit("break;");
+	    		code.dedent();
+
+    		}
+    		
+    	}
+    	code.emitStart();
+    	code.emitEnd("}");
+    	
+    	return null; 
+    }
+    
+    
+    @Override 
+    public Object visitFunctionCall(PascalParser.FunctionCallContext ctx)
+    { 
+    	String Name = (String) visit(ctx.functionName());
+    	code.emitStart(Name + "(");
+    	if(ctx.argumentList() != null) 
+    	{
+    		visit(ctx.argumentList());
+    	}
+    	code.emitEnd(");");
+    	return null;
+    }
+    
+    // when calling a procedure, use this
+    @Override 
+    public Object visitProcedureCallStatement(PascalParser.ProcedureCallStatementContext ctx)
+    {
+    	
+    	String Name = (String) visit(ctx.procedureName()); // get the name from the procedure name
+    	code.emitStart(Name + "("); // emit it and a paranthesis
+    	if(ctx.argumentList() != null) {
+    	visit(ctx.argumentList()); // go to the arguement list, which emits its own arguements
+    	}
+    	code.emitEnd(");");
+    	return null;
+    }
+    @Override 
+    public Object visitProcedureName(PascalParser.ProcedureNameContext ctx)
+    {
+    	return ctx.IDENTIFIER().getText(); // return the identifier, which should be the name
+    } 
+    @Override 
+    public Object visitArgumentList(PascalParser.ArgumentListContext ctx)
+    {
+		int numArguements = (ctx.getChildCount()/2 + 1);
+
+		int i = 0;
+	for(PascalParser.ArgumentContext Name: ctx.argument() ) {
+		code.emit(Name.getText());
+		i++;
+		if(i!= numArguements) {
+			code.emit(", ");	
+		}
+		}
+	return null;
+	}
 
     @Override 
     public Object visitExpression(PascalParser.ExpressionContext ctx) 

@@ -1,0 +1,104 @@
+Convertor Runtime Output:
+
+i = 1
+i = 2
+i = 3
+i = 4
+i = 5
+
+i = 1, j = 4
+i = 1, j = 3
+i = 1, j = 2
+i = 1, j = 1
+i = 2, j = 4
+i = 2, j = 3
+i = 2, j = 2
+i = 2, j = 1
+i = 3, j = 4
+i = 3, j = 3
+i = 3, j = 2
+i = 3, j = 1
+
+abcdefghijklmnopqrstuvwxyz
+ZYXWVUTSRQPONMLKJIHGFEDCBA
+
+[15 milliseconds execution time.]
+
+
+Interpreter Output:
+
+001 program TestFor;
+002 
+003 var
+004     i, j : integer;
+005     ch : char;
+006     
+007 begin
+008     for i := 1 to 5 do writeln('i = ', i);
+009     writeln;
+010     
+011     for i := 1 to 3 do begin
+012         for j := 4 downto 1 do begin
+013             writeln('i = ', i, ', j = ', j);
+014         END
+015     end;
+016     
+017     writeln;
+018     
+019     for ch := 'a' to 'z' do write(ch);
+020     writeln;
+021     
+022     for ch := 'Z' DOWNto 'A' do write(ch);
+023     writeln;
+024 end.
+
+PASS 1 Syntax: There were no syntax errors.
+
+PASS 2 Semantics:
+
+===== CROSS-REFERENCE TABLE =====
+
+*** PROGRAM TestFor ***
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+ch               005 019 019 022 022
+                                 Kind: variable
+                                 Scope nesting level: 1
+                                 Type form: scalar, Type id: char
+i                004 008 008 011 013
+                                 Kind: variable
+                                 Scope nesting level: 1
+                                 Type form: scalar, Type id: integer
+j                004 012 013
+                                 Kind: variable
+                                 Scope nesting level: 1
+                                 Type form: scalar, Type id: integer
+
+PASS 3 Execution:
+
+i = 1
+i = 2
+i = 3
+i = 4
+i = 5
+
+i = 1, j = 4
+i = 1, j = 3
+i = 1, j = 2
+i = 1, j = 1
+i = 2, j = 4
+i = 2, j = 3
+i = 2, j = 2
+i = 2, j = 1
+i = 3, j = 4
+i = 3, j = 3
+i = 3, j = 2
+i = 3, j = 1
+
+abcdefghijklmnopqrstuvwxyz
+ZYXWVUTSRQPONMLKJIHGFEDCBA
+
+                 108 statements executed.
+                   0 runtime errors.
+                  14 milliseconds execution time.
