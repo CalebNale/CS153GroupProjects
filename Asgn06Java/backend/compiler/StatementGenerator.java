@@ -1,13 +1,14 @@
 package backend.compiler;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
-import java.util.Set;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import antlr4.PascalParser;
-
+import antlr4.PascalParser.CaseBranchContext;
+import antlr4.PascalParser.CaseConstantContext;
 import intermediate.symtab.*;
 import intermediate.type.*;
 import intermediate.type.Typespec.Form;
@@ -119,7 +120,37 @@ public class StatementGenerator extends CodeGenerator
      */
     public void emitCase(PascalParser.CaseStatementContext ctx)
     {
-        /***** Complete this method. *****/
+        compiler.visit(ctx.expression());
+        emit(LOOKUPSWITCH);
+        ArrayList<Integer> caseConsts = new ArrayList<>();
+        HashMap<Integer, Label> cases = new HashMap<>();
+        HashMap<Label, CaseBranchContext> branches = new HashMap<>();
+        for(CaseBranchContext branch : ctx.caseBranchList().caseBranch()){
+            if(branch.caseConstantList() != null){
+                Label newLabel = new Label();
+                for(CaseConstantContext constant:  branch.caseConstantList().caseConstant())
+                {
+                    caseConsts.add(constant.value);
+                    cases.put(constant.value,newLabel);
+                }
+                branches.put(newLabel, branch);
+            }
+        }
+        
+        Label defaultLabel = new Label();
+        Collections.sort(caseConsts);
+        for(Integer x: caseConsts){
+            emitLabel(x,cases.get(x));
+        }
+        emitLabel("default", defaultLabel);
+
+        for(Map.Entry<Label,CaseBranchContext> entry : branches.entrySet()){
+            emitLabel(entry.getKey());
+            compiler.visit(entry.getValue());
+            emit(GOTO, defaultLabel);
+        }
+
+        emitLabel(defaultLabel);
     }
 
     /**
