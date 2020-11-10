@@ -211,7 +211,33 @@ public class StatementGenerator extends CodeGenerator
      */
     public void emitProcedureCall(PascalParser.ProcedureCallStatementContext ctx)
     {
-        /***** Complete this method. *****/
+        String argTypes = "";
+        SymtabEntry routineId = ctx.procedureName().entry;
+        ArrayList<SymtabEntry> paramIds = routineId.getRoutineParameters();
+        int i = 0;
+        if(ctx.argumentList() != null)
+        {
+            for(SymtabEntry param : paramIds)
+            {
+                argTypes += typeDescriptor(param);
+
+
+            }
+
+            for (PascalParser.ArgumentContext argCtx : ctx.argumentList().argument())
+            {
+                PascalParser.ExpressionContext exprCtx = argCtx.expression();
+                compiler.visit(exprCtx);
+                if(typeDescriptor(paramIds.get(i)).equals("F") && TypeChecker.isInteger(exprCtx.type))
+                    emit(I2F);
+                i++;
+            }
+
+
+        }
+
+        emit(INVOKESTATIC, programName + "/" + ctx.procedureName().IDENTIFIER().getText() + "("
+                + argTypes + ")V");
     }
     
     /**
