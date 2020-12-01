@@ -7,23 +7,20 @@ grammar project;
     import intermediate.type.Typespec;
 }
 
-program:  (functionDeclaration | functionDefinition)* INT MAIN '(' parameterList? ')' compoundStatement
-            functionDefinition*;
+program: functionDefinitions mainProgram  ;
+mainProgram: INT MAIN '(' parameterList? ')' compoundStatement;
 
-
-functionName   locals [ SymtabEntry entry = null ]  : IDENTIFIER ;
-
-functionDeclaration: (INT | STRING | CHAR) functionName '(' parameterList? ')' SEMICOLON ;
-functionDefinition : (INT | STRING | CHAR) functionName '(' parameterList? ')' compoundStatement ;
+functionName locals [ SymtabEntry entry = null ]  : IDENTIFIER ;
+functionDefinitions:  functionDefinition* ;
+functionDefinition : TYPE = (INT | STRING | CHAR | DOUBLE | VOID) functionName '(' parameterList? ')' compoundStatement ;
 parameterList : parameter ( ',' parameter )* ;
-parameter : (INT | STRING | CHAR) variable ;
+parameter : TYPE = (INT | STRING | CHAR | DOUBLE) variable ;
 
 functionCallStatement : functionCall SEMICOLON ;
 functionCall : functionName '(' argumentList? ')' ;
 argumentList : argument ( ',' argument)* ;
 argument     : expression ;
-
-returnStatement: RETURN (expression SEMICOLON | functionCall)? ;
+returnStatement: RETURN (expression | functionCall)? SEMICOLON ;
 
 statement : compoundStatement
           | declarationStatement
@@ -40,9 +37,8 @@ statement : compoundStatement
 statementList       : statement* ;
 compoundStatement : '{' statementList '}' ;
 
-
-declarationStatement: (INT | STRING | CHAR) variable SEMICOLON;
-assignmentStatement : (INT | STRING | CHAR)? lhs '=' rhs SEMICOLON 
+declarationStatement: TYPE = (INT | STRING | CHAR | DOUBLE)  variable SEMICOLON;
+assignmentStatement : TYPE = (INT | STRING | CHAR | DOUBLE)? lhs '=' rhs SEMICOLON 
                     | variable ('++' | '--') SEMICOLON
                     ;
 lhs locals [ Typespec type = null ] 
@@ -54,20 +50,19 @@ ifStatement    : IF '(' expression ')' trueStatement (ELSE falseStatement )? ;
 trueStatement  : compoundStatement ;
 falseStatement : compoundStatement ;
 
-
 switchStatement
     locals [ HashMap<Integer, PascalParser.StatementContext> jumpTable = null ]
     : SWITCH '(' expression ')' '{' switchBranchList '}' ;
 switchBranchList : caseBranch+ defaultBranch?;
-caseBranch       : CASE caseConstantList ':' compoundStatement ;
+caseBranch       : CASE caseConstantList ':' caseCompound ;
 caseConstantList : caseConstant ( ',' caseConstant )* ;
-defaultBranch    : 'default' ':' compoundStatement;
+caseCompound : statement* (BREAK SEMICOLON)?;
+defaultBranch    : 'default' ':' caseCompound;
 caseConstant    locals [ Typespec type = null, int value = 0 ]
     : constant ;
 
 
 whileStatement  : WHILE '(' expression ')' compoundStatement ;
-
 
 forStatement : FOR '(' forInitialization forControl forIncrementStatement ')' compoundStatement ;
 forInitialization : assignmentStatement;
@@ -101,7 +96,10 @@ factor              locals [ Typespec type = null ]
     ;
 
 variable            locals [ Typespec type = null, SymtabEntry entry = null ] 
-    : IDENTIFIER ;
+    : IDENTIFIER modifier* ;
+
+modifier  : '[' index ']';
+index     : expression ;
 
 constant   locals [ Typespec type = null, Object value = null ]  
     : sign? ( IDENTIFIER | unsignedNumber )
@@ -111,8 +109,9 @@ constant   locals [ Typespec type = null, Object value = null ]
 
 sign              : '-' | '+' ;
 number            : sign? unsignedNumber ;
-unsignedNumber    : integerConstant ;
+unsignedNumber    : integerConstant | realConstant ;
 integerConstant   : INTEGER ;
+realConstant      : REAL;
 characterConstant : CHARACTER ;
 stringConstant    : STR ;
        
@@ -137,23 +136,31 @@ STRING    : 'string' ;
 CHAR      : 'char' ;
 MAIN      : 'main';
 RETURN    : 'return';
+DOUBLE    : 'double' ;
+VOID      : 'void' ;
+BREAK     : 'break';
 
 IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;
 INTEGER    : [0-9]+ ;
+
+REAL       : INTEGER '.' INTEGER
+           | INTEGER ('e' | 'E') ('+' | '-')? INTEGER
+           | INTEGER '.' INTEGER ('e' | 'E') ('+' | '-')? INTEGER
+           ;
 
 NEWLINE : '\r'? '\n' -> skip  ;
 WS      : [ \t]+ -> skip ; 
 
 QUOTE     : '\'' ;
 CHARACTER : QUOTE CHARACTER_CHAR QUOTE ;
-STR    : '"' STRING_CHAR* '"' ;
+STR       : '"' STRING_CHAR* '"' ;
 SEMICOLON : ';' ;
 
 fragment CHARACTER_CHAR : ~('\'')   // any non-quote character
                         ;
 
-fragment STRING_CHAR : ~('"')      // any non-quote character
-                     ;
+fragment STRING_CHAR    : ~('"')      // any non-quote character
+                        ;
 
 COMMENT : '/*' STRING_CHAR '*/' -> skip ;
 

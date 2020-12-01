@@ -27,10 +27,7 @@ public class SymtabEntry
      */
     public enum Kind
     {
-        CONSTANT, ENUMERATION_CONSTANT, TYPE, VARIABLE, RECORD_FIELD,
-        VALUE_PARAMETER, REFERENCE_PARAMETER, PROGRAM_PARAMETER,
-        PROGRAM, PROCEDURE, FUNCTION,
-        UNDEFINED;
+        CONSTANT, VARIABLE, VALUE_PARAMETER, PROGRAM_PARAMETER, FUNCTION;
         
         public String toString() { return super.toString().toLowerCase(); }
     }
@@ -40,10 +37,7 @@ public class SymtabEntry
      */
     public enum Routine
     {
-        DECLARED, FORWARD,
-        READ, READLN, WRITE, WRITELN,
-        ABS, ARCTAN, CHR, COS, EOF, EOLN, EXP, LN, ODD, ORD,
-        PRED, ROUND, SIN, SQR, SQRT, SUCC, TRUNC,
+        PRINT
     }
 
     /**
@@ -88,15 +82,11 @@ public class SymtabEntry
         switch (kind)
         {
             case CONSTANT:
-            case ENUMERATION_CONSTANT:
             case VARIABLE:
-            case RECORD_FIELD:
             case VALUE_PARAMETER:
                 info = new ValueInfo();
                 break;
                 
-            case PROGRAM:
-            case PROCEDURE:
             case FUNCTION:
                 info = new RoutineInfo();
                 ((RoutineInfo) info).parameters  = new ArrayList<SymtabEntry>();
