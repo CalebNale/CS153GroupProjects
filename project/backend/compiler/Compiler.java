@@ -42,19 +42,6 @@ public class Compiler extends PascalBaseVisitor<Object>
         this.programName = parent.programName;
     }
     
-    /**
-     * Constructor for child compilers of records.
-     * @param parent the parent compiler.
-     * @param recordId the symbol table entry of the name of the record to compile.
-     */
-    public Compiler(Compiler parent, SymtabEntry recordId)
-    {        
-        String recordTypePath = recordId.getType().getRecordTypePath();
-        code = new CodeGenerator(recordTypePath, "j", this);
-        createNewGenerators(code);
-        
-        programCode.emitRecord(recordId, recordTypePath);
-    }
     
     /**
      * Create new child code generators.

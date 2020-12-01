@@ -49,7 +49,6 @@ public class StructuredDataGenerator extends CodeGenerator
                 Form form = type.getForm();
                     
                 if      (form == ARRAY)  emitAllocateArray(id, type);
-                else if (form == RECORD) emitAllocateRecord(id, type, DUP);
             }
         }
     }
@@ -83,20 +82,12 @@ public class StructuredDataGenerator extends CodeGenerator
             : elmtType == Predefined.booleanType ? "boolean"
             : elmtType == Predefined.charType    ? "char"
             : elmtType == Predefined.stringType  ? "java/lang/String"
-            : elmtForm == ENUMERATION            ? "int"
-            : elmtForm == RECORD                 ? elmtType.getIdentifier()
-                                                           .getName()
             :                                      null;
 
         // One-dimensional array.
         if (dimensionCount == 1) 
         {
-            if (elmtType.getForm() == RECORD)
-            {
-                emit(ANEWARRAY, elmtType.getRecordTypePath());
-                emit(DUP);
-            }
-            else if (elmtType == Predefined.stringType) 
+            if (elmtType == Predefined.stringType) 
             {
                 emit(ANEWARRAY, typeName);
             }
@@ -112,20 +103,10 @@ public class StructuredDataGenerator extends CodeGenerator
             emit(MULTIANEWARRAY, typeDescriptor(targetId.getType()),
                  Integer.toString(dimensionCount));
             localStack.decrease(dimensionCount - 1);
-
-            if (elmtType.getForm() == RECORD) emit(DUP);
         }
 
         // Store the allocation into the array variable.
         emitStoreValue(targetId, targetId.getType());
-
-        // Allocate data for record elements.
-        if (elmtType.getForm() == RECORD)
-        {
-            emitAllocateArrayElements(targetId, targetId.getType(), 
-                                      1, dimensionCount);
-            emit(POP);
-        }
     }
 
     /**
@@ -169,12 +150,6 @@ public class StructuredDataGenerator extends CodeGenerator
                                       dimensionIndex + 1, dimensionCount);
         }
         
-        // Allocate data for a record element.
-        else if (form == RECORD) 
-        {
-            emitLoadLocal(Predefined.integerType, tempIndex);  // subscript        
-            emitAllocateRecord(null, elmtType.getArrayElementType(), DUP_X2);
-        }
 
         // Bottom of the loop: 
         // If it's not the last dimension, pop off the copy of the record
@@ -188,83 +163,5 @@ public class StructuredDataGenerator extends CodeGenerator
         emitLabel(loopExitLabel);
 
         localVariables.release(tempIndex);
-    }
-
-    /**
-     * Emit code to allocate a record variable as a class.
-     * @param variableId the symbol table entry of the variable.
-     * @param recordType the record data type.
-     */
-    private void emitAllocateRecord(
-                SymtabEntry variableId, Typespec recordType, Instruction dup)
-    {
-        // Allocate and store into the record variable.
-        emit(NEW, recordType.getRecordTypePath());
-        emit(DUP);
-        emit(INVOKESPECIAL, recordType.getRecordTypePath() + "/<init>()V");
-        localStack.decrease(1);
-        
-        boolean hasStructuredField = false;
-        for (SymtabEntry fieldId : recordType.getRecordSymtab().sortedEntries())
-        {
-            if (fieldId.getKind() == RECORD_FIELD)
-            {
-                if (fieldId.getType().isStructured())
-                {
-                    hasStructuredField = true;
-                    break;
-                }
-            }
-        }
-        
-        // Duplicate the record address to use to initialize structured fields:
-        //   DUP    to later store this record into an unstructured variable
-        //   DUP_X1 to later store this record into a record field
-        //   DUP_X2 to later store this record into an array element
-        if (hasStructuredField)
-        {
-            emit(dup);
-            // Stack: @record @record ...
-        }
-
-        // Store newly allocated record.
-        if (variableId != null)
-        {
-            emitStoreValue(variableId, variableId.getType());
-        }
-        else
-        {
-            emitStoreValue(null, null);
-        }
-        // Stack: @record ...
-        
-        // Allocate data for any structured fields.
-        if (hasStructuredField)
-        {
-            for (SymtabEntry fieldId : 
-                                recordType.getRecordSymtab().sortedEntries())
-            {
-                if (fieldId.getKind() == RECORD_FIELD)
-                {
-                    Typespec fieldType = fieldId.getType();
-                    if (fieldType.getForm() == ARRAY)
-                    {
-                        emit(DUP);  // dup record address to store array field
-                        emitAllocateArray(fieldId, fieldType);
-                        // Stack: @record
-                    }
-                    else if (fieldType.getForm() == RECORD)
-                    {
-                        emit(DUP);  // dup record address to store record field
-                        emitAllocateRecord(fieldId, fieldType, DUP_X1);
-                        // Stack: @record
-                    }
-                }
-            }
-            
-            // Pop off the remaining duplicated record address
-            // from either DUP or DUP_X1 or DUP_X2
-            emit(POP);
-        }
     }
 }

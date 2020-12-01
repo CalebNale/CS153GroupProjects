@@ -449,7 +449,7 @@ public class StatementGenerator extends CodeGenerator
                 compiler.visit(exprCtx);
 
                 Form form = type.getForm();
-                if (    ((form == SCALAR) || (form == ENUMERATION))
+                if (    ((form == SCALAR))
                      && (type != Predefined.stringType))
                 {
                     emit(INVOKESTATIC, valueOfSignature(type));

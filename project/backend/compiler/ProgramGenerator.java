@@ -42,7 +42,6 @@ public class ProgramGenerator extends CodeGenerator
         
         localVariables = new LocalVariables(programLocalsCount);
         
-        emitRecords(programSymtab);
         
         emitDirective(CLASS_PUBLIC, programName);
         emitDirective(SUPER, "java/lang/Object");
@@ -55,48 +54,6 @@ public class ProgramGenerator extends CodeGenerator
         emitMainMethod(ctx);
     }
     
-    /**
-     * Create a new compiler instance for a record.
-     * @param symtab the record type's symbol table.
-     */
-    public void emitRecords(Symtab symtab)
-    {
-        for (SymtabEntry id : symtab.sortedEntries())
-        {
-            if (   (id.getKind() == TYPE)
-                && (id.getType().getForm() == RECORD))
-            {
-                new Compiler(compiler, id);
-            }
-        }
-    }
-    
-    /**
-     * Emit code for a record.
-     */
-    public void emitRecord(SymtabEntry recordId, String namePath)
-    {
-        Symtab recordSymtab = recordId.getType().getRecordSymtab();
-        
-        emitDirective(CLASS_PUBLIC, namePath);
-        emitDirective(SUPER, "java/lang/Object");
-        emitLine();
-        
-        // Emit code for any nested records.
-        emitRecords(recordSymtab);
-        
-        // Emit record fields.
-        for (SymtabEntry id : recordSymtab.sortedEntries())
-        {
-            if (id.getKind() == RECORD_FIELD)
-            {
-                emitDirective(FIELD, id.getName(), typeDescriptor(id));
-            }
-        }
-        
-        emitConstructor();
-        close();  // the object file
-    }
     
     /**
      * Emit field directives for the program variables.
@@ -329,7 +286,7 @@ public class ProgramGenerator extends CodeGenerator
         buffer.append(typeDescriptor(routineId));
 
         emitLine();
-        if (routineId.getKind() == PROCEDURE) 
+        if (routineId.getKind() == FUNCTION) 
         {
             emitComment("PROCEDURE " + routineName);
         }
@@ -358,8 +315,7 @@ public class ProgramGenerator extends CodeGenerator
         {
             Kind kind = id.getKind();
 
-            if ((kind == VARIABLE) || (kind == VALUE_PARAMETER)
-                                   || (kind == REFERENCE_PARAMETER)) 
+            if ((kind == VARIABLE) || (kind == VALUE_PARAMETER)) 
             {
                 int slot = id.getSlotNumber();
                 emitDirective(VAR, slot + " is " + id.getName(),

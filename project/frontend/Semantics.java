@@ -130,7 +130,7 @@ public class Semantics extends PascalBaseVisitor<Object>
             if (constantId != null)
             {
                 Kind kind = constantId.getKind();
-                if ((kind != CONSTANT) && (kind != ENUMERATION_CONSTANT))
+                if ((kind != CONSTANT))
                 {
                     error.flag(INVALID_CONSTANT, ctx);
                 }
@@ -187,15 +187,9 @@ public class Semantics extends PascalBaseVisitor<Object>
         PascalParser.TypeSpecificationContext typespecCtx = 
                                                         ctx.typeSpecification();
         
-        // If it's a record type, create a named record type.
-        if (typespecCtx instanceof PascalParser.RecordTypespecContext)
-        {
-            typeId = createRecordType(
-                    (PascalParser.RecordTypespecContext) typespecCtx, typeName);            
-        }
 
         // Enter the type name of any other type into the symbol table.
-        else if (typeId == null)
+        if (typeId == null)
         {
             visit(typespecCtx);
             
@@ -216,89 +210,7 @@ public class Semantics extends PascalBaseVisitor<Object>
         typeId.appendLineNumber(ctx.getStart().getLine());        
         return null;
     }
-
-    @Override 
-    public Object visitRecordTypespec(PascalParser.RecordTypespecContext ctx) 
-    { 
-        // Create an unnamed record type.
-        String recordTypeName = Symtab.generateUnnamedName();
-        createRecordType(ctx, recordTypeName);
-        
-        return null;
-    }
     
-    /**
-     * Create a new record type.
-     * @param recordTypeSpecCtx the RecordTypespecContext.
-     * @param recordTypeName the name of the record type.
-     * @return the symbol table entry of the record type identifier.
-     */
-    private SymtabEntry createRecordType(
-                        PascalParser.RecordTypespecContext recordTypeSpecCtx, 
-                        String recordTypeName)
-    {
-        PascalParser.RecordTypeContext recordTypeCtx = 
-                                                recordTypeSpecCtx.recordType();
-        Typespec recordType = new Typespec(RECORD);
-        
-        SymtabEntry recordTypeId = symtabStack.enterLocal(recordTypeName, TYPE);
-        recordTypeId.setType(recordType);
-        recordType.setIdentifier(recordTypeId);
-        
-        String recordTypePath = createRecordTypePath(recordType);
-        recordType.setRecordTypePath(recordTypePath);
-
-        // Enter the record fields into the record type's symbol table.
-        Symtab recordSymtab = createRecordSymtab(recordTypeCtx.recordFields(),
-                                                 recordTypeId);
-        recordType.setRecordSymtab(recordSymtab);
-
-        recordTypeCtx.entry    = recordTypeId;
-        recordTypeSpecCtx.type = recordType;
-        
-        return recordTypeId;
-    }
-
-    /**
-     * Create the fully qualified type pathname of a record type.
-     * @param recordType the record type.
-     * @return the pathname.
-     */
-    private String createRecordTypePath(Typespec recordType)
-    {
-        SymtabEntry recordId = recordType.getIdentifier();
-        SymtabEntry parentId = recordId.getSymtab().getOwner();
-        String path = recordId.getName();
-        
-        while (   (parentId.getKind() == TYPE) 
-               && (parentId.getType().getForm() == RECORD))
-        {
-            path = parentId.getName() + "$" + path;
-            parentId = parentId.getSymtab().getOwner();
-        }
-        
-        path = parentId.getName() + "$" + path;
-        return path;
-    }
-
-    /**
-     * Create the symbol table for a record type.
-     * @param ctx the RecordFieldsContext,
-     * @param ownerId the symbol table entry of the owner's identifier.
-     * @return the symbol table.
-     */
-    private Symtab createRecordSymtab(PascalParser.RecordFieldsContext ctx,
-                                      SymtabEntry ownerId) 
-    { 
-        Symtab recordSymtab = symtabStack.push();
-
-        recordSymtab.setOwner(ownerId);
-        visit(ctx.variableDeclarationsList());
-        recordSymtab.resetVariables(RECORD_FIELD);
-        symtabStack.pop();
-        
-        return recordSymtab;
-    }
     
     @Override 
     public Object visitSimpleTypespec(PascalParser.SimpleTypespecContext ctx) 
@@ -349,108 +261,6 @@ public class Semantics extends PascalBaseVisitor<Object>
         return null;
     }
 
-    @Override 
-    public Object visitEnumerationTypespec(
-                                    PascalParser.EnumerationTypespecContext ctx) 
-    { 
-        Typespec enumType = new Typespec(ENUMERATION);
-        ArrayList<SymtabEntry> constants = new ArrayList<>();
-        int value = -1;
-
-        // Loop over the enumeration constants.
-        for (PascalParser.EnumerationConstantContext constCtx : 
-                                    ctx.enumerationType().enumerationConstant())
-        {
-            PascalParser.ConstantIdentifierContext constIdCtx = 
-                                                constCtx.constantIdentifier();
-            String constantName = constIdCtx.IDENTIFIER().getText()
-                                                         .toLowerCase();
-            SymtabEntry constantId = symtabStack.lookupLocal(constantName);
-            
-            if (constantId == null)
-            {
-                constantId = symtabStack.enterLocal(constantName, 
-                                                    ENUMERATION_CONSTANT);
-                constantId.setType(enumType);
-                constantId.setValue(++value);
-                
-                constants.add(constantId);
-            }
-            else
-            {
-                error.flag(REDECLARED_IDENTIFIER, constCtx);
-            }
-            
-            constIdCtx.entry = constantId;
-            constIdCtx.type  = enumType;
-            
-            constantId.appendLineNumber(ctx.getStart().getLine());        
-        }
-
-        enumType.setEnumerationConstants(constants);
-        ctx.type = enumType;
-       
-        return null;
-    }
-
-    @Override 
-    public Object visitSubrangeTypespec(
-                                    PascalParser.SubrangeTypespecContext ctx) 
-    { 
-        Typespec type = new Typespec(SUBRANGE);
-        PascalParser.SubrangeTypeContext subCtx = ctx.subrangeType();
-        PascalParser.ConstantContext minCtx = subCtx.constant().get(0);
-        PascalParser.ConstantContext maxCtx = subCtx.constant().get(1);
-        
-        Object minObj = visit(minCtx);
-        Object maxObj = visit(maxCtx);
-        
-        Typespec minType = minCtx.type;
-        Typespec maxType = maxCtx.type;
-        
-        if (   (   (minType.getForm() != SCALAR)
-                && (minType.getForm() != ENUMERATION))
-            || (minType == Predefined.realType)
-            || (minType == Predefined.stringType))
-        {
-            error.flag(INVALID_CONSTANT, minCtx);
-            minType = Predefined.integerType;
-            minObj = 0;
-        }
-        
-        int minValue;
-        int maxValue;
-
-        if (minType == Predefined.integerType)
-        {
-            minValue = (Integer) minObj;
-            maxValue = (Integer) maxObj;
-        }
-        else if (minType == Predefined.charType)
-        {
-            minValue = (Character) minObj;
-            maxValue = (Character) maxObj;
-        }
-        else  // enumeration constants
-        {
-            minValue = (Integer) minCtx.value;
-            maxValue = (Integer) maxCtx.value;
-        }
-
-        if ((maxType != minType) || (minValue > maxValue))
-        {
-            error.flag(INVALID_CONSTANT, maxCtx);
-            maxType = minType;
-            maxObj  = minObj;
-        }
-        
-        type.setSubrangeBaseType(minType);
-        type.setSubrangeMinValue((Integer) minValue);
-        type.setSubrangeMaxValue((Integer) maxValue);
-
-        ctx.type = type;
-        return null;
-    }
 
     @Override 
     public Object visitArrayTypespec(PascalParser.ArrayTypespecContext ctx) 
@@ -485,30 +295,6 @@ public class Semantics extends PascalBaseVisitor<Object>
         arrayType.setArrayElementType(elmtType);
         
         return null;
-    }
-    
-    /**
-     * Return the number of values in a datatype.
-     * @param type the datatype.
-     * @return the number of values.
-     */
-    private int typeCount(Typespec type)
-    {
-        int count = 0;
-        
-        if (type.getForm() == ENUMERATION)
-        {
-            ArrayList<SymtabEntry> constants = type.getEnumerationConstants();
-            count = constants.size();
-        }
-        else  // subrange
-        {
-            int minValue = type.getSubrangeMinValue();
-            int maxValue = type.getSubrangeMaxValue();
-            count = maxValue - minValue + 1;
-        }
-        
-        return count;
     }
 
     @Override 
@@ -846,21 +632,6 @@ public class Semantics extends PascalBaseVisitor<Object>
         return null;
     }
 
-    @Override 
-    public Object visitRepeatStatement(PascalParser.RepeatStatementContext ctx) 
-    {
-        PascalParser.ExpressionContext exprCtx = ctx.expression();
-        visit(exprCtx);
-        Typespec exprType = exprCtx.type;
-        
-        if (!TypeChecker.isBoolean(exprType))
-        {
-            error.flag(TYPE_MUST_BE_BOOLEAN, exprCtx);
-        }
-        
-        visit(ctx.statementList());
-        return null;
-    }
 
     @Override 
     public Object visitWhileStatement(PascalParser.WhileStatementContext ctx) 

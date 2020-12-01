@@ -410,13 +410,6 @@ public class CodeGenerator
             }
         }
         
-        // Enumeration constant
-        else if (kind == ENUMERATION_CONSTANT)
-        {
-            Object value = variableId.getValue();
-            emitLoadConstant((Integer) value);
-        }
-
         // Program variable.
         else if (nestingLevel == 1) 
         {
@@ -450,8 +443,7 @@ public class CodeGenerator
 
         if (   (type == Predefined.integerType)
             || (type == Predefined.booleanType)
-            || (type == Predefined.charType)
-            || (form == ENUMERATION))
+            || (type == Predefined.charType))
         {
             switch (index) 
             {
@@ -500,10 +492,6 @@ public class CodeGenerator
         if (targetId == null)
         {
             emitStoreToArrayElement(targetType);
-        }
-        else if (targetId.getKind() == RECORD_FIELD) 
-        {
-            emitStoreToRecordField(targetId);
         }
         else
         {
@@ -557,8 +545,7 @@ public class CodeGenerator
 
         if (   (type == Predefined.integerType)
             || (type == Predefined.booleanType)
-            || (type == Predefined.charType)
-            || (form == ENUMERATION))
+            || (type == Predefined.charType))
         {
             switch (slot) 
             {
@@ -610,24 +597,9 @@ public class CodeGenerator
              : elmtType == Predefined.realType    ? FASTORE
              : elmtType == Predefined.booleanType ? BASTORE
              : elmtType == Predefined.charType    ? CASTORE
-             : form == ENUMERATION                ? IASTORE
              :                                      AASTORE);
     }
-    /**
-     * Emit a store to a record field.
-     * @param fieldId the symbol table entry of the field.
-     */
-    private void emitStoreToRecordField(SymtabEntry fieldId)
-    {
-        String fieldName = fieldId.getName();
-        Typespec fieldType = fieldId.getType();  
-        Typespec recordType = fieldId.getSymtab().getOwner().getType();
-        
-        String recordTypePath = recordType.getRecordTypePath();
-        String fieldPath = recordTypePath + "/" + fieldName;
-        
-        emit(PUTFIELD, fieldPath, typeDescriptor(fieldType));
-    }
+
 
     // ======================
     // Miscellaneous emitters
@@ -683,8 +655,7 @@ public class CodeGenerator
 
         if (   (type == Predefined.integerType)
             || (type == Predefined.booleanType)
-            || (type == Predefined.charType)
-            || (form == ENUMERATION))         emit(IRETURN);
+            || (type == Predefined.charType))         emit(IRETURN);
         else if (type == Predefined.realType) emit(FRETURN);
         else                                  emit(ARETURN);
     }
@@ -748,9 +719,7 @@ public class CodeGenerator
         else if (pascalType == Predefined.realType)    str = "F";
         else if (pascalType == Predefined.booleanType) str = "Z";
         else if (pascalType == Predefined.charType)    str = "C";
-        else if (pascalType == Predefined.stringType)  str = "Ljava/lang/String;";
-        else if (form == ENUMERATION)                  str = "I";
-        else /* (form == RECORD) */ str = "L" + pascalType.getRecordTypePath() + ";";
+        else  str = "Ljava/lang/String;";
 
         buffer.append(str);
         return buffer.toString();
@@ -784,10 +753,8 @@ public class CodeGenerator
         else if (pascalType == Predefined.realType)    str = "java/lang/Float";
         else if (pascalType == Predefined.booleanType) str = "java/lang/Boolean";
         else if (pascalType == Predefined.charType)    str = "java/lang/Character";
-        else if (pascalType == Predefined.stringType)  str = "Ljava/lang/String;";
-        else if (form == ENUMERATION)                  str = "java/lang/Integer";
-        else /* (form == RECORD) */ str = "L" + pascalType.getRecordTypePath() + ";";
-        
+        else                                           str = "Ljava/lang/String;";
+
         buffer.append(str);
         if (isArray) buffer.append(";");
 
@@ -808,7 +775,7 @@ public class CodeGenerator
         // Arrays and records are normally passed by reference
         // and so must be cloned to be passed by value.
         return (   (kind == VALUE_PARAMETER))
-                && ((form == ARRAY) || (form == RECORD));
+                && ((form == ARRAY));
     }
 
     /**

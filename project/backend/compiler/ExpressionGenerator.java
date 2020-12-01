@@ -301,10 +301,6 @@ public class ExpressionGenerator extends CodeGenerator
             {
                 emitLoadArrayElementValue(variableType);
             }
-            else
-            {
-                emitLoadRecordFieldValue(lastModCtx.field(), variableType);
-            }
         }
     }
 
@@ -336,11 +332,6 @@ public class ExpressionGenerator extends CodeGenerator
                                 modCtx.indexList(), variableType, lastModifier);
             }
             
-            // Field
-            else if (!lastModifier)
-            {
-                variableType = emitLoadRecordField(modCtx.field(), variableType);
-            }
         }
 
         return variableType;
@@ -367,18 +358,6 @@ public class ExpressionGenerator extends CodeGenerator
             PascalParser.IndexContext indexCtx = indexListCtx.index().get(i);
             emitExpression(indexCtx.expression());
 
-            Typespec indexType = elmtType.getArrayIndexType();
-
-            if (indexType.getForm() == SUBRANGE) 
-            {
-                int min = indexType.getSubrangeMinValue();
-                if (min != 0) 
-                {
-                    emitLoadConstant(min);
-                    emit(ISUB);
-                }
-            }
-
             if (!lastModifier || (i < indexCount - 1)) emit(AALOAD);
             elmtType = elmtType.getArrayElementType();
         }
@@ -392,13 +371,6 @@ public class ExpressionGenerator extends CodeGenerator
      */
     private void emitLoadArrayElementValue(Typespec elmtType)
     {
-        Form form = SCALAR;
-
-        if (elmtType != null) 
-        {
-            elmtType = elmtType.baseType();
-            form = elmtType.getForm();
-        }
 
         // Load a character from a string.
         if (elmtType == Predefined.charType) 
@@ -413,35 +385,8 @@ public class ExpressionGenerator extends CodeGenerator
                  : elmtType == Predefined.realType    ? FALOAD
                  : elmtType == Predefined.booleanType ? BALOAD
                  : elmtType == Predefined.charType    ? CALOAD
-                 : form == ENUMERATION                ? IALOAD
                  :                                      AALOAD);
         }
-    }
-    
-    private void emitLoadRecordFieldValue(
-                        PascalParser.FieldContext fieldCtx, Typespec recordType)
-    {
-        emitLoadRecordField(fieldCtx, recordType);
-    }
-
-    /**
-     * Emit code to load the address or value of a record field.
-     * @param fieldCtx the FieldContext.
-     * @param last true if this is the variable's last field, else false.
-     * @return the type of the field.
-     */
-    private Typespec emitLoadRecordField(
-                        PascalParser.FieldContext fieldCtx, Typespec recordType)
-    {
-        SymtabEntry fieldId = fieldCtx.entry;
-        String fieldName = fieldId.getName();
-        Typespec fieldType = fieldCtx.type;  
-        
-        String recordTypePath = recordType.getRecordTypePath();
-        String fieldPath = recordTypePath + "/" + fieldName;        
-        emit(GETFIELD, fieldPath, typeDescriptor(fieldType));
-
-        return fieldType;
     }
     
     /**
