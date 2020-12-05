@@ -1,14 +1,14 @@
 package backend.compiler;
 
 import antlr4.*;
-
+import antlr4.subCParser.ArgumentContext;
 import intermediate.symtab.*;
 import intermediate.symtab.Predefined;
 
 /**
  * Compile Pascal to Jasmin assembly language.
  */
-public class Compiler extends PascalBaseVisitor<Object>
+public class Compiler extends subCBaseVisitor<Object>
 {
     private SymtabEntry programId;  // symbol table entry of the program name
     private String programName;     // the program name
@@ -60,28 +60,20 @@ public class Compiler extends PascalBaseVisitor<Object>
      */
     public String getObjectFileName() { return code.getObjectFileName(); }
     
-    @Override 
-    public Object visitProgram(PascalParser.ProgramContext ctx) 
-    { 
-        createNewGenerators(code);
-        programCode.emitProgram(ctx);
-        return null;
-    }
 
     @Override 
-    public Object visitRoutineDefinition(
-                                    PascalParser.RoutineDefinitionContext ctx) 
+    public Object visitFunctionDefinition(
+                                    subCParser.FunctionDefinitionContext ctx) 
     {
         createNewGenerators(programCode);
-        programCode.emitRoutine(ctx);
+        programCode.emitFunction(ctx);
         return null;
     }
     
     @Override 
-    public Object visitStatement(PascalParser.StatementContext ctx) 
+    public Object visitStatement(subCParser.StatementContext ctx) 
     {
-        if (   (ctx.compoundStatement() == null) 
-            && (ctx.emptyStatement() == null))
+        if (   (ctx.compoundStatement() == null) )
         {
             statementCode.emitComment(ctx);
         }
@@ -91,78 +83,78 @@ public class Compiler extends PascalBaseVisitor<Object>
 
     @Override 
     public Object visitAssignmentStatement(
-                                    PascalParser.AssignmentStatementContext ctx) 
+                                    subCParser.AssignmentStatementContext ctx) 
     {
         statementCode.emitAssignment(ctx);
         return null;
     }
 
     @Override 
-    public Object visitIfStatement(PascalParser.IfStatementContext ctx) 
+    public Object visitIfStatement(subCParser.IfStatementContext ctx) 
     {
         statementCode.emitIf(ctx);
         return null;
     }
 
     @Override 
-    public Object visitCaseStatement(PascalParser.CaseStatementContext ctx) 
+    public Object visitSwitchStatement(subCParser.SwitchStatementContext ctx) 
     {
-        statementCode.emitCase(ctx);
+        statementCode.emitSwitch(ctx);
         return null;
     }
 
-    @Override 
-    public Object visitRepeatStatement(PascalParser.RepeatStatementContext ctx) 
-    {
-        statementCode.emitRepeat(ctx);
-        return null;
-    }
+//    @Override 
+//    public Object visitRepeatStatement(subCParser.RepeatStatementContext ctx) 
+//    {
+//        statementCode.emitRepeat(ctx);
+//        return null;
+//    }
 
     @Override 
-    public Object visitWhileStatement(PascalParser.WhileStatementContext ctx) 
+    public Object visitWhileStatement(subCParser.WhileStatementContext ctx) 
     {
         statementCode.emitWhile(ctx);
         return null;
     }
 
     @Override 
-    public Object visitForStatement(PascalParser.ForStatementContext ctx) 
+    public Object visitForStatement(subCParser.ForStatementContext ctx) 
     {
         statementCode.emitFor(ctx);
         return null;
     }
 
     @Override 
-    public Object visitProcedureCallStatement(
-                                PascalParser.ProcedureCallStatementContext ctx) 
+    public Object visitFunctionCallStatement(
+                                subCParser.FunctionCallStatementContext ctx) 
     {
-        statementCode.emitProcedureCall(ctx);
+        statementCode.emitFunctionCall(ctx);
         return null;
     }
 
     @Override 
-    public Object visitExpression(PascalParser.ExpressionContext ctx) 
+    public Object visitExpression(subCParser.ExpressionContext ctx) 
     {
         expressionCode.emitExpression(ctx);
         return null;
     }
 
     @Override 
-    public Object visitVariableFactor(PascalParser.VariableFactorContext ctx) 
+    public Object visitVariableFactor(subCParser.VariableFactorContext ctx) 
     {
         expressionCode.emitLoadValue(ctx.variable());
         return null;
     }
 
     @Override 
-    public Object visitVariable(PascalParser.VariableContext ctx) 
+    public Object visitVariable(subCParser.VariableContext ctx) 
     {
         expressionCode.emitLoadVariable(ctx);        
         return null;
     }
 
     @Override 
-    public Object visitNumberFactor(PascalParser.NumberFactorContext ctx) 
+    public Object visitNumberFactor(subCParser.NumberFactorContext ctx) 
     {
         if (ctx.type == Predefined.integerType) 
         {
@@ -177,7 +169,7 @@ public class Compiler extends PascalBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitCharacterFactor(PascalParser.CharacterFactorContext ctx) 
+    public Object visitCharacterFactor(subCParser.CharacterFactorContext ctx) 
     {
         char ch = ctx.getText().charAt(1);
         expressionCode.emitLoadConstant(ch);
@@ -186,7 +178,7 @@ public class Compiler extends PascalBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitStringFactor(PascalParser.StringFactorContext ctx) 
+    public Object visitStringFactor(subCParser.StringFactorContext ctx) 
     {
         String jasminString = convertString(ctx.getText());
         expressionCode.emitLoadConstant(jasminString);
@@ -207,14 +199,14 @@ public class Compiler extends PascalBaseVisitor<Object>
 
     @Override 
     public Object visitFunctionCallFactor(
-                                    PascalParser.FunctionCallFactorContext ctx) 
+                                    subCParser.FunctionCallFactorContext ctx) 
     {
         statementCode.emitFunctionCall(ctx.functionCall());
         return null;
     }
 
     @Override 
-    public Object visitNotFactor(PascalParser.NotFactorContext ctx) 
+    public Object visitNotFactor(subCParser.NotFactorContext ctx) 
     {
         expressionCode.emitNotFactor(ctx);
         return null;
@@ -222,36 +214,16 @@ public class Compiler extends PascalBaseVisitor<Object>
 
     @Override 
     public Object visitParenthesizedFactor(
-                                    PascalParser.ParenthesizedFactorContext ctx) 
+                                    subCParser.ParenthesizedFactorContext ctx) 
     {
         return visit(ctx.expression());
     }
 
     @Override 
-    public Object visitWriteStatement(PascalParser.WriteStatementContext ctx) 
+    public Object visitPrintStatement(subCParser.PrintStatementContext ctx) 
     {
-        statementCode.emitWrite(ctx);
+        statementCode.emitPrint(ctx);
         return null;
     }
 
-    @Override 
-    public Object visitWritelnStatement(PascalParser.WritelnStatementContext ctx) 
-    {
-        statementCode.emitWriteln(ctx);
-        return null;
-    }
-
-    @Override 
-    public Object visitReadStatement(PascalParser.ReadStatementContext ctx) 
-    {
-        statementCode.emitRead(ctx);
-        return null;
-    }
-
-    @Override 
-    public Object visitReadlnStatement(PascalParser.ReadlnStatementContext ctx) 
-    {
-        statementCode.emitReadln(ctx);
-        return null;
-    }
 }

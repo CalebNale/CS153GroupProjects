@@ -131,29 +131,6 @@ public class Converter extends PascalBaseVisitor<Object>
         PascalParser.TypeSpecificationContext typeCtx = ctx.typeSpecification();
         Form form = typeCtx.type.getForm();
         
-        if (form == ENUMERATION)
-        {
-            code.emitStart();
-            if (programVariables) code.emit("private static ");
-            code.emit("enum " + typeName);
-            visit(typeCtx);
-        }
-        else if (form == RECORD)
-        {
-            code.emitStart();
-            if (programVariables) code.emit("public static ");
-            code.emitEnd("class " + typeName);
-            code.emitLine("{");
-            code.indent();
-         
-            emitUnnamedRecordDefinitions(typeCtx.type.getRecordSymtab());
-            visit(typeCtx);
-            
-            code.dedent();
-            code.emitLine("}");
-            code.emitLine();
-        }
-        
         return null;
     }
             

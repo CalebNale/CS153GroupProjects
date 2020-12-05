@@ -1,6 +1,6 @@
 package backend.compiler;
 
-import antlr4.PascalParser;
+import antlr4.subCParser;
 
 import intermediate.symtab.*;
 import intermediate.type.*;
@@ -32,11 +32,11 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for an expression.
      * @param ctx the ExpressionContext.
      */
-    public void emitExpression(PascalParser.ExpressionContext ctx)
+    public void emitExpression(subCParser.ExpressionContext ctx)
     {
-        PascalParser.SimpleExpressionContext simpleCtx1 = 
+        subCParser.SimpleExpressionContext simpleCtx1 = 
                                                 ctx.simpleExpression().get(0);
-        PascalParser.RelOpContext relOpCtx = ctx.relOp();
+        subCParser.RelOpContext relOpCtx = ctx.relOp();
         Typespec type1 = simpleCtx1.type;
         emitSimpleExpression(simpleCtx1);
         
@@ -44,7 +44,7 @@ public class ExpressionGenerator extends CodeGenerator
         if (relOpCtx != null)
         {
             String op = relOpCtx.getText();
-            PascalParser.SimpleExpressionContext simpleCtx2 = 
+            subCParser.SimpleExpressionContext simpleCtx2 = 
                                                 ctx.simpleExpression().get(1);
             Typespec type2 = simpleCtx2.type;
 
@@ -75,8 +75,8 @@ public class ExpressionGenerator extends CodeGenerator
             {
                 emitSimpleExpression(simpleCtx2);
                 
-                if      (op.equals("=" )) emit(IF_ICMPEQ, trueLabel);
-                else if (op.equals("<>")) emit(IF_ICMPNE, trueLabel);
+                if      (op.equals("==" )) emit(IF_ICMPEQ, trueLabel);
+                else if (op.equals("!=")) emit(IF_ICMPNE, trueLabel);
                 else if (op.equals("<" )) emit(IF_ICMPLT, trueLabel);
                 else if (op.equals("<=")) emit(IF_ICMPLE, trueLabel);
                 else if (op.equals(">" )) emit(IF_ICMPGT, trueLabel);
@@ -90,8 +90,8 @@ public class ExpressionGenerator extends CodeGenerator
                 
                 emit(FCMPG);
 
-                if      (op.equals("=" )) emit(IFEQ, trueLabel);
-                else if (op.equals("<>")) emit(IFNE, trueLabel);
+                if      (op.equals("==" )) emit(IFEQ, trueLabel);
+                else if (op.equals("!=")) emit(IFNE, trueLabel);
                 else if (op.equals("<" )) emit(IFLT, trueLabel);
                 else if (op.equals("<=")) emit(IFLE, trueLabel);
                 else if (op.equals(">" )) emit(IFGT, trueLabel);
@@ -104,8 +104,8 @@ public class ExpressionGenerator extends CodeGenerator
                      "java/lang/String.compareTo(Ljava/lang/String;)I");
                 localStack.decrease(1);
                 
-                if      (op.equals("=" )) emit(IFEQ, trueLabel);
-                else if (op.equals("<>")) emit(IFNE, trueLabel);
+                if      (op.equals("==" )) emit(IFEQ, trueLabel);
+                else if (op.equals("!=")) emit(IFNE, trueLabel);
                 else if (op.equals("<" )) emit(IFLT, trueLabel);
                 else if (op.equals("<=")) emit(IFLE, trueLabel);
                 else if (op.equals(">" )) emit(IFGT, trueLabel);
@@ -126,14 +126,14 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for a simple expression.
      * @param ctx the SimpleExpressionContext.
      */
-    public void emitSimpleExpression(PascalParser.SimpleExpressionContext ctx)
+    public void emitSimpleExpression(subCParser.SimpleExpressionContext ctx)
     {
         int count = ctx.term().size();
         Boolean negate =    (ctx.sign() != null) 
                          && ctx.sign().getText().equals("-");
         
         // First term.
-        PascalParser.TermContext termCtx1 = ctx.term().get(0);
+        subCParser.TermContext termCtx1 = ctx.term().get(0);
         Typespec type1 = termCtx1.type;
         emitTerm(termCtx1);
         
@@ -143,7 +143,7 @@ public class ExpressionGenerator extends CodeGenerator
         for (int i = 1; i < count; i++)
         {
             String op = ctx.addOp().get(i-1).getText().toLowerCase();
-            PascalParser.TermContext termCtx2 = ctx.term().get(i);
+            subCParser.TermContext termCtx2 = ctx.term().get(i);
             Typespec type2 = termCtx2.type;
 
             boolean integerMode = false;
@@ -213,12 +213,12 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for a term.
      * @param ctx the TermContext.
      */
-    public void emitTerm(PascalParser.TermContext ctx)
+    public void emitTerm(subCParser.TermContext ctx)
     {
         int count = ctx.factor().size();
         
         // First factor.
-        PascalParser.FactorContext factorCtx1 = ctx.factor().get(0);
+        subCParser.FactorContext factorCtx1 = ctx.factor().get(0);
         Typespec type1 = factorCtx1.type;
         compiler.visit(factorCtx1);
         
@@ -226,7 +226,7 @@ public class ExpressionGenerator extends CodeGenerator
         for (int i = 1; i < count; i++)
         {
             String op = ctx.mulOp().get(i-1).getText().toLowerCase();
-            PascalParser.FactorContext factorCtx2 = ctx.factor().get(i);
+            subCParser.FactorContext factorCtx2 = ctx.factor().get(i);
             Typespec type2 = factorCtx2.type;
 
             boolean integerMode = false;
@@ -273,7 +273,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for NOT.
      * @param ctx the NotFactorContext.
      */
-    public void emitNotFactor(PascalParser.NotFactorContext ctx)
+    public void emitNotFactor(subCParser.NotFactorContext ctx)
     {
         compiler.visit(ctx.factor());
         emit(ICONST_1);
@@ -285,7 +285,7 @@ public class ExpressionGenerator extends CodeGenerator
      * or a structured variable's address.
      * @param ctx the VariableContext.
      */
-    public void emitLoadValue(PascalParser.VariableContext varCtx)
+    public void emitLoadValue(subCParser.VariableContext varCtx)
     {
         // Load the scalar value or structure address.
         Typespec variableType = emitLoadVariable(varCtx);
@@ -294,13 +294,13 @@ public class ExpressionGenerator extends CodeGenerator
         int modifierCount = varCtx.modifier().size();
         if (modifierCount > 0)
         {
-            PascalParser.ModifierContext lastModCtx =
+            subCParser.ModifierContext lastModCtx =
                                     varCtx.modifier().get(modifierCount - 1);
             
-            if (lastModCtx.indexList() != null)
-            {
-                emitLoadArrayElementValue(variableType);
-            }
+//            if (lastModCtx.indexList() != null)
+//            {
+//                emitLoadArrayElementValue(variableType);
+//            }
         }
     }
 
@@ -310,7 +310,7 @@ public class ExpressionGenerator extends CodeGenerator
      * @param variableNode the variable node.
      * @return the datatype of the variable.
      */
-    public Typespec emitLoadVariable(PascalParser.VariableContext varCtx)
+    public Typespec emitLoadVariable(subCParser.VariableContext varCtx)
     {
         SymtabEntry variableId = varCtx.entry;
         Typespec variableType = variableId.getType();
@@ -322,15 +322,15 @@ public class ExpressionGenerator extends CodeGenerator
         // Loop over subscript and field modifiers.
         for (int i = 0; i < modifierCount; ++i)
         {
-            PascalParser.ModifierContext modCtx = varCtx.modifier().get(i);
+            subCParser.ModifierContext modCtx = varCtx.modifier().get(i);
             boolean lastModifier = i == modifierCount - 1;
 
             // Subscript
-            if (modCtx.indexList() != null) 
-            {
-                variableType = emitLoadArrayElementAccess(
-                                modCtx.indexList(), variableType, lastModifier);
-            }
+//            if (modCtx.indexList() != null) 
+//            {
+//                variableType = emitLoadArrayElementAccess(
+//                                modCtx.indexList(), variableType, lastModifier);
+//            }
             
         }
 
@@ -346,24 +346,24 @@ public class ExpressionGenerator extends CodeGenerator
      * @param lastModifier true if this is the variable's last modifier.
      * @return the type of the element.
      */
-    private Typespec emitLoadArrayElementAccess(
-                                    PascalParser.IndexListContext indexListCtx,
-                                    Typespec elmtType, boolean lastModifier)
-    {
-        int indexCount = indexListCtx.index().size();
-        
-        // Loop over the subscripts.
-        for (int i = 0; i < indexCount; i++)
-        {
-            PascalParser.IndexContext indexCtx = indexListCtx.index().get(i);
-            emitExpression(indexCtx.expression());
-
-            if (!lastModifier || (i < indexCount - 1)) emit(AALOAD);
-            elmtType = elmtType.getArrayElementType();
-        }
-
-        return elmtType;
-    }
+//    private Typespec emitLoadArrayElementAccess(
+//                                    subCParser.IndexListContext indexListCtx,
+//                                    Typespec elmtType, boolean lastModifier)
+//    {
+//        int indexCount = indexListCtx.index().size();
+//        
+//        // Loop over the subscripts.
+//        for (int i = 0; i < indexCount; i++)
+//        {
+//            subCParser.IndexContext indexCtx = indexListCtx.index().get(i);
+//            emitExpression(indexCtx.expression());
+//
+//            if (!lastModifier || (i < indexCount - 1)) emit(AALOAD);
+//            elmtType = elmtType.getArrayElementType();
+//        }
+//
+//        return elmtType;
+//    }
 
     /**
      * Emit a load of an array element's value.
@@ -393,7 +393,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code to load an integer constant.
      * @parm intCtx the IntegerConstantContext.
      */
-    public void emitLoadIntegerConstant(PascalParser.NumberContext intCtx)
+    public void emitLoadIntegerConstant(subCParser.NumberContext intCtx)
     {
         int value = Integer.parseInt(intCtx.getText());
         emitLoadConstant(value);
@@ -403,7 +403,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code to load real constant.
      * @parm intCtx the IntegerConstantContext.
      */
-    public void emitLoadRealConstant(PascalParser.NumberContext realCtx)
+    public void emitLoadRealConstant(subCParser.NumberContext realCtx)
     {
         float value = Float.parseFloat(realCtx.getText());
         emitLoadConstant(value);

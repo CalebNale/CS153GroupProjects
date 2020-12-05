@@ -3,8 +3,7 @@ package backend.compiler;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import antlr4.PascalParser;
-
+import antlr4.subCParser;
 import intermediate.symtab.*;
 import intermediate.symtab.SymtabEntry.Kind;
 import intermediate.type.*;
@@ -118,7 +117,7 @@ public class CodeGenerator
      * Emit a statement comment.
      * @param ctx the StatementContext.
      */
-    public void emitComment(PascalParser.StatementContext ctx)
+    public void emitComment(subCParser.StatementContext ctx)
     {
         String text = String.format("%03d %s", ctx.getStart().getLine(), 
                                                ctx.getText());

@@ -2,7 +2,7 @@ package backend.compiler;
 
 import java.util.ArrayList;
 
-import antlr4.PascalParser;
+import antlr4.subCParser;
 import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
 import intermediate.symtab.SymtabEntry.Kind;
@@ -35,7 +35,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for a program.
      * @param ctx the ProgramContext.
      */
-    public void emitProgram(PascalParser.ProgramContext ctx)
+    public void emitProgram(subCParser.ProgramContext ctx)
     {
         programId = ctx.programHeader().programIdentifier().entry;
         Symtab programSymtab = programId.getRoutineSymtab();
@@ -128,27 +128,12 @@ public class ProgramGenerator extends CodeGenerator
         localStack.reset();
     }
 
-    /**
-     * Emit code for any nested procedures and functions.
-     */
-    private void emitSubroutines(PascalParser.RoutinesPartContext ctx)
-    {
-        if (ctx != null)
-        {
-            for (PascalParser.RoutineDefinitionContext defnCtx : 
-                                                        ctx.routineDefinition())
-            {
-                compiler = new Compiler(compiler);
-                compiler.visit(defnCtx);
-            }
-        }     
-    }
 
     /**
      * Emit code for the program body as the main method.
      * @param ctx the ProgramContext.
      */
-    private void emitMainMethod(PascalParser.ProgramContext ctx)
+    private void emitMainMethod(subCParser.ProgramContext ctx)
     {
         emitLine();
         emitComment("MAIN");
@@ -234,7 +219,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for a declared procedure or function
      * @param routineId the symbol table entry of the routine's name.
      */
-    public void emitRoutine(PascalParser.RoutineDefinitionContext ctx)
+    public void emitFunction(subCParser.FunctionDefinitionContext ctx)
     {
         SymtabEntry routineId = ctx.procedureHead() != null 
                                 ? ctx.procedureHead().routineIdentifier().entry
@@ -252,8 +237,8 @@ public class ProgramGenerator extends CodeGenerator
         localVariables = new LocalVariables(routineSymtab.getMaxSlotNumber());
 
         // Emit code for the compound statement.
-        PascalParser.CompoundStatementContext stmtCtx = 
-            (PascalParser.CompoundStatementContext) routineId.getExecutable();
+        subCParser.CompoundStatementContext stmtCtx = 
+            (subCParser.CompoundStatementContext) routineId.getExecutable();
         compiler.visit(stmtCtx);
         
         emitRoutineReturn(routineId);

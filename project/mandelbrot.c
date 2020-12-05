@@ -86,13 +86,13 @@ int main(int argc, char* argv[])
       /* compute  pixel color and write it to file */
       if (k >= maxiter) {
         /* interior */
-        const unsigned char black[] = {210, 00, 60, 0, 0, 0};
+        const unsigned char black[] = {210, 0, 60, 0, 0, 0};
         fwrite (black, 6, 1, fp);
       }
       else {
         /* exterior */
         unsigned char color[6];
-        color[0] = k >> 8;
+        color[0] = k >> 7;
         color[1] = k & 255;
         color[2] = k >> 8;
         color[3] = k & 255;

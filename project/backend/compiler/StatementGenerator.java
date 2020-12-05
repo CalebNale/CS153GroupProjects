@@ -6,9 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import antlr4.PascalParser;
-import antlr4.PascalParser.CaseBranchContext;
-import antlr4.PascalParser.CaseConstantContext;
+import antlr4.subCParser;
+import antlr4.subCParser.CaseBranchContext;
+import antlr4.subCParser.CaseConstantContext;
+import antlr4.subCParser;
 import intermediate.symtab.*;
 import intermediate.type.*;
 import intermediate.type.Typespec.Form;
@@ -40,17 +41,17 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for an assignment statement.
      * @param ctx the AssignmentStatementContext.
      */
-    public void emitAssignment(PascalParser.AssignmentStatementContext ctx)
+    public void emitAssignment(subCParser.AssignmentStatementContext ctx)
     {
-        PascalParser.VariableContext   varCtx  = ctx.lhs().variable();
-        PascalParser.ExpressionContext exprCtx = ctx.rhs().expression();
+        subCParser.VariableContext   varCtx  = ctx.lhs().variable();
+        subCParser.ExpressionContext exprCtx = ctx.rhs().expression();
         SymtabEntry varId = varCtx.entry;
         Typespec varType  = varCtx.type;
         Typespec exprType = exprCtx.type;
 
         // The last modifier, if any, is the variable's last subscript or field.
         int modifierCount = varCtx.modifier().size();
-        PascalParser.ModifierContext lastModCtx = modifierCount == 0
+        subCParser.ModifierContext lastModCtx = modifierCount == 0
                             ? null : varCtx.modifier().get(modifierCount - 1);
 
         // The target variable has subscripts and/or fields.
@@ -71,12 +72,6 @@ public class StatementGenerator extends CodeGenerator
         // The target variable has no subscripts or fields.
         if (lastModCtx == null) emitStoreValue(varId, varId.getType());
 
-        // The target variable is a field.
-        else if (lastModCtx.field() != null)
-        {
-            emitStoreValue(lastModCtx.field().entry, lastModCtx.field().type);
-        }
-
         // The target variable is an array element.
         else
         {
@@ -88,7 +83,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for an IF statement.
      * @param ctx the IfStatementContext.
      */
-    public void emitIf(PascalParser.IfStatementContext ctx)
+    public void emitIf(subCParser.IfStatementContext ctx)
     {
         boolean elseExists = ctx.falseStatement() != null;
         Label nextLabel = new Label();
@@ -118,14 +113,14 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a CASE statement.
      * @param ctx the CaseStatementContext.
      */
-    public void emitCase(PascalParser.CaseStatementContext ctx)
+    public void emitSwitch(subCParser.SwitchStatementContext ctx)
     {
         compiler.visit(ctx.expression());
         emit(LOOKUPSWITCH);
         ArrayList<Integer> caseConsts = new ArrayList<>();
         HashMap<Integer, Label> cases = new HashMap<>();
         HashMap<Label, CaseBranchContext> branches = new HashMap<>();
-        for(CaseBranchContext branch : ctx.caseBranchList().caseBranch()){
+        for(CaseBranchContext branch : ctx.switchBranchList().caseBranch()){
             if(branch.caseConstantList() != null){
                 Label newLabel = new Label();
                 for(CaseConstantContext constant:  branch.caseConstantList().caseConstant())
@@ -152,31 +147,12 @@ public class StatementGenerator extends CodeGenerator
 
         emitLabel(defaultLabel);
     }
-
-    /**
-     * Emit code for a REPEAT statement.
-     * @param ctx the RepeatStatementContext.
-     */
-    public void emitRepeat(PascalParser.RepeatStatementContext ctx)
-    {
-        Label loopTopLabel  = new Label();
-        Label loopExitLabel = new Label();
-
-        emitLabel(loopTopLabel);
-        
-        compiler.visit(ctx.statementList());
-        compiler.visit(ctx.expression());
-        emit(IFNE, loopExitLabel);
-        emit(GOTO, loopTopLabel);
-        
-        emitLabel(loopExitLabel);
-    }
     
     /**
      * Emit code for a WHILE statement.
      * @param ctx the WhileStatementContext.
      */
-    public void emitWhile(PascalParser.WhileStatementContext ctx)
+    public void emitWhile(subCParser.WhileStatementContext ctx)
     {
         Label loopTopLabel = new Label();
         Label loopExitLabel = new Label();
@@ -184,7 +160,7 @@ public class StatementGenerator extends CodeGenerator
         emitLabel(loopTopLabel);
         compiler.visit(ctx.expression());
         emit(IFEQ, loopExitLabel);
-        compiler.visit(ctx.statement());
+        compiler.visit(ctx.compoundStatement());
         emit(GOTO, loopTopLabel);
         emitLabel(loopExitLabel);
     }
@@ -193,60 +169,60 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a FOR statement.
      * @param ctx the ForStatementContext.
      */
-    public void emitFor(PascalParser.ForStatementContext ctx)
+    public void emitFor(subCParser.ForStatementContext ctx)
     {
         Instruction pop = POP;// instuction to incriment the top value on stack
         Instruction ldc = LDC;// instuction to incriment the top value on stack
         Instruction add = IADD;// instuction to incriment the top value on stack
-        boolean incriment = ctx.TO() !=null; // are we counting up or down?
-        PascalParser.VariableContext varCtx = ctx.variable();
-        SymtabEntry entry = varCtx.entry;
-        Label loopTopLabel  = new Label(); // label at the beginning
-        Label loopExitLabel = new Label();// label to jump out from
-        emitComment("A for loop is starting here");
-        compiler.visit(ctx.expression(0)); // get the first part of the expression, the assignment statement
-        emitStoreValue(entry, entry.getType());
-        emitLabel(loopTopLabel); // print out the first loop lable
-        compiler.visit(ctx.expression(1)); // get the first part of the expression, the assignment statement
-        emitLoadValue(entry);
-        if(incriment)
-            emit(IF_ICMPLT, loopExitLabel);// check to see if the variables are equal. if they are, then jump out of the loop
-        else
-            emit(IF_ICMPGT, loopExitLabel);
-
-
-        compiler.visit(ctx.statement()); // if we are still going, visit the context
-        if(incriment == true) { // if not, inciment or decrement the number
-            //emit(pop); // get the compare value off of the stack
-            emit(ldc,1); // add a i to the stack
-            emitLoadValue(entry);
-            emit(add); // add the values
-            emitStoreValue(entry, entry.getType());
-        }
-        else {
-            //emit(pop);
-            emit(ldc,-1); // use -1 if decrimenting
-            emitLoadValue(entry);
-            emit(add);
-            emitStoreValue(entry, entry.getType());
-        }
-        emit(GOTO, loopTopLabel); // then jump back up to the loop
-
-        emitLabel(loopExitLabel); // jump here to exit the loop
-        emitComment("The for loop is ending here");
+//        boolean incriment = ctx.TO() !=null; // are we counting up or 
+//        subCParser.VariableContext varCtx = ctx.variable();
+//        SymtabEntry entry = varCtx.entry;
+//        Label loopTopLabel  = new Label(); // label at the beginning
+//        Label loopExitLabel = new Label();// label to jump out from
+//        emitComment("A for loop is starting here");
+//        compiler.visit(ctx.forInitialization); // get the first part of the expression, the assignment statement
+//        emitStoreValue(entry, entry.getType());
+//        emitLabel(loopTopLabel); // print out the first loop lable
+//        compiler.visit(ctx.expression(1)); // get the first part of the expression, the assignment statement
+//        emitLoadValue(entry);
+//        if(incriment)
+//            emit(IF_ICMPLT, loopExitLabel);// check to see if the variables are equal. if they are, then jump out of the loop
+//        else
+//            emit(IF_ICMPGT, loopExitLabel);
+//
+//
+//        compiler.visit(ctx.compoundStatement()); // if we are still going, visit the context
+//        if(incriment == true) { // if not, inciment or decrement the number
+//            //emit(pop); // get the compare value off of the stack
+//            emit(ldc,1); // add a i to the stack
+//            emitLoadValue(entry);
+//            emit(add); // add the values
+//            emitStoreValue(entry, entry.getType());
+//        }
+//        else {
+//            //emit(pop);
+//            emit(ldc,-1); // use -1 if decrimenting
+//            emitLoadValue(entry);
+//            emit(add);
+//            emitStoreValue(entry, entry.getType());
+//        }
+//        emit(GOTO, loopTopLabel); // then jump back up to the loop
+//
+//        emitLabel(loopExitLabel); // jump here to exit the loop
+//        emitComment("The for loop is ending here");
     }
     
     /**
      * Emit code for a procedure call statement.
      * @param ctx the ProcedureCallStatementContext.
      */
-    public void emitProcedureCall(PascalParser.ProcedureCallStatementContext ctx)
+    public void emitFunctionCall(subCParser.FunctionCallStatementContext ctx)
     {
         String argTypes = "";
-        SymtabEntry routineId = ctx.procedureName().entry;
-        ArrayList<SymtabEntry> paramIds = routineId.getRoutineParameters();
+        SymtabEntry routineId = ctx.functionCall().functionName().entry;
+		ArrayList<SymtabEntry> paramIds = routineId.getRoutineParameters();
         int i = 0;
-        if(ctx.argumentList() != null)
+        if(ctx.functionCall().argumentList() != null)
         {
             for(SymtabEntry param : paramIds)
             {
@@ -255,9 +231,9 @@ public class StatementGenerator extends CodeGenerator
 
             }
 
-            for (PascalParser.ArgumentContext argCtx : ctx.argumentList().argument())
+            for (subCParser.ArgumentContext argCtx : ctx.functionCall().argumentList().argument())
             {
-                PascalParser.ExpressionContext exprCtx = argCtx.expression();
+                subCParser.ExpressionContext exprCtx = argCtx.expression();
                 compiler.visit(exprCtx);
                 if(typeDescriptor(paramIds.get(i)).equals("F") && TypeChecker.isInteger(exprCtx.type))
                     emit(I2F);
@@ -267,7 +243,7 @@ public class StatementGenerator extends CodeGenerator
 
         }
 
-        emit(INVOKESTATIC, programName + "/" + ctx.procedureName().IDENTIFIER().getText() + "("
+        emit(INVOKESTATIC, programName + "/" + ctx.functionCall().functionName().IDENTIFIER().getText() + "("
                 + argTypes + ")V");
     }
     
@@ -275,7 +251,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a function call statement.
      * @param ctx the FunctionCallContext.
      */
-    public void emitFunctionCall(PascalParser.FunctionCallContext ctx)
+    public void emitFunctionCall(subCParser.FunctionCallContext ctx)
     {
         /***** Complete this method. *****/
     }
@@ -286,7 +262,7 @@ public class StatementGenerator extends CodeGenerator
      * @param argListCtx the ArgumentListContext.
      */
     private void emitCall(SymtabEntry routineId,
-                          PascalParser.ArgumentListContext argListCtx)
+                          subCParser.ArgumentListContext argListCtx)
     {
         /***** Complete this method. *****/
     }
@@ -295,18 +271,9 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a WRITE statement.
      * @param ctx the WriteStatementContext.
      */
-    public void emitWrite(PascalParser.WriteStatementContext ctx)
+    public void emitPrint(subCParser.PrintStatementContext ctx)
     {
-        emitWrite(ctx.writeArguments(), false);
-    }
-
-    /**
-     * Emit code for a WRITELN statement.
-     * @param ctx the WritelnStatementContext.
-     */
-    public void emitWriteln(PascalParser.WritelnStatementContext ctx)
-    {
-        emitWrite(ctx.writeArguments(), true);
+        emitPrint(ctx.formatString(), ctx.writeArguments(), false);
     }
 
     /**
@@ -314,7 +281,7 @@ public class StatementGenerator extends CodeGenerator
      * @param argsCtx the WriteArgumentsContext.
      * @param needLF true if need a line feed.
      */
-    private void emitWrite(PascalParser.WriteArgumentsContext argsCtx,
+    private void emitPrint(subCParser.FormatStringContext format, subCParser.WriteArgumentsContext argsCtx,
                            boolean needLF)
     {
         emit(GETSTATIC, "java/lang/System/out", "Ljava/io/PrintStream;");
@@ -329,8 +296,7 @@ public class StatementGenerator extends CodeGenerator
         // Generate code for the arguments.
         else
         {
-            StringBuffer format = new StringBuffer();
-            int exprCount = createWriteFormat(argsCtx, format, needLF);
+            int exprCount = argsCtx.children.size();
             
             // Load the format string.
             emit(LDC, format.toString());
@@ -355,74 +321,13 @@ public class StatementGenerator extends CodeGenerator
         }
     }
     
-    /**
-     * Create the printf format string.
-     * @param argsCtx the WriteArgumentsContext.
-     * @param format the format string to create.
-     * @return the count of expression arguments.
-     */
-    private int createWriteFormat(PascalParser.WriteArgumentsContext argsCtx,
-                                  StringBuffer format, boolean needLF)
-    {
-        int exprCount = 0;
-        format.append("\"");
-        
-        // Loop over the write arguments.
-        for (PascalParser.WriteArgumentContext argCtx : argsCtx.writeArgument())
-        {
-            Typespec type = argCtx.expression().type;
-            String argText = argCtx.getText();
-            
-            // Append any literal strings.
-            if (argText.charAt(0) == '\'') 
-            {
-                format.append(convertString(argText));
-            }
-            
-            // For any other expressions, append a field specifier.
-            else
-            {
-                exprCount++;
-                format.append("%");
-                
-                PascalParser.FieldWidthContext fwCtx = argCtx.fieldWidth();              
-                if (fwCtx != null)
-                {
-                    String sign = (   (fwCtx.sign() != null) 
-                                   && (fwCtx.sign().getText().equals("-"))) 
-                                ? "-" : "";
-                    format.append(sign)
-                          .append(fwCtx.integerConstant().getText());
-                    
-                    PascalParser.DecimalPlacesContext dpCtx = 
-                                                        fwCtx.decimalPlaces();
-                    if (dpCtx != null)
-                    {
-                        format.append(".")
-                              .append(dpCtx.integerConstant().getText());
-                    }
-                }
-                
-                String typeFlag = type == Predefined.integerType ? "d" 
-                                : type == Predefined.realType    ? "f" 
-                                : type == Predefined.booleanType ? "b" 
-                                : type == Predefined.charType    ? "c" 
-                                :                                  "s";
-                format.append(typeFlag);
-            }
-        }
-        
-        format.append(needLF ? "\\n\"" : "\"");
- 
-        return exprCount;
-    }
     
     /**
      * Emit the printf arguments array.
      * @param argsCtx
      * @param exprCount
      */
-    private void emitArgumentsArray(PascalParser.WriteArgumentsContext argsCtx,
+    private void emitArgumentsArray(subCParser.WriteArgumentsContext argsCtx,
                                     int exprCount)
     {
         // Create the arguments array.
@@ -432,11 +337,11 @@ public class StatementGenerator extends CodeGenerator
         int index = 0;
 
         // Loop over the write arguments to fill the arguments array.
-        for (PascalParser.WriteArgumentContext argCtx : 
+        for (subCParser.WriteArgumentContext argCtx : 
                                                     argsCtx.writeArgument())
         {
             String argText = argCtx.getText();
-            PascalParser.ExpressionContext exprCtx = argCtx.expression();
+            subCParser.ExpressionContext exprCtx = argCtx.expression();
             Typespec type = exprCtx.type.baseType();
             
             // Skip string constants, which were made part of
@@ -458,92 +363,6 @@ public class StatementGenerator extends CodeGenerator
                 // Store the value into the array.
                 emit(AASTORE);
             }
-        }
-    }
-
-    /**
-     * Emit code for a READ statement.
-     * @param ctx the ReadStatementContext.
-     */
-    public void emitRead(PascalParser.ReadStatementContext ctx)
-    {
-        emitRead(ctx.readArguments(), false);
-    }
-
-    /**
-     * Emit code for a READLN statement.
-     * @param ctx the ReadlnStatementContext.
-     */
-    public void emitReadln(PascalParser.ReadlnStatementContext ctx)
-    {
-        emitRead(ctx.readArguments(), true);
-    }
-
-    /**
-     * Generate code for a call to READ or READLN.
-     * @param argsCtx the ReadArgumentsContext.
-     * @param needSkip true if need to skip the rest of the input line.
-     */
-    private void emitRead(PascalParser.ReadArgumentsContext argsCtx,
-                          boolean needSkip)
-    {
-        int size = argsCtx.variable().size();
-        
-        // Loop over read arguments.
-        for (int i = 0; i < size; i++)
-        {
-            PascalParser.VariableContext varCtx = argsCtx.variable().get(i);
-            Typespec varType = varCtx.type;
-            
-            if (varType == Predefined.integerType)
-            {
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/nextInt()I");
-                emitStoreValue(varCtx.entry, null);
-            }
-            else if (varType == Predefined.realType)
-            {
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/nextFloat()F");
-                emitStoreValue(varCtx.entry, null);
-            }
-            else if (varType == Predefined.booleanType)
-            {
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/nextBoolean()Z");
-                emitStoreValue(varCtx.entry, null);
-            }
-            else if (varType == Predefined.charType)
-            {
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(LDC, "\"\"");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/useDelimiter(Ljava/lang/String;)" +
-                                    "Ljava/util/Scanner;");
-                emit(POP);                
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/next()Ljava/lang/String;");
-                emit(ICONST_0);           
-                emit(INVOKEVIRTUAL, "java/lang/String/charAt(I)C");
-                emitStoreValue(varCtx.entry, null);
-                
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/reset()Ljava/util/Scanner;");
-
-            }
-            else  // string
-            {
-                emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-                emit(INVOKEVIRTUAL, "java/util/Scanner/next()Ljava/lang/String;");
-                emitStoreValue(varCtx.entry, null);
-            }
-        }
-
-        // READLN: Skip the rest of the input line.
-        if (needSkip) 
-        {
-            emit(GETSTATIC, programName + "/_sysin Ljava/util/Scanner;");
-            emit(INVOKEVIRTUAL, "java/util/Scanner/nextLine()Ljava/lang/String;");
-            emit(POP);                 
         }
     }
 }
