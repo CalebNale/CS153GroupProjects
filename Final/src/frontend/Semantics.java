@@ -330,6 +330,42 @@ public class Semantics extends projectBaseVisitor<Object>
     public Object visitAssignmentStatement(
                                     projectParser.AssignmentStatementContext ctx)
     {
+        projectParser.VariableContext varCtx = ctx.lhs().variable();
+        if(ctx.TYPE != null)
+        {
+            int lineNumber = varCtx.getStart().getLine();
+            String variableName = varCtx.IDENTIFIER().getText().toLowerCase();
+            SymtabEntry variableId = symtabStack.lookupLocal(variableName);
+            if (variableId == null)
+            {
+                variableId = symtabStack.enterLocal(variableName, VARIABLE);
+                Typespec varType;
+                switch (ctx.TYPE.getText())
+                {
+                    case "int" : varType = Predefined.integerType; break;
+                    case "string" : varType = Predefined.stringType; break;
+                    case "char"   : varType = Predefined.charType; break;
+                    default: varType = Predefined.realType; break;
+                }
+
+                variableId.setType(varType);
+
+                // Assign slot numbers to local variables.
+                Symtab symtab = variableId.getSymtab();
+                if (symtab.getNestingLevel() > 1)
+                {
+                    variableId.setSlotNumber(symtab.nextSlotNumber());
+                }
+
+            }
+            else
+            {
+                error.flag(REDECLARED_IDENTIFIER, ctx);
+            }
+
+            variableId.appendLineNumber(lineNumber);
+        }
+
         projectParser.LhsContext lhsCtx = ctx.lhs();
         projectParser.RhsContext rhsCtx = ctx.rhs();
         
