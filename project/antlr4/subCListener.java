@@ -537,26 +537,6 @@ public interface SubCListener extends ParseTreeListener {
 	 */
 	void exitVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SubCParser#modifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterModifier(SubCParser.ModifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SubCParser#modifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitModifier(SubCParser.ModifierContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SubCParser#index}.
-	 * @param ctx the parse tree
-	 */
-	void enterIndex(SubCParser.IndexContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SubCParser#index}.
-	 * @param ctx the parse tree
-	 */
-	void exitIndex(SubCParser.IndexContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 */

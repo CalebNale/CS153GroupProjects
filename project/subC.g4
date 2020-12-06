@@ -103,11 +103,7 @@ variableIdentifier  locals [ Typespec type = null, SymtabEntry entry = null ]
     : IDENTIFIER ;
 
 variable            locals [ Typespec type = null, SymtabEntry entry = null ] 
-    : variableIdentifier modifier* ;
-
-
-modifier  : '[' index ']';
-index     : expression ;
+    : variableIdentifier ;
 
 constant   locals [ Typespec type = null, Object value = null ]  
     : sign? ( IDENTIFIER | unsignedNumber )

@@ -329,18 +329,6 @@ public interface SubCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SubCParser#modifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitModifier(SubCParser.ModifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SubCParser#index}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIndex(SubCParser.IndexContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

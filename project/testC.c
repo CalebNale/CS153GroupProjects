@@ -25,5 +25,5 @@ int max(int x, double y){
 }
 
 int main(){
-    max();
+    max(4,4.3);
 }   

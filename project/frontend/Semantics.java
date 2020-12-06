@@ -63,7 +63,6 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitProgram(SubCParser.ProgramContext ctx) 
     { 
-    	System.out.println("visited program");
         visit(ctx.functionDefinitions());
         visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
@@ -78,18 +77,13 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitDeclarationStatement(
                                 SubCParser.DeclarationStatementContext ctx) 
     { 
-    	//TODO
-    	System.out.println("visited declaration statement");
+    	
             int lineNumber = ctx.getStart().getLine();      
             SubCParser.VariableContext var = ctx.variable();
             String variableName = var.variableIdentifier().IDENTIFIER().getText().toLowerCase();
             String s = ctx.TYPE.getText();
-            if(var.modifier().size() == 0) {
-            	var.type = getType(s);
-            }
-            else {
-//            	Form.ARRAY;
-            }
+            var.type = getType(s);
+         
             
             SymtabEntry variableId = symtabStack.lookupLocal(variableName);
             
@@ -122,8 +116,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitConstant(SubCParser.ConstantContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited constant");
+    	
         if (ctx.IDENTIFIER() != null)
         {
             String constantName = ctx.IDENTIFIER().getText().toLowerCase();
@@ -160,7 +153,7 @@ public class Semantics extends SubCBaseVisitor<Object>
             String pascalString = ctx.stringConstant().STR().getText();
             String unquoted = pascalString.substring(1, pascalString.length()-1);
             ctx.type  = Predefined.stringType;            
-            //TODO change the value of string to match C instead of Pascal (quotes)
+     
             ctx.value = unquoted.replace("''", "'").replace("\"", "\\\"");
         }
         else  // number
@@ -179,50 +172,12 @@ public class Semantics extends SubCBaseVisitor<Object>
         
         return ctx.value;
     }
-
- 
-    @Override 
-    public Object visitArrayTypespec(SubCParser.ArrayTypespecContext ctx) 
-    { 
-        Typespec arrayType = new Typespec(ARRAY);
-        SubCParser.ArrayTypeContext arrayCtx = ctx.arrayType();
-        SubCParser.ArrayDimensionListContext listCtx = 
-                                                arrayCtx.arrayDimensionList();
-        
-        ctx.type = arrayType;
-        
-        // Loop over the array dimensions.
-        int count = listCtx.simpleType().size();
-        for (int i = 0; i < count; i++)
-        {
-            SubCParser.SimpleTypeContext simpleCtx = 
-                                                    listCtx.simpleType().get(i);
-            visit(simpleCtx);
-            arrayType.setArrayIndexType(simpleCtx.type);
-            arrayType.setArrayElementCount(typeCount(simpleCtx.type));
-            
-            if (i < count-1) 
-            {
-                Typespec elmtType = new Typespec(ARRAY);
-                arrayType.setArrayElementType(elmtType);
-                arrayType = elmtType;
-            }
-        }
-        
-        visit(arrayCtx.typeSpecification());
-        Typespec elmtType = arrayCtx.typeSpecification().type;
-        arrayType.setArrayElementType(elmtType);
-        
-        return null;
-    }
-
     
     @Override 
     @SuppressWarnings("unchecked")
     public Object visitFunctionDefinition(
                                     SubCParser.FunctionDefinitionContext ctx) 
     {
-    	System.out.println("visited Function Definition");
         Typespec returnType = getType(ctx.TYPE.getText());
         SubCParser.FunctionNameContext idCtx = ctx.functionName();
         SubCParser.ParameterListContext parameters = ctx.parameterList();
@@ -291,7 +246,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitParameterList(
                             SubCParser.ParameterListContext ctx)
     {
-    	System.out.println("visited Parameter List");
+    	
         ArrayList<SymtabEntry> parameterList = new ArrayList<>();
         
         // Loop over the parameter declarations.
@@ -311,7 +266,6 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitParameter(SubCParser.ParameterContext ctx) 
     
     {
-    	System.out.println("visited Parameter");
         Kind kind = VALUE_PARAMETER; 
 
         Typespec parmType = getType(ctx.TYPE.getText());
@@ -399,8 +353,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitLhs(SubCParser.LhsContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited LHS");
+    	
         SubCParser.VariableContext varCtx = ctx.variable();
         visit(varCtx);
         ctx.type = varCtx.type;
@@ -536,7 +489,6 @@ public class Semantics extends SubCBaseVisitor<Object>
         if (varCtx.entry != null)
         {            
             if (   (controlType.getForm() != SCALAR )
-                || (varCtx.modifier().size() != 0)
                 || (controlType != Predefined.booleanType))
             {
                 error.flag(INVALID_CONTROL_VARIABLE, varCtx);
@@ -582,8 +534,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitFunctionCallStatement(
                                 SubCParser.FunctionCallStatementContext ctx) 
     {
-    	//TODO
-    	System.out.println("Visited Function Call");
+    	
         SubCParser.FunctionNameContext nameCtx = ctx.functionCall().functionName();
         SubCParser.ArgumentListContext listCtx = ctx.functionCall().argumentList();
         String name = nameCtx.getText().toLowerCase();
@@ -706,8 +657,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitExpression(SubCParser.ExpressionContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited expression");
+    	
         SubCParser.SimpleExpressionContext simpleCtx1 =
                                                 ctx.simpleExpression().get(0);
 
@@ -742,8 +692,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitSimpleExpression(SubCParser.SimpleExpressionContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited simple expression");
+    	
         int count = ctx.term().size();
         SubCParser.SignContext signCtx = ctx.sign();
         Boolean hasSign = signCtx != null;
@@ -866,8 +815,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitTerm(SubCParser.TermContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited term");
+    	
         int count = ctx.factor().size();
         SubCParser.FactorContext factorCtx1 = ctx.factor().get(0);
         
@@ -976,8 +924,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitVariableFactor(SubCParser.VariableFactorContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited variable factor");
+    	
         SubCParser.VariableContext varCtx = ctx.variable();
         visit(varCtx);        
         ctx.type  = varCtx.type;
@@ -988,8 +935,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitVariable(SubCParser.VariableContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited variable");
+    	
         SubCParser.VariableIdentifierContext varIdCtx = 
                                                     ctx.variableIdentifier();
         
@@ -1006,8 +952,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitVariableIdentifier(
                                     SubCParser.VariableIdentifierContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited Variable Identifier");
+    	
         String variableName = ctx.IDENTIFIER().getText().toLowerCase();
         SymtabEntry variableId = symtabStack.lookup(variableName);
         
@@ -1039,85 +984,12 @@ public class Semantics extends SubCBaseVisitor<Object>
 
         return null;
     }
-
-    /**
-     * Determine the datatype of a variable that can have modifiers.
-     * @param varCtx the VariableContext.
-     * @param varType the variable's datatype without the modifiers.
-     * @return the datatype with any modifiers.
-     */
-    /* private Typespec variableDatatype(
-                        SubCParser.VariableContext varCtx, Typespec varType)
-    {
-        Typespec type = varType;
-        
-        // Loop over the modifiers.
-        for (SubCParser.ModifierContext modCtx : varCtx.modifier())
-        {
-            if (modCtx.index() != null)
-            {
-            	
-                if (type.getForm() == ARRAY)
-                {
-                    Typespec indexType = type.getArrayIndexType();
-                    SubCParser.ExpressionContext exprCtx = 
-                                                    indexCtx.expression();
-                    visit(exprCtx);
-                    
-                    if (indexType.baseType() != exprCtx.type.baseType())
-                    {
-                        error.flag(TYPE_MISMATCH, exprCtx);
-                    }
-                    
-                    // Datatype of the next dimension.
-                    type = type.getArrayElementType();
-                }
-                else
-                {
-                    error.flag(TOO_MANY_SUBSCRIPTS, indexCtx);
-                }
-            }
-            else  // Record field.
-            {
-                if (type.getForm() == RECORD)
-                {
-                    Symtab symtab = type.getRecordSymtab();
-                    SubCParser.FieldContext fieldCtx = modCtx.field();
-                    String fieldName = 
-                                fieldCtx.IDENTIFIER().getText().toLowerCase();
-                    SymtabEntry fieldId = symtab.lookup(fieldName);
-
-                    // Field of the record type?
-                    if (fieldId != null) 
-                    {
-                        type = fieldId.getType();
-                        fieldCtx.entry = fieldId;
-                        fieldCtx.type = type;
-                        fieldId.appendLineNumber(modCtx.getStart().getLine());
-                    }
-                    else 
-                    {
-                        error.flag(INVALID_FIELD, modCtx);
-                    }
-                }
-                
-                // Not a record variable.
-                else 
-                {
-                    error.flag(INVALID_FIELD, modCtx);
-                }
-            }
-        }
-        
-        return type;
-    }*/
     
     
     @Override 
     public Object visitNumberFactor(SubCParser.NumberFactorContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited number");
+    	
         SubCParser.NumberContext          numberCtx   = ctx.number();
         SubCParser.UnsignedNumberContext  unsignedCtx = numberCtx.unsignedNumber();
         SubCParser.IntegerConstantContext integerCtx  = unsignedCtx.integerConstant();
@@ -1132,8 +1004,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitCharacterFactor(
                                     SubCParser.CharacterFactorContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited character");
+    	
         ctx.type = Predefined.charType;
         return null;
     }
@@ -1141,8 +1012,7 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitStringFactor(SubCParser.StringFactorContext ctx) 
     {
-    	//TODO
-    	System.out.println("visited String");
+    	
         ctx.type = Predefined.stringType;
         return null;
     }
