@@ -1,4 +1,9 @@
+int ff(){
+    int x = 3;
+}
+
 
 int main(){
-    string str = "hello";
+    int x = 2;
+    ff();
 }   

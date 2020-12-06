@@ -70,6 +70,27 @@ public class TypeChecker
     }
 
     /**
+     * Check if a type specification is boolean.
+     * @param type the type specification to check.
+     * @return true if boolean, else false.
+     */
+    public static boolean isBoolean(Typespec type)
+    {
+        return (type != null) && (type.baseType() == Predefined.booleanType);
+    }
+
+    /**
+     * Check if both type specifications are boolean.
+     * @param type1 the first type specification to check.
+     * @param type2 the second type specification to check.
+     * @return true if both are boolean, else false.
+     */
+    public static boolean areBothBoolean(Typespec type1, Typespec type2)
+    {
+        return isBoolean(type1) && isBoolean(type2);
+    }
+
+    /**
      * Check if a type specification is char.
      * @param type the type specification to check.
      * @return true if char, else false.

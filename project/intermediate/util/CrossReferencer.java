@@ -113,16 +113,6 @@ public class CrossReferencer
             printEntry(entry);
         }
         
-        // Loop over the sorted list of entries again
-        // to print each nested record's symbol table.
-        for (SymtabEntry entry : sorted) 
-        {
-            if (entry.getKind() == TYPE)
-            {
-                Typespec type = entry.getType();
-                if (type.getForm() == RECORD) printRecord(type);
-            }
-        }
     }
 
     /**
@@ -156,13 +146,6 @@ public class CrossReferencer
                 break;
             }
 
-            case ENUMERATION_CONSTANT: 
-            {
-                Object value = entry.getValue();
-                System.out.println(INDENT + "Value: " + toString(value, type));
-
-                break;
-            }
 
             case TYPE: 
             {
@@ -183,12 +166,6 @@ public class CrossReferencer
                     printTypeDetail(type);
                 }
 
-                break;
-            }
-            
-            case RECORD_FIELD:
-            {
-                printTypeDetail(type);
                 break;
             }
             
@@ -223,80 +200,7 @@ public class CrossReferencer
     {
         Form form = type.getForm();
 
-        switch (form) 
-        {
-            case ENUMERATION: 
-            {
-                ArrayList<SymtabEntry> constantIds = 
-                                                type.getEnumerationConstants();
-
-                System.out.println(INDENT + "--- Enumeration constants ---");
-
-                // Print each enumeration constant and its value.
-                for (SymtabEntry constantId : constantIds) 
-                {
-                    String name = constantId.getName();
-                    Object value = constantId.getValue();
-
-                    System.out.println(INDENT + String.format(ENUM_CONST_FORMAT,
-                                                              name, value));
-                }
-
-                break;
-            }
-
-            case SUBRANGE: 
-            {
-                Object minValue = type.getSubrangeMinValue();
-                Object maxValue = type.getSubrangeMaxValue();
-                Typespec baseType = type.baseType();
-
-                System.out.println(INDENT + "--- Base type ---");
-                printType(baseType);
-
-                // Print the base type details only if the type is unnamed.
-                if (baseType.getIdentifier() == null) 
-                {
-                    printTypeDetail(baseType);
-                }
-
-                System.out.print(INDENT + "Range: ");
-                System.out.println(toString(minValue, baseType) + ".." +
-                                   toString(maxValue, baseType));
-
-                break;
-            }
-
-            case ARRAY: 
-            {
-                Typespec indexType = type.getArrayIndexType();
-                Typespec elementType = type.getArrayElementType();
-                int count = type.getArrayElementCount();
-
-                System.out.println(INDENT + "--- INDEX TYPE ---");
-                printType(indexType);
-
-                // Print the index type details only if the type is unnamed.
-                if (indexType.getIdentifier() == null) 
-                {
-                    printTypeDetail(indexType);
-                }
-
-                System.out.println(INDENT + "--- ELEMENT TYPE ---");
-                printType(elementType);
-                System.out.println(INDENT.toString() + count + " elements");
-
-                // Print the element type details only if the type is unnamed.
-                if (elementType.getIdentifier() == null) 
-                {
-                    printTypeDetail(elementType);
-                }
-
-                break;
-            }
-            
-            default: break;
-        }
+        
     }
 
     /**
@@ -305,15 +209,7 @@ public class CrossReferencer
      */
     private void printRecord(Typespec recordType)
     {
-        SymtabEntry recordId = recordType.getIdentifier();
-        String name = recordId != null ? recordId.getName() : "<unnamed>";
-
-        System.out.println("\n--- RECORD " + name + " ---");
-        printColumnHeadings();
-
-        // Print the entries in the record's symbol table.
-        Symtab symtab = recordType.getRecordSymtab();
-        printSymtab(symtab);
+        
     }
 
     /**
