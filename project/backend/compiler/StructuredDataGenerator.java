@@ -79,7 +79,6 @@ public class StructuredDataGenerator extends CodeGenerator
         String typeName =
               elmtType == Predefined.integerType ? "int"
             : elmtType == Predefined.realType    ? "float"
-            : elmtType == Predefined.booleanType ? "boolean"
             : elmtType == Predefined.charType    ? "char"
             : elmtType == Predefined.stringType  ? "java/lang/String"
             :                                      null;

@@ -3,7 +3,7 @@ package backend.compiler;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import antlr4.subCParser;
+import antlr4.SubCParser;
 import intermediate.symtab.*;
 import intermediate.symtab.SymtabEntry.Kind;
 import intermediate.type.*;
@@ -117,7 +117,7 @@ public class CodeGenerator
      * Emit a statement comment.
      * @param ctx the StatementContext.
      */
-    public void emitComment(subCParser.StatementContext ctx)
+    public void emitComment(SubCParser.StatementContext ctx)
     {
         String text = String.format("%03d %s", ctx.getStart().getLine(), 
                                                ctx.getText());
@@ -441,7 +441,6 @@ public class CodeGenerator
         }
 
         if (   (type == Predefined.integerType)
-            || (type == Predefined.booleanType)
             || (type == Predefined.charType))
         {
             switch (index) 
@@ -543,7 +542,6 @@ public class CodeGenerator
         }
 
         if (   (type == Predefined.integerType)
-            || (type == Predefined.booleanType)
             || (type == Predefined.charType))
         {
             switch (slot) 
@@ -594,7 +592,6 @@ public class CodeGenerator
 
         emit(  elmtType == Predefined.integerType ? IASTORE
              : elmtType == Predefined.realType    ? FASTORE
-             : elmtType == Predefined.booleanType ? BASTORE
              : elmtType == Predefined.charType    ? CASTORE
              :                                      AASTORE);
     }
@@ -653,7 +650,6 @@ public class CodeGenerator
         }
 
         if (   (type == Predefined.integerType)
-            || (type == Predefined.booleanType)
             || (type == Predefined.charType))         emit(IRETURN);
         else if (type == Predefined.realType) emit(FRETURN);
         else                                  emit(ARETURN);
@@ -716,7 +712,6 @@ public class CodeGenerator
 
         if      (pascalType == Predefined.integerType) str = "I";
         else if (pascalType == Predefined.realType)    str = "F";
-        else if (pascalType == Predefined.booleanType) str = "Z";
         else if (pascalType == Predefined.charType)    str = "C";
         else  str = "Ljava/lang/String;";
 
@@ -750,7 +745,6 @@ public class CodeGenerator
 
         if      (pascalType == Predefined.integerType) str = "java/lang/Integer";
         else if (pascalType == Predefined.realType)    str = "java/lang/Float";
-        else if (pascalType == Predefined.booleanType) str = "java/lang/Boolean";
         else if (pascalType == Predefined.charType)    str = "java/lang/Character";
         else                                           str = "Ljava/lang/String;";
 
@@ -802,7 +796,6 @@ public class CodeGenerator
         String typeCode = typeDescriptor(type);
         String typeName = type == Predefined.integerType ? "int"
                         : type == Predefined.realType    ? "double"
-                        : type == Predefined.booleanType ? "boolean"
                         : type == Predefined.charType    ? "char"
                         :                                  "int";
 

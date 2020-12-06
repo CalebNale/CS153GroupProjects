@@ -37,6 +37,41 @@ public class TypeChecker
     }
 
     /**
+     * Check if a type specification is real.
+     * @param type the type specification to check.
+     * @return true if real, else false.
+     */
+    public static boolean isReal(Typespec type)
+    {
+        return (type != null) && (type.baseType() == Predefined.realType);
+    }
+
+    /**
+     * Check if a type specification is integer or real.
+     * @param type the type specification to check.
+     * @return true if integer or real, else false.
+     */
+    public static boolean isIntegerOrReal(Typespec type)
+    {
+        return isInteger(type) || isReal(type);
+    }
+
+    /**
+     * Check if at least one of two type specifications is real.
+     * @param type1 the first type specification to check.
+     * @param type2 the second type specification to check.
+     * @return true if at least one is real, else false.
+     */
+    public static boolean isAtLeastOneReal(Typespec type1, Typespec type2)
+    {
+        return    (isReal(type1) && isReal(type2))
+               || (isReal(type1) && isInteger(type2))
+               || (isInteger(type1) && isReal(type2));
+    }
+
+
+
+    /**
      * Check if a type specification is char.
      * @param type the type specification to check.
      * @return true if char, else false.
@@ -86,6 +121,9 @@ public class TypeChecker
         // Identical types.
         if (targetType == valueType) compatible = true;
 
+        // real := integer
+        else if (isReal(targetType) && isInteger(valueType)) compatible = true;
+
         return compatible;
     }
 
@@ -107,11 +145,13 @@ public class TypeChecker
         boolean compatible = false;
 
         // Two identical scalar or enumeration types.
-        if (   (type1 == type2)
-            && (form == SCALAR)) 
+        if ((type1 == type2) && (form == SCALAR)) 
         {
             compatible = true;
         }
+        
+        // One integer and one real.
+        else if (isAtLeastOneReal(type1, type2)) compatible = true;
 
         return compatible;
     }

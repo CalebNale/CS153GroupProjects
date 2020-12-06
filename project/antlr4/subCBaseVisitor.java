@@ -1,4 +1,4 @@
-// Generated from subC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
     import java.util.HashMap;
@@ -8,446 +8,453 @@
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
- * This class provides an empty implementation of {@link subCVisitor},
+ * This class provides an empty implementation of {@link SubCVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public class subCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements subCVisitor<T> {
+public class SubCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements SubCVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitProgram(subCParser.ProgramContext ctx) { return visitChildren(ctx); }
+	@Override public T visitProgram(SubCParser.ProgramContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMainProgram(subCParser.MainProgramContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMainProgram(SubCParser.MainProgramContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionName(subCParser.FunctionNameContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionName(SubCParser.FunctionNameContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionDefinitions(subCParser.FunctionDefinitionsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionDefinition(subCParser.FunctionDefinitionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionDefinition(SubCParser.FunctionDefinitionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParameterList(subCParser.ParameterListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParameterList(SubCParser.ParameterListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParameter(subCParser.ParameterContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParameter(SubCParser.ParameterContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionCallStatement(subCParser.FunctionCallStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionCall(subCParser.FunctionCallContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionCall(SubCParser.FunctionCallContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgumentList(subCParser.ArgumentListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArgumentList(SubCParser.ArgumentListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgument(subCParser.ArgumentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArgument(SubCParser.ArgumentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReturnStatement(subCParser.ReturnStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReturnStatement(SubCParser.ReturnStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStatement(subCParser.StatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStatement(SubCParser.StatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStatementList(subCParser.StatementListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStatementList(SubCParser.StatementListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCompoundStatement(subCParser.CompoundStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCompoundStatement(SubCParser.CompoundStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDeclarationStatement(subCParser.DeclarationStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDeclarationStatement(SubCParser.DeclarationStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignmentStatement(subCParser.AssignmentStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssignmentStatement(SubCParser.AssignmentStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLhs(subCParser.LhsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLhs(SubCParser.LhsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRhs(subCParser.RhsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRhs(SubCParser.RhsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfStatement(subCParser.IfStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfStatement(SubCParser.IfStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTrueStatement(subCParser.TrueStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTrueStatement(SubCParser.TrueStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFalseStatement(subCParser.FalseStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFalseStatement(SubCParser.FalseStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSwitchStatement(subCParser.SwitchStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSwitchStatement(SubCParser.SwitchStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSwitchBranchList(subCParser.SwitchBranchListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSwitchBranchList(SubCParser.SwitchBranchListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCaseBranch(subCParser.CaseBranchContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCaseBranch(SubCParser.CaseBranchContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCaseConstantList(subCParser.CaseConstantListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCaseConstantList(SubCParser.CaseConstantListContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCaseCompound(subCParser.CaseCompoundContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCaseCompound(SubCParser.CaseCompoundContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDefaultBranch(subCParser.DefaultBranchContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDefaultBranch(SubCParser.DefaultBranchContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCaseConstant(subCParser.CaseConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCaseConstant(SubCParser.CaseConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhileStatement(subCParser.WhileStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWhileStatement(SubCParser.WhileStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitForStatement(subCParser.ForStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitForStatement(SubCParser.ForStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitForInitialization(subCParser.ForInitializationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitForInitialization(SubCParser.ForInitializationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitForControl(subCParser.ForControlContext ctx) { return visitChildren(ctx); }
+	@Override public T visitForControl(SubCParser.ForControlContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitForIncrementStatement(subCParser.ForIncrementStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitForIncrementStatement(SubCParser.ForIncrementStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrintStatement(subCParser.PrintStatementContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrintStatement(SubCParser.PrintStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFormatString(subCParser.FormatStringContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFormatString(SubCParser.FormatStringContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWriteArguments(subCParser.WriteArgumentsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWriteArguments(SubCParser.WriteArgumentsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWriteArgument(subCParser.WriteArgumentContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWriteArgument(SubCParser.WriteArgumentContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExpression(subCParser.ExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpression(SubCParser.ExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSimpleExpression(subCParser.SimpleExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSimpleExpression(SubCParser.SimpleExpressionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTerm(subCParser.TermContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTerm(SubCParser.TermContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariableFactor(subCParser.VariableFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariableFactor(SubCParser.VariableFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumberFactor(subCParser.NumberFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumberFactor(SubCParser.NumberFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCharacterFactor(subCParser.CharacterFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCharacterFactor(SubCParser.CharacterFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringFactor(subCParser.StringFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStringFactor(SubCParser.StringFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionCallFactor(subCParser.FunctionCallFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotFactor(subCParser.NotFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNotFactor(SubCParser.NotFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParenthesizedFactor(subCParser.ParenthesizedFactorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariable(subCParser.VariableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariableIdentifier(SubCParser.VariableIdentifierContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitModifier(subCParser.ModifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariable(SubCParser.VariableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIndex(subCParser.IndexContext ctx) { return visitChildren(ctx); }
+	@Override public T visitModifier(SubCParser.ModifierContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitConstant(subCParser.ConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIndex(SubCParser.IndexContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSign(subCParser.SignContext ctx) { return visitChildren(ctx); }
+	@Override public T visitConstant(SubCParser.ConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNumber(subCParser.NumberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSign(SubCParser.SignContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUnsignedNumber(subCParser.UnsignedNumberContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumber(SubCParser.NumberContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntegerConstant(subCParser.IntegerConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitUnsignedNumber(SubCParser.UnsignedNumberContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRealConstant(subCParser.RealConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntegerConstant(SubCParser.IntegerConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCharacterConstant(subCParser.CharacterConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRealConstant(SubCParser.RealConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStringConstant(subCParser.StringConstantContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCharacterConstant(SubCParser.CharacterConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitRelOp(subCParser.RelOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStringConstant(SubCParser.StringConstantContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAddOp(subCParser.AddOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRelOp(SubCParser.RelOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMulOp(subCParser.MulOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAddOp(SubCParser.AddOpContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMulOp(SubCParser.MulOpContext ctx) { return visitChildren(ctx); }
 }

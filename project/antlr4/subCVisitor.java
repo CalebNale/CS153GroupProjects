@@ -1,4 +1,4 @@
-// Generated from subC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
     import java.util.HashMap;
@@ -9,389 +9,395 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced
- * by {@link subCParser}.
+ * by {@link SubCParser}.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public interface subCVisitor<T> extends ParseTreeVisitor<T> {
+public interface SubCVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link subCParser#program}.
+	 * Visit a parse tree produced by {@link SubCParser#program}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(subCParser.ProgramContext ctx);
+	T visitProgram(SubCParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#mainProgram}.
+	 * Visit a parse tree produced by {@link SubCParser#mainProgram}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMainProgram(subCParser.MainProgramContext ctx);
+	T visitMainProgram(SubCParser.MainProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#functionName}.
+	 * Visit a parse tree produced by {@link SubCParser#functionName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionName(subCParser.FunctionNameContext ctx);
+	T visitFunctionName(SubCParser.FunctionNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#functionDefinitions}.
+	 * Visit a parse tree produced by {@link SubCParser#functionDefinitions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDefinitions(subCParser.FunctionDefinitionsContext ctx);
+	T visitFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#functionDefinition}.
+	 * Visit a parse tree produced by {@link SubCParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDefinition(subCParser.FunctionDefinitionContext ctx);
+	T visitFunctionDefinition(SubCParser.FunctionDefinitionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#parameterList}.
+	 * Visit a parse tree produced by {@link SubCParser#parameterList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameterList(subCParser.ParameterListContext ctx);
+	T visitParameterList(SubCParser.ParameterListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#parameter}.
+	 * Visit a parse tree produced by {@link SubCParser#parameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameter(subCParser.ParameterContext ctx);
+	T visitParameter(SubCParser.ParameterContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#functionCallStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#functionCallStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallStatement(subCParser.FunctionCallStatementContext ctx);
+	T visitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#functionCall}.
+	 * Visit a parse tree produced by {@link SubCParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCall(subCParser.FunctionCallContext ctx);
+	T visitFunctionCall(SubCParser.FunctionCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#argumentList}.
+	 * Visit a parse tree produced by {@link SubCParser#argumentList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgumentList(subCParser.ArgumentListContext ctx);
+	T visitArgumentList(SubCParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#argument}.
+	 * Visit a parse tree produced by {@link SubCParser#argument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgument(subCParser.ArgumentContext ctx);
+	T visitArgument(SubCParser.ArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#returnStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#returnStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReturnStatement(subCParser.ReturnStatementContext ctx);
+	T visitReturnStatement(SubCParser.ReturnStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#statement}.
+	 * Visit a parse tree produced by {@link SubCParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(subCParser.StatementContext ctx);
+	T visitStatement(SubCParser.StatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#statementList}.
+	 * Visit a parse tree produced by {@link SubCParser#statementList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatementList(subCParser.StatementListContext ctx);
+	T visitStatementList(SubCParser.StatementListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#compoundStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#compoundStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompoundStatement(subCParser.CompoundStatementContext ctx);
+	T visitCompoundStatement(SubCParser.CompoundStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#declarationStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#declarationStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclarationStatement(subCParser.DeclarationStatementContext ctx);
+	T visitDeclarationStatement(SubCParser.DeclarationStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#assignmentStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#assignmentStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignmentStatement(subCParser.AssignmentStatementContext ctx);
+	T visitAssignmentStatement(SubCParser.AssignmentStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#lhs}.
+	 * Visit a parse tree produced by {@link SubCParser#lhs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLhs(subCParser.LhsContext ctx);
+	T visitLhs(SubCParser.LhsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#rhs}.
+	 * Visit a parse tree produced by {@link SubCParser#rhs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRhs(subCParser.RhsContext ctx);
+	T visitRhs(SubCParser.RhsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#ifStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#ifStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfStatement(subCParser.IfStatementContext ctx);
+	T visitIfStatement(SubCParser.IfStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#trueStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#trueStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTrueStatement(subCParser.TrueStatementContext ctx);
+	T visitTrueStatement(SubCParser.TrueStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#falseStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#falseStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFalseStatement(subCParser.FalseStatementContext ctx);
+	T visitFalseStatement(SubCParser.FalseStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#switchStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#switchStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSwitchStatement(subCParser.SwitchStatementContext ctx);
+	T visitSwitchStatement(SubCParser.SwitchStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#switchBranchList}.
+	 * Visit a parse tree produced by {@link SubCParser#switchBranchList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSwitchBranchList(subCParser.SwitchBranchListContext ctx);
+	T visitSwitchBranchList(SubCParser.SwitchBranchListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#caseBranch}.
+	 * Visit a parse tree produced by {@link SubCParser#caseBranch}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseBranch(subCParser.CaseBranchContext ctx);
+	T visitCaseBranch(SubCParser.CaseBranchContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#caseConstantList}.
+	 * Visit a parse tree produced by {@link SubCParser#caseConstantList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseConstantList(subCParser.CaseConstantListContext ctx);
+	T visitCaseConstantList(SubCParser.CaseConstantListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#caseCompound}.
+	 * Visit a parse tree produced by {@link SubCParser#caseCompound}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseCompound(subCParser.CaseCompoundContext ctx);
+	T visitCaseCompound(SubCParser.CaseCompoundContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#defaultBranch}.
+	 * Visit a parse tree produced by {@link SubCParser#defaultBranch}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDefaultBranch(subCParser.DefaultBranchContext ctx);
+	T visitDefaultBranch(SubCParser.DefaultBranchContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#caseConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#caseConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseConstant(subCParser.CaseConstantContext ctx);
+	T visitCaseConstant(SubCParser.CaseConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#whileStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#whileStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhileStatement(subCParser.WhileStatementContext ctx);
+	T visitWhileStatement(SubCParser.WhileStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#forStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#forStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForStatement(subCParser.ForStatementContext ctx);
+	T visitForStatement(SubCParser.ForStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#forInitialization}.
+	 * Visit a parse tree produced by {@link SubCParser#forInitialization}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForInitialization(subCParser.ForInitializationContext ctx);
+	T visitForInitialization(SubCParser.ForInitializationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#forControl}.
+	 * Visit a parse tree produced by {@link SubCParser#forControl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForControl(subCParser.ForControlContext ctx);
+	T visitForControl(SubCParser.ForControlContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#forIncrementStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#forIncrementStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForIncrementStatement(subCParser.ForIncrementStatementContext ctx);
+	T visitForIncrementStatement(SubCParser.ForIncrementStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#printStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#printStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrintStatement(subCParser.PrintStatementContext ctx);
+	T visitPrintStatement(SubCParser.PrintStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#formatString}.
+	 * Visit a parse tree produced by {@link SubCParser#formatString}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFormatString(subCParser.FormatStringContext ctx);
+	T visitFormatString(SubCParser.FormatStringContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#writeArguments}.
+	 * Visit a parse tree produced by {@link SubCParser#writeArguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWriteArguments(subCParser.WriteArgumentsContext ctx);
+	T visitWriteArguments(SubCParser.WriteArgumentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#writeArgument}.
+	 * Visit a parse tree produced by {@link SubCParser#writeArgument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWriteArgument(subCParser.WriteArgumentContext ctx);
+	T visitWriteArgument(SubCParser.WriteArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#expression}.
+	 * Visit a parse tree produced by {@link SubCParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(subCParser.ExpressionContext ctx);
+	T visitExpression(SubCParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#simpleExpression}.
+	 * Visit a parse tree produced by {@link SubCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSimpleExpression(subCParser.SimpleExpressionContext ctx);
+	T visitSimpleExpression(SubCParser.SimpleExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#term}.
+	 * Visit a parse tree produced by {@link SubCParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTerm(subCParser.TermContext ctx);
+	T visitTerm(SubCParser.TermContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code variableFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableFactor(subCParser.VariableFactorContext ctx);
+	T visitVariableFactor(SubCParser.VariableFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code numberFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberFactor(subCParser.NumberFactorContext ctx);
+	T visitNumberFactor(SubCParser.NumberFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code characterFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharacterFactor(subCParser.CharacterFactorContext ctx);
+	T visitCharacterFactor(SubCParser.CharacterFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code stringFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringFactor(subCParser.StringFactorContext ctx);
+	T visitStringFactor(SubCParser.StringFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code functionCallFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallFactor(subCParser.FunctionCallFactorContext ctx);
+	T visitFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code notFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNotFactor(subCParser.NotFactorContext ctx);
+	T visitNotFactor(SubCParser.NotFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenthesizedFactor}
-	 * labeled alternative in {@link subCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParenthesizedFactor(subCParser.ParenthesizedFactorContext ctx);
+	T visitParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#variable}.
+	 * Visit a parse tree produced by {@link SubCParser#variableIdentifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariable(subCParser.VariableContext ctx);
+	T visitVariableIdentifier(SubCParser.VariableIdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#modifier}.
+	 * Visit a parse tree produced by {@link SubCParser#variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitModifier(subCParser.ModifierContext ctx);
+	T visitVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#index}.
+	 * Visit a parse tree produced by {@link SubCParser#modifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIndex(subCParser.IndexContext ctx);
+	T visitModifier(SubCParser.ModifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#constant}.
+	 * Visit a parse tree produced by {@link SubCParser#index}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstant(subCParser.ConstantContext ctx);
+	T visitIndex(SubCParser.IndexContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#sign}.
+	 * Visit a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSign(subCParser.SignContext ctx);
+	T visitConstant(SubCParser.ConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#number}.
+	 * Visit a parse tree produced by {@link SubCParser#sign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumber(subCParser.NumberContext ctx);
+	T visitSign(SubCParser.SignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#unsignedNumber}.
+	 * Visit a parse tree produced by {@link SubCParser#number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnsignedNumber(subCParser.UnsignedNumberContext ctx);
+	T visitNumber(SubCParser.NumberContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#integerConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#unsignedNumber}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntegerConstant(subCParser.IntegerConstantContext ctx);
+	T visitUnsignedNumber(SubCParser.UnsignedNumberContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#realConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#integerConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRealConstant(subCParser.RealConstantContext ctx);
+	T visitIntegerConstant(SubCParser.IntegerConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#characterConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#realConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharacterConstant(subCParser.CharacterConstantContext ctx);
+	T visitRealConstant(SubCParser.RealConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#stringConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#characterConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringConstant(subCParser.StringConstantContext ctx);
+	T visitCharacterConstant(SubCParser.CharacterConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#relOp}.
+	 * Visit a parse tree produced by {@link SubCParser#stringConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelOp(subCParser.RelOpContext ctx);
+	T visitStringConstant(SubCParser.StringConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#addOp}.
+	 * Visit a parse tree produced by {@link SubCParser#relOp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddOp(subCParser.AddOpContext ctx);
+	T visitRelOp(SubCParser.RelOpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link subCParser#mulOp}.
+	 * Visit a parse tree produced by {@link SubCParser#addOp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMulOp(subCParser.MulOpContext ctx);
+	T visitAddOp(SubCParser.AddOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SubCParser#mulOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulOp(SubCParser.MulOpContext ctx);
 }

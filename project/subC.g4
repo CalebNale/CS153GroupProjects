@@ -1,4 +1,4 @@
-grammar subC;
+grammar SubC;
 
 @header {
     package antlr4;
@@ -51,7 +51,7 @@ trueStatement  : compoundStatement ;
 falseStatement : compoundStatement ;
 
 switchStatement
-    locals [ HashMap<Integer, subCParser.StatementContext> jumpTable = null ]
+    locals [ HashMap<Integer, SubCParser.StatementContext> jumpTable = null ]
     : SWITCH '(' expression ')' '{' switchBranchList '}' ;
 switchBranchList : caseBranch+ defaultBranch?;
 caseBranch       : CASE caseConstantList ':' caseCompound ;
@@ -95,8 +95,12 @@ factor              locals [ Typespec type = null ]
     | '(' expression ')'   # parenthesizedFactor
     ;
 
+variableIdentifier  locals [ Typespec type = null, SymtabEntry entry = null ] 
+    : IDENTIFIER ;
+
 variable            locals [ Typespec type = null, SymtabEntry entry = null ] 
-    : IDENTIFIER modifier* ;
+    : variableIdentifier modifier* ;
+
 
 modifier  : '[' index ']';
 index     : expression ;
