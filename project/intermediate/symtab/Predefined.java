@@ -26,6 +26,7 @@ public class Predefined
     public static Typespec realType;
     public static Typespec charType;
     public static Typespec stringType;
+    public static Typespec voidType;
     public static Typespec undefinedType;
 
     // Predefined identifiers.
@@ -34,6 +35,7 @@ public class Predefined
     public static SymtabEntry booleanId;
     public static SymtabEntry charId;
     public static SymtabEntry stringId;
+    public static SymtabEntry voidId;
     public static SymtabEntry printId;
 
     /**
@@ -75,6 +77,12 @@ public class Predefined
         stringType = new Typespec(SCALAR);
         stringType.setIdentifier(stringId);
         stringId.setType(stringType);
+        
+     // Type string.
+        stringId = symTabStack.enterLocal("void", TYPE);
+        stringType = new Typespec(SCALAR);
+        stringType.setIdentifier(voidId);
+        stringId.setType(voidType);
 
         // Undefined type.
         undefinedType = new Typespec(SCALAR);

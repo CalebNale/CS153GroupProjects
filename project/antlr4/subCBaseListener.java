@@ -105,6 +105,18 @@ public class SubCBaseListener implements SubCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterParameterIdentifier(SubCParser.ParameterIdentifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}

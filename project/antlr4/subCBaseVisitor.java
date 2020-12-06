@@ -71,6 +71,13 @@ public class SubCBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements S
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

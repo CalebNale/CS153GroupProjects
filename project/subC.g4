@@ -10,11 +10,15 @@ grammar SubC;
 program: functionDefinitions mainProgram  ;
 mainProgram: INT MAIN '(' parameterList? ')' compoundStatement;
 
-functionName locals [ SymtabEntry entry = null ]  : IDENTIFIER ;
+functionName locals [ Typespec type = null, SymtabEntry entry = null ]
+    : IDENTIFIER ;
 functionDefinitions:  functionDefinition* ;
 functionDefinition : TYPE = (INT | STRING | CHAR | DOUBLE | VOID) functionName '(' parameterList? ')' compoundStatement ;
 parameterList : parameter ( ',' parameter )* ;
-parameter : TYPE = (INT | STRING | CHAR | DOUBLE) variable ;
+parameter : TYPE = (INT | STRING | CHAR | DOUBLE) parameterIdentifier ;
+
+parameterIdentifier   locals [ Typespec type = null, SymtabEntry entry = null ]
+    : IDENTIFIER ;
 
 functionCallStatement : functionCall SEMICOLON ;
 functionCall : functionName '(' argumentList? ')' ;
@@ -119,9 +123,9 @@ realConstant      : REAL;
 characterConstant : CHARACTER ;
 stringConstant    : STR ;
        
-relOp : '==' | '!=' | '<' | '<=' | '>' | '>=' ;
-addOp : '+' | '-' | OR ;
-mulOp : '*' | '/' | MOD | AND ;
+relOp : '==' | '!='| '<' | '<=' | '>' | '>=' ;
+addOp :  '+' | '-' | OR ;
+mulOp :  '*' | '/' | MOD | AND ;
 
 MOD       : '%' ;
 AND       : '&&' ;
@@ -166,6 +170,8 @@ fragment CHARACTER_CHAR : ~('\'')   // any non-quote character
 fragment STRING_CHAR    : ~('"')      // any non-quote character
                         ;
 
-COMMENT : '/*' STRING_CHAR '*/' -> skip ;
+COMMENT : '/*' COMMENT_CHARACTER* '*/' -> skip ;
 
+fragment COMMENT_CHARACTER : ~('*') ;
+                     
                      

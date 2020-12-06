@@ -58,6 +58,12 @@ public interface SubCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParameter(SubCParser.ParameterContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SubCParser#parameterIdentifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SubCParser#functionCallStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

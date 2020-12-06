@@ -37,8 +37,9 @@ public class SymtabEntry
      */
     public enum Routine
     {
-        PRINT
+        DECLARED, PRINT
     }
+    
 
     /**
      * Entry information interface.
@@ -248,5 +249,19 @@ public class SymtabEntry
     public void setExecutable(Object executable)
     {
         ((RoutineInfo) info).executable = executable;
+    }
+    
+    public String tostr() {
+    	String str =  "name: " + name + " kind: " + kind.toString() + " type form:" + typespec.getForm().toString()
+    			+ " basetype: ";
+    	
+    	String ss = typespec == Predefined.stringType  ? "string" 
+    			: 	typespec == Predefined.integerType ? "int"
+				:	typespec == Predefined.realType    ? "real"
+				:   typespec == Predefined.charType    ? "char"
+				:	"undefined";
+    		
+    	
+    	return str + ss;
     }
 }

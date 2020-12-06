@@ -81,13 +81,16 @@ public class SubC
          Semantics pass2 = new Semantics(mode);
          pass2.visit(tree);
         
-        // errorCount = pass2.getErrorCount();
-        // if (errorCount > 0)
-        // {
-        //     System.out.printf("\nThere were %d semantic errors.\n", errorCount);
-        //     System.out.println("Object file not created or modified.");
-        //     return;
-        // }
+         errorCount = pass2.getErrorCount();
+         if (errorCount > 0)
+         {
+             System.out.printf("\nThere were %d semantic errors.\n", errorCount);
+             System.out.println("Object file not created or modified.");
+             return;
+         }
+         else {
+        	 System.out.printf("\nPass 2 semantic: There were no semantic errors.\n");
+         }
 
         // // Pass 3: Translation.
         // switch (mode)
