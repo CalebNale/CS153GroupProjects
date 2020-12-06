@@ -6,7 +6,6 @@ import java.util.HashSet;
 import antlr4.*;
 import antlr4.SubCParser.AssignmentStatementContext;
 import antlr4.SubCParser.ForIncrementStatementContext;
-import antlr4.SubCParser.RhsContext;
 import antlr4.SubCParser.VariableContext;
 import intermediate.symtab.*;
 import intermediate.symtab.SymtabEntry.Kind;
