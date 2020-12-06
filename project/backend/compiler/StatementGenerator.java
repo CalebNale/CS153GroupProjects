@@ -6,10 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import antlr4.subCParser;
-import antlr4.subCParser.CaseBranchContext;
-import antlr4.subCParser.CaseConstantContext;
-import antlr4.subCParser;
+import antlr4.*;
 import intermediate.symtab.*;
 import intermediate.type.*;
 import intermediate.type.Typespec.Form;
@@ -41,17 +38,17 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for an assignment statement.
      * @param ctx the AssignmentStatementContext.
      */
-    public void emitAssignment(subCParser.AssignmentStatementContext ctx)
+    public void emitAssignment(SubCParser.AssignmentStatementContext ctx)
     {
-        subCParser.VariableContext   varCtx  = ctx.lhs().variable();
-        subCParser.ExpressionContext exprCtx = ctx.rhs().expression();
+        SubCParser.VariableContext   varCtx  = ctx.lhs().variable();
+        SubCParser.ExpressionContext exprCtx = ctx.rhs().expression();
         SymtabEntry varId = varCtx.entry;
         Typespec varType  = varCtx.type;
         Typespec exprType = exprCtx.type;
 
         // The last modifier, if any, is the variable's last subscript or field.
         int modifierCount = varCtx.modifier().size();
-        subCParser.ModifierContext lastModCtx = modifierCount == 0
+        SubCParser.ModifierContext lastModCtx = modifierCount == 0
                             ? null : varCtx.modifier().get(modifierCount - 1);
 
         // The target variable has subscripts and/or fields.
@@ -83,7 +80,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for an IF statement.
      * @param ctx the IfStatementContext.
      */
-    public void emitIf(subCParser.IfStatementContext ctx)
+    public void emitIf(SubCParser.IfStatementContext ctx)
     {
         boolean elseExists = ctx.falseStatement() != null;
         Label nextLabel = new Label();
@@ -113,7 +110,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a CASE statement.
      * @param ctx the CaseStatementContext.
      */
-    public void emitSwitch(subCParser.SwitchStatementContext ctx)
+    public void emitSwitch(SubCParser.SwitchStatementContext ctx)
     {
         compiler.visit(ctx.expression());
         emit(LOOKUPSWITCH);
@@ -152,7 +149,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a WHILE statement.
      * @param ctx the WhileStatementContext.
      */
-    public void emitWhile(subCParser.WhileStatementContext ctx)
+    public void emitWhile(SubCParser.WhileStatementContext ctx)
     {
         Label loopTopLabel = new Label();
         Label loopExitLabel = new Label();
@@ -169,13 +166,13 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a FOR statement.
      * @param ctx the ForStatementContext.
      */
-    public void emitFor(subCParser.ForStatementContext ctx)
+    public void emitFor(SubCParser.ForStatementContext ctx)
     {
         Instruction pop = POP;// instuction to incriment the top value on stack
         Instruction ldc = LDC;// instuction to incriment the top value on stack
         Instruction add = IADD;// instuction to incriment the top value on stack
 //        boolean incriment = ctx.TO() !=null; // are we counting up or 
-//        subCParser.VariableContext varCtx = ctx.variable();
+//        SubCParser.VariableContext varCtx = ctx.variable();
 //        SymtabEntry entry = varCtx.entry;
 //        Label loopTopLabel  = new Label(); // label at the beginning
 //        Label loopExitLabel = new Label();// label to jump out from
@@ -216,7 +213,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a procedure call statement.
      * @param ctx the ProcedureCallStatementContext.
      */
-    public void emitFunctionCall(subCParser.FunctionCallStatementContext ctx)
+    public void emitFunctionCall(SubCParser.FunctionCallStatementContext ctx)
     {
         String argTypes = "";
         SymtabEntry routineId = ctx.functionCall().functionName().entry;
@@ -231,9 +228,9 @@ public class StatementGenerator extends CodeGenerator
 
             }
 
-            for (subCParser.ArgumentContext argCtx : ctx.functionCall().argumentList().argument())
+            for (SubCParser.ArgumentContext argCtx : ctx.functionCall().argumentList().argument())
             {
-                subCParser.ExpressionContext exprCtx = argCtx.expression();
+                SubCParser.ExpressionContext exprCtx = argCtx.expression();
                 compiler.visit(exprCtx);
                 if(typeDescriptor(paramIds.get(i)).equals("F") && TypeChecker.isInteger(exprCtx.type))
                     emit(I2F);
@@ -251,7 +248,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a function call statement.
      * @param ctx the FunctionCallContext.
      */
-    public void emitFunctionCall(subCParser.FunctionCallContext ctx)
+    public void emitFunctionCall(SubCParser.FunctionCallContext ctx)
     {
         /***** Complete this method. *****/
     }
@@ -262,7 +259,7 @@ public class StatementGenerator extends CodeGenerator
      * @param argListCtx the ArgumentListContext.
      */
     private void emitCall(SymtabEntry routineId,
-                          subCParser.ArgumentListContext argListCtx)
+                          SubCParser.ArgumentListContext argListCtx)
     {
         /***** Complete this method. *****/
     }
@@ -271,7 +268,7 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a WRITE statement.
      * @param ctx the WriteStatementContext.
      */
-    public void emitPrint(subCParser.PrintStatementContext ctx)
+    public void emitPrint(SubCParser.PrintStatementContext ctx)
     {
         emitPrint(ctx.formatString(), ctx.writeArguments(), false);
     }
@@ -281,7 +278,7 @@ public class StatementGenerator extends CodeGenerator
      * @param argsCtx the WriteArgumentsContext.
      * @param needLF true if need a line feed.
      */
-    private void emitPrint(subCParser.FormatStringContext format, subCParser.WriteArgumentsContext argsCtx,
+    private void emitPrint(SubCParser.FormatStringContext format, SubCParser.WriteArgumentsContext argsCtx,
                            boolean needLF)
     {
         emit(GETSTATIC, "java/lang/System/out", "Ljava/io/PrintStream;");
@@ -327,7 +324,7 @@ public class StatementGenerator extends CodeGenerator
      * @param argsCtx
      * @param exprCount
      */
-    private void emitArgumentsArray(subCParser.WriteArgumentsContext argsCtx,
+    private void emitArgumentsArray(SubCParser.WriteArgumentsContext argsCtx,
                                     int exprCount)
     {
         // Create the arguments array.
@@ -337,11 +334,11 @@ public class StatementGenerator extends CodeGenerator
         int index = 0;
 
         // Loop over the write arguments to fill the arguments array.
-        for (subCParser.WriteArgumentContext argCtx : 
+        for (SubCParser.WriteArgumentContext argCtx : 
                                                     argsCtx.writeArgument())
         {
             String argText = argCtx.getText();
-            subCParser.ExpressionContext exprCtx = argCtx.expression();
+            SubCParser.ExpressionContext exprCtx = argCtx.expression();
             Typespec type = exprCtx.type.baseType();
             
             // Skip string constants, which were made part of

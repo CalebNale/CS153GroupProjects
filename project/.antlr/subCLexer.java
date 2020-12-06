@@ -1,4 +1,4 @@
-// Generated from SubC.g4 by ANTLR 4.8
+// Generated from /Users/rahulg510/Documents/code/cs153/CS153GroupProjects/project/subC.g4 by ANTLR 4.8
 
     package antlr4;
     import java.util.HashMap;
@@ -112,7 +112,7 @@ public class SubCLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "SubC.g4"; }
+	public String getGrammarFileName() { return "subC.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

@@ -1,14 +1,13 @@
 package backend.compiler;
 
 import antlr4.*;
-import antlr4.subCParser.ArgumentContext;
 import intermediate.symtab.*;
 import intermediate.symtab.Predefined;
 
 /**
  * Compile Pascal to Jasmin assembly language.
  */
-public class Compiler extends subCBaseVisitor<Object>
+public class Compiler extends SubCBaseVisitor<Object>
 {
     private SymtabEntry programId;  // symbol table entry of the program name
     private String programName;     // the program name
@@ -63,7 +62,7 @@ public class Compiler extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitFunctionDefinition(
-                                    subCParser.FunctionDefinitionContext ctx) 
+                                    SubCParser.FunctionDefinitionContext ctx) 
     {
         createNewGenerators(programCode);
         programCode.emitFunction(ctx);
@@ -71,7 +70,7 @@ public class Compiler extends subCBaseVisitor<Object>
     }
     
     @Override 
-    public Object visitStatement(subCParser.StatementContext ctx) 
+    public Object visitStatement(SubCParser.StatementContext ctx) 
     {
         if (   (ctx.compoundStatement() == null) )
         {
@@ -83,42 +82,42 @@ public class Compiler extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitAssignmentStatement(
-                                    subCParser.AssignmentStatementContext ctx) 
+                                    SubCParser.AssignmentStatementContext ctx) 
     {
         statementCode.emitAssignment(ctx);
         return null;
     }
 
     @Override 
-    public Object visitIfStatement(subCParser.IfStatementContext ctx) 
+    public Object visitIfStatement(SubCParser.IfStatementContext ctx) 
     {
         statementCode.emitIf(ctx);
         return null;
     }
 
     @Override 
-    public Object visitSwitchStatement(subCParser.SwitchStatementContext ctx) 
+    public Object visitSwitchStatement(SubCParser.SwitchStatementContext ctx) 
     {
         statementCode.emitSwitch(ctx);
         return null;
     }
 
 //    @Override 
-//    public Object visitRepeatStatement(subCParser.RepeatStatementContext ctx) 
+//    public Object visitRepeatStatement(SubCParser.RepeatStatementContext ctx) 
 //    {
 //        statementCode.emitRepeat(ctx);
 //        return null;
 //    }
 
     @Override 
-    public Object visitWhileStatement(subCParser.WhileStatementContext ctx) 
+    public Object visitWhileStatement(SubCParser.WhileStatementContext ctx) 
     {
         statementCode.emitWhile(ctx);
         return null;
     }
 
     @Override 
-    public Object visitForStatement(subCParser.ForStatementContext ctx) 
+    public Object visitForStatement(SubCParser.ForStatementContext ctx) 
     {
         statementCode.emitFor(ctx);
         return null;
@@ -126,35 +125,35 @@ public class Compiler extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitFunctionCallStatement(
-                                subCParser.FunctionCallStatementContext ctx) 
+                                SubCParser.FunctionCallStatementContext ctx) 
     {
         statementCode.emitFunctionCall(ctx);
         return null;
     }
 
     @Override 
-    public Object visitExpression(subCParser.ExpressionContext ctx) 
+    public Object visitExpression(SubCParser.ExpressionContext ctx) 
     {
         expressionCode.emitExpression(ctx);
         return null;
     }
 
     @Override 
-    public Object visitVariableFactor(subCParser.VariableFactorContext ctx) 
+    public Object visitVariableFactor(SubCParser.VariableFactorContext ctx) 
     {
         expressionCode.emitLoadValue(ctx.variable());
         return null;
     }
 
     @Override 
-    public Object visitVariable(subCParser.VariableContext ctx) 
+    public Object visitVariable(SubCParser.VariableContext ctx) 
     {
         expressionCode.emitLoadVariable(ctx);        
         return null;
     }
 
     @Override 
-    public Object visitNumberFactor(subCParser.NumberFactorContext ctx) 
+    public Object visitNumberFactor(SubCParser.NumberFactorContext ctx) 
     {
         if (ctx.type == Predefined.integerType) 
         {
@@ -169,7 +168,7 @@ public class Compiler extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitCharacterFactor(subCParser.CharacterFactorContext ctx) 
+    public Object visitCharacterFactor(SubCParser.CharacterFactorContext ctx) 
     {
         char ch = ctx.getText().charAt(1);
         expressionCode.emitLoadConstant(ch);
@@ -178,7 +177,7 @@ public class Compiler extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitStringFactor(subCParser.StringFactorContext ctx) 
+    public Object visitStringFactor(SubCParser.StringFactorContext ctx) 
     {
         String jasminString = convertString(ctx.getText());
         expressionCode.emitLoadConstant(jasminString);
@@ -199,14 +198,14 @@ public class Compiler extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitFunctionCallFactor(
-                                    subCParser.FunctionCallFactorContext ctx) 
+                                    SubCParser.FunctionCallFactorContext ctx) 
     {
         statementCode.emitFunctionCall(ctx.functionCall());
         return null;
     }
 
     @Override 
-    public Object visitNotFactor(subCParser.NotFactorContext ctx) 
+    public Object visitNotFactor(SubCParser.NotFactorContext ctx) 
     {
         expressionCode.emitNotFactor(ctx);
         return null;
@@ -214,13 +213,13 @@ public class Compiler extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitParenthesizedFactor(
-                                    subCParser.ParenthesizedFactorContext ctx) 
+                                    SubCParser.ParenthesizedFactorContext ctx) 
     {
         return visit(ctx.expression());
     }
 
     @Override 
-    public Object visitPrintStatement(subCParser.PrintStatementContext ctx) 
+    public Object visitPrintStatement(SubCParser.PrintStatementContext ctx) 
     {
         statementCode.emitPrint(ctx);
         return null;

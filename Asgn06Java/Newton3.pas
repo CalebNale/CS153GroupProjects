@@ -1,7 +1,7 @@
 PROGRAM Newton3;
 
 VAR
-    number : integer;
+    number : 
 
 FUNCTION root(x : real) : real;
     VAR

@@ -14,3 +14,13 @@
 /subCListener.java
 /subCParser.java
 /subCVisitor.java
+/SubC.tokens
+/SubCBaseListener.java
+/SubCBaseVisitor.java
+/SubCLexer.java
+/SubCLexer.tokens
+/SubCListener.java
+/SubCParser.java
+/SubCVisitor.java
+/SubC.interp
+/SubCLexer.interp

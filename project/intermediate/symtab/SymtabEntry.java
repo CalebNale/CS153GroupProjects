@@ -27,7 +27,7 @@ public class SymtabEntry
      */
     public enum Kind
     {
-        CONSTANT, VARIABLE, TYPE, VALUE_PARAMETER, PROGRAM_PARAMETER, FUNCTION;
+        CONSTANT, VARIABLE, TYPE, VALUE_PARAMETER, PROGRAM_PARAMETER, FUNCTION, UNDEFINED;
         
         public String toString() { return super.toString().toLowerCase(); }
     }

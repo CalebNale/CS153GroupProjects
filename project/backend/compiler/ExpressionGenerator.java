@@ -1,6 +1,6 @@
 package backend.compiler;
 
-import antlr4.subCParser;
+import antlr4.SubCParser;
 
 import intermediate.symtab.*;
 import intermediate.type.*;
@@ -32,11 +32,11 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for an expression.
      * @param ctx the ExpressionContext.
      */
-    public void emitExpression(subCParser.ExpressionContext ctx)
+    public void emitExpression(SubCParser.ExpressionContext ctx)
     {
-        subCParser.SimpleExpressionContext simpleCtx1 = 
+        SubCParser.SimpleExpressionContext simpleCtx1 = 
                                                 ctx.simpleExpression().get(0);
-        subCParser.RelOpContext relOpCtx = ctx.relOp();
+        SubCParser.RelOpContext relOpCtx = ctx.relOp();
         Typespec type1 = simpleCtx1.type;
         emitSimpleExpression(simpleCtx1);
         
@@ -44,7 +44,7 @@ public class ExpressionGenerator extends CodeGenerator
         if (relOpCtx != null)
         {
             String op = relOpCtx.getText();
-            subCParser.SimpleExpressionContext simpleCtx2 = 
+            SubCParser.SimpleExpressionContext simpleCtx2 = 
                                                 ctx.simpleExpression().get(1);
             Typespec type2 = simpleCtx2.type;
 
@@ -126,14 +126,14 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for a simple expression.
      * @param ctx the SimpleExpressionContext.
      */
-    public void emitSimpleExpression(subCParser.SimpleExpressionContext ctx)
+    public void emitSimpleExpression(SubCParser.SimpleExpressionContext ctx)
     {
         int count = ctx.term().size();
         Boolean negate =    (ctx.sign() != null) 
                          && ctx.sign().getText().equals("-");
         
         // First term.
-        subCParser.TermContext termCtx1 = ctx.term().get(0);
+        SubCParser.TermContext termCtx1 = ctx.term().get(0);
         Typespec type1 = termCtx1.type;
         emitTerm(termCtx1);
         
@@ -143,12 +143,11 @@ public class ExpressionGenerator extends CodeGenerator
         for (int i = 1; i < count; i++)
         {
             String op = ctx.addOp().get(i-1).getText().toLowerCase();
-            subCParser.TermContext termCtx2 = ctx.term().get(i);
+            SubCParser.TermContext termCtx2 = ctx.term().get(i);
             Typespec type2 = termCtx2.type;
 
             boolean integerMode = false;
             boolean realMode    = false;
-            boolean booleanMode = false;
 
             if (   (type1 == Predefined.integerType)
                 && (type2 == Predefined.integerType)) 
@@ -159,11 +158,6 @@ public class ExpressionGenerator extends CodeGenerator
                      || (type2 == Predefined.realType))
             {
                 realMode = true;
-            }
-            else if (   (type1 == Predefined.booleanType) 
-                     && (type2 == Predefined.booleanType))
-            {
-                booleanMode = true;
             }
                             
             if (integerMode)
@@ -181,11 +175,6 @@ public class ExpressionGenerator extends CodeGenerator
                 
                 if (op.equals("+")) emit(FADD);
                 else                emit(FSUB);
-            }
-            else if (booleanMode)
-            {
-                emitTerm(termCtx2);
-                emit(IOR);
             }
             else  // stringMode
             {
@@ -213,12 +202,12 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for a term.
      * @param ctx the TermContext.
      */
-    public void emitTerm(subCParser.TermContext ctx)
+    public void emitTerm(SubCParser.TermContext ctx)
     {
         int count = ctx.factor().size();
         
         // First factor.
-        subCParser.FactorContext factorCtx1 = ctx.factor().get(0);
+        SubCParser.FactorContext factorCtx1 = ctx.factor().get(0);
         Typespec type1 = factorCtx1.type;
         compiler.visit(factorCtx1);
         
@@ -226,7 +215,7 @@ public class ExpressionGenerator extends CodeGenerator
         for (int i = 1; i < count; i++)
         {
             String op = ctx.mulOp().get(i-1).getText().toLowerCase();
-            subCParser.FactorContext factorCtx2 = ctx.factor().get(i);
+            SubCParser.FactorContext factorCtx2 = ctx.factor().get(i);
             Typespec type2 = factorCtx2.type;
 
             boolean integerMode = false;
@@ -273,7 +262,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code for NOT.
      * @param ctx the NotFactorContext.
      */
-    public void emitNotFactor(subCParser.NotFactorContext ctx)
+    public void emitNotFactor(SubCParser.NotFactorContext ctx)
     {
         compiler.visit(ctx.factor());
         emit(ICONST_1);
@@ -285,7 +274,7 @@ public class ExpressionGenerator extends CodeGenerator
      * or a structured variable's address.
      * @param ctx the VariableContext.
      */
-    public void emitLoadValue(subCParser.VariableContext varCtx)
+    public void emitLoadValue(SubCParser.VariableContext varCtx)
     {
         // Load the scalar value or structure address.
         Typespec variableType = emitLoadVariable(varCtx);
@@ -294,7 +283,7 @@ public class ExpressionGenerator extends CodeGenerator
         int modifierCount = varCtx.modifier().size();
         if (modifierCount > 0)
         {
-            subCParser.ModifierContext lastModCtx =
+            SubCParser.ModifierContext lastModCtx =
                                     varCtx.modifier().get(modifierCount - 1);
             
 //            if (lastModCtx.indexList() != null)
@@ -310,7 +299,7 @@ public class ExpressionGenerator extends CodeGenerator
      * @param variableNode the variable node.
      * @return the datatype of the variable.
      */
-    public Typespec emitLoadVariable(subCParser.VariableContext varCtx)
+    public Typespec emitLoadVariable(SubCParser.VariableContext varCtx)
     {
         SymtabEntry variableId = varCtx.entry;
         Typespec variableType = variableId.getType();
@@ -322,7 +311,7 @@ public class ExpressionGenerator extends CodeGenerator
         // Loop over subscript and field modifiers.
         for (int i = 0; i < modifierCount; ++i)
         {
-            subCParser.ModifierContext modCtx = varCtx.modifier().get(i);
+            SubCParser.ModifierContext modCtx = varCtx.modifier().get(i);
             boolean lastModifier = i == modifierCount - 1;
 
             // Subscript
@@ -347,7 +336,7 @@ public class ExpressionGenerator extends CodeGenerator
      * @return the type of the element.
      */
 //    private Typespec emitLoadArrayElementAccess(
-//                                    subCParser.IndexListContext indexListCtx,
+//                                    SubCParser.IndexListContext indexListCtx,
 //                                    Typespec elmtType, boolean lastModifier)
 //    {
 //        int indexCount = indexListCtx.index().size();
@@ -355,7 +344,7 @@ public class ExpressionGenerator extends CodeGenerator
 //        // Loop over the subscripts.
 //        for (int i = 0; i < indexCount; i++)
 //        {
-//            subCParser.IndexContext indexCtx = indexListCtx.index().get(i);
+//            SubCParser.IndexContext indexCtx = indexListCtx.index().get(i);
 //            emitExpression(indexCtx.expression());
 //
 //            if (!lastModifier || (i < indexCount - 1)) emit(AALOAD);
@@ -383,7 +372,6 @@ public class ExpressionGenerator extends CodeGenerator
         {
             emit(  elmtType == Predefined.integerType ? IALOAD
                  : elmtType == Predefined.realType    ? FALOAD
-                 : elmtType == Predefined.booleanType ? BALOAD
                  : elmtType == Predefined.charType    ? CALOAD
                  :                                      AALOAD);
         }
@@ -393,7 +381,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code to load an integer constant.
      * @parm intCtx the IntegerConstantContext.
      */
-    public void emitLoadIntegerConstant(subCParser.NumberContext intCtx)
+    public void emitLoadIntegerConstant(SubCParser.NumberContext intCtx)
     {
         int value = Integer.parseInt(intCtx.getText());
         emitLoadConstant(value);
@@ -403,7 +391,7 @@ public class ExpressionGenerator extends CodeGenerator
      * Emit code to load real constant.
      * @parm intCtx the IntegerConstantContext.
      */
-    public void emitLoadRealConstant(subCParser.NumberContext realCtx)
+    public void emitLoadRealConstant(SubCParser.NumberContext realCtx)
     {
         float value = Float.parseFloat(realCtx.getText());
         emitLoadConstant(value);

@@ -21,7 +21,7 @@ import static intermediate.util.BackendMode.*;
  * Semantic operations.
  * Perform type checking and create symbol tables.
  */
-public class Semantics extends subCBaseVisitor<Object>
+public class Semantics extends SubCBaseVisitor<Object>
 {
     private BackendMode mode;
     private SymtabStack symtabStack;
@@ -52,28 +52,28 @@ public class Semantics extends subCBaseVisitor<Object>
 
         if      (type == Predefined.integerType) return Integer.valueOf(0);
         else if (type == Predefined.realType)    return Float.valueOf(0.0f);
-        else if (type == Predefined.booleanType) return Boolean.valueOf(false);
         else if (type == Predefined.charType)    return Character.valueOf('#');
         else /* string */                        return String.valueOf("#");
     }
 
     @Override 
-    public Object visitProgram(subCParser.ProgramContext ctx) 
+    public Object visitProgram(SubCParser.ProgramContext ctx) 
     { 
+    	System.out.println("program Visited");
         visit(ctx.functionDefinitions());
-        visit(ctx.mainProgram());
-        
+        visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
-        CrossReferencer crossReferencer = new CrossReferencer();
-        crossReferencer.print(symtabStack);
+//        CrossReferencer crossReferencer = new CrossReferencer();
+//        crossReferencer.print(symtabStack);
 
         return null;
     }
     
 //    @Override 
-//    public Object visitProgramHeader(subCParser.ProgramHeaderContext ctx) 
+    //TODO make this into main function
+//    public Object visitProgramHeader(SubCParser.ProgramHeaderContext ctx) 
 //    { 
-//        subCParser.ProgramIdentifierContext idCtx = ctx.programIdentifier();
+//        SubCParser.ProgramIdentifierContext idCtx = ctx.programIdentifier();
 //        String programName = idCtx.IDENTIFIER().getText();  // don't shift case
 //        
 //        programId = symtabStack.enterLocal(programName, PROGRAM);
@@ -85,41 +85,48 @@ public class Semantics extends subCBaseVisitor<Object>
 //        idCtx.entry = programId;
 //        return null;
 //    }
-
-//    @Override 
-//    public Object visitConstantDefinition(
-//                                subCParser.ConstantDefinitionContext ctx) 
-//    { 
-//        subCParser.ConstantIdentifierContext idCtx = ctx.constantIdentifier();
-//        String constantName = idCtx.IDENTIFIER().getText().toLowerCase();
-//        SymtabEntry constantId = symtabStack.lookupLocal(constantName);
-//        
-//        if (constantId == null)
-//        {
-//            subCParser.ConstantContext constCtx = ctx.constant();
-//            Object constValue = visit(constCtx);
-//            
-//            constantId = symtabStack.enterLocal(constantName, CONSTANT);
-//            constantId.setValue(constValue);
-//            constantId.setType(constCtx.type);
-//            
-//            idCtx.entry = constantId;
-//            idCtx.type  = constCtx.type;
-//        }
-//        else
-//        {
-//            error.flag(REDECLARED_IDENTIFIER, ctx);
-//            
-//            idCtx.entry = constantId;
-//            idCtx.type  = Predefined.integerType;
-//        }
-//
-//        constantId.appendLineNumber(ctx.getStart().getLine());        
-//        return null;
-//    }
+    
+    @Override 
+    public Object visitDeclarationStatement(
+                                SubCParser.DeclarationStatementContext ctx) 
+    { 
+            int lineNumber = ctx.getStart().getLine();      
+            SubCParser.VariableContext var = ctx.variable();
+            String variableName = var.variableIdentifier().IDENTIFIER().getText().toLowerCase();
+            String s = ctx.TYPE.getText();
+            Form form = var.modifier() == null ? Form.SCALAR : Form.ARRAY;
+            var.type = new Typespec(form);
+            
+            SymtabEntry variableId = symtabStack.lookupLocal(variableName);
+            
+            if (variableId == null)
+            {
+                variableId = symtabStack.enterLocal(variableName, VARIABLE);
+                variableId.setType(var.type);
+                
+                // Assign slot numbers to local variables.
+                Symtab symtab = variableId.getSymtab();
+                if (symtab.getNestingLevel() > 1)
+                {
+                    variableId.setSlotNumber(symtab.nextSlotNumber());
+                }
+                
+                var.variableIdentifier().entry = variableId;
+            }
+            else
+            {
+                error.flag(REDECLARED_IDENTIFIER, ctx);
+            }
+            
+            variableId.appendLineNumber(lineNumber);        
+ 
+        
+        return null;
+    }
+  
 
     @Override 
-    public Object visitConstant(subCParser.ConstantContext ctx) 
+    public Object visitConstant(SubCParser.ConstantContext ctx) 
     {
         if (ctx.IDENTIFIER() != null)
         {
@@ -157,6 +164,7 @@ public class Semantics extends subCBaseVisitor<Object>
             String pascalString = ctx.stringConstant().STR().getText();
             String unquoted = pascalString.substring(1, pascalString.length()-1);
             ctx.type  = Predefined.stringType;            
+            //TODO change the value of string to match C instead of Pascal (quotes)
             ctx.value = unquoted.replace("''", "'").replace("\"", "\\\"");
         }
         else  // number
@@ -176,97 +184,13 @@ public class Semantics extends subCBaseVisitor<Object>
         return ctx.value;
     }
 
+ 
 //    @Override 
-//    public Object visitTypeDefinition(subCParser.TypeDefinitionContext ctx) 
-//    { 
-//        subCParser.TypeIdentifierContext idCtx = ctx.typeIdentifier();
-//        String typeName = idCtx.IDENTIFIER().getText().toLowerCase();
-//        SymtabEntry typeId = symtabStack.lookupLocal(typeName);
-//        
-//        subCParser.TypeSpecificationContext typespecCtx = 
-//                                                        ctx.typeSpecification();
-//        
-//
-//        // Enter the type name of any other type into the symbol table.
-//        if (typeId == null)
-//        {
-//            visit(typespecCtx);
-//            
-//            typeId = symtabStack.enterLocal(typeName, TYPE);
-//            typeId.setType(typespecCtx.type);
-//            typespecCtx.type.setIdentifier(typeId);
-//        }
-//        
-//        // Redeclared identifier.
-//        else 
-//        {
-//            error.flag(REDECLARED_IDENTIFIER, ctx);
-//        }
-//        
-//        idCtx.entry = typeId;
-//        idCtx.type  = typespecCtx.type;
-//
-//        typeId.appendLineNumber(ctx.getStart().getLine());        
-//        return null;
-//    }
-    
-    
-//    @Override 
-//    public Object visitSimpleTypespec(subCParser.SimpleTypespecContext ctx) 
-//    { 
-//        visit(ctx.simpleType());
-//        ctx.type = ctx.simpleType().type;
-//        
-//        return null;
-//    }
-//
-//    @Override 
-//    public Object visitTypeIdentifierTypespec(
-//                                subCParser.TypeIdentifierTypespecContext ctx) 
-//    { 
-//        visit(ctx.typeIdentifier());
-//        ctx.type = ctx.typeIdentifier().type;
-//        
-//        return null;
-//    }
-//
-//    @Override 
-//    public Object visitTypeIdentifier(subCParser.TypeIdentifierContext ctx) 
-//    { 
-//        String typeName = ctx.IDENTIFIER().getText().toLowerCase();
-//        SymtabEntry typeId = symtabStack.lookup(typeName);
-//        
-//        if (typeId != null)
-//        {
-//            if (typeId.getKind() != TYPE)
-//            {
-//                error.flag(INVALID_TYPE, ctx);
-//                ctx.type = Predefined.integerType;
-//            }
-//            else
-//            {
-//                ctx.type = typeId.getType();
-//            }
-//            
-//            typeId.appendLineNumber(ctx.start.getLine());
-//        }
-//        else
-//        {
-//            error.flag(UNDECLARED_IDENTIFIER, ctx);
-//            ctx.type = Predefined.integerType;
-//        }
-//        
-//        ctx.entry = typeId;
-//        return null;
-//    }
-
-
-//    @Override 
-//    public Object visitArrayTypespec(subCParser.ArrayTypespecContext ctx) 
+//    public Object visitArrayTypespec(SubCParser.ArrayTypespecContext ctx) 
 //    { 
 //        Typespec arrayType = new Typespec(ARRAY);
-//        subCParser.ArrayTypeContext arrayCtx = ctx.arrayType();
-//        subCParser.ArrayDimensionListContext listCtx = 
+//        SubCParser.ArrayTypeContext arrayCtx = ctx.arrayType();
+//        SubCParser.ArrayDimensionListContext listCtx = 
 //                                                arrayCtx.arrayDimensionList();
 //        
 //        ctx.type = arrayType;
@@ -275,7 +199,7 @@ public class Semantics extends subCBaseVisitor<Object>
 //        int count = listCtx.simpleType().size();
 //        for (int i = 0; i < count; i++)
 //        {
-//            subCParser.SimpleTypeContext simpleCtx = 
+//            SubCParser.SimpleTypeContext simpleCtx = 
 //                                                    listCtx.simpleType().get(i);
 //            visit(simpleCtx);
 //            arrayType.setArrayIndexType(simpleCtx.type);
@@ -296,228 +220,173 @@ public class Semantics extends subCBaseVisitor<Object>
 //        return null;
 //    }
 
+    
 //    @Override 
-//    public Object visitVariableDeclarations(
-//                                subCParser.VariableDeclarationsContext ctx) 
-//    { 
-//        subCParser.TypeSpecificationContext typeCtx = ctx.typeSpecification();
-//        visit(typeCtx);
+//    @SuppressWarnings("unchecked")
+//    public Object visitFunctionDefinition(
+//                                    SubCParser.FunctionDefinitionContext ctx) 
+//    {
+//        Typespec returnType = null;
+//        String routineName;
 //        
-//        subCParser.VariableIdentifierListContext listCtx = 
-//                                                ctx.variableIdentifierList();
+//        routineName = ctx.TYPE.getText();
+//        SymtabEntry routineId = symtabStack.lookupLocal(routineName);
 //        
-//        // Loop over the variables being declared.
-//        for (subCParser.VariableIdentifierContext idCtx : 
-//                                                listCtx.variableIdentifier())
+//        if (routineId != null)
 //        {
-//            int lineNumber = idCtx.getStart().getLine();        
-//            String variableName = idCtx.IDENTIFIER().getText().toLowerCase();
-//            SymtabEntry variableId = symtabStack.lookupLocal(variableName);
+//            error.flag(REDECLARED_IDENTIFIER, 
+//                       ctx.getStart().getLine(), routineName);
+//            return null;
+//        }
+//
+//        routineId = symtabStack.enterLocal(
+//                        routineName, FUNCTION);
+//        routineId.setRoutineCode(DECLARED);
+//        idCtx.entry = routineId;
+//        
+//        // Append to the parent routine's list of subroutines.
+//        SymtabEntry parentId = symtabStack.getLocalSymtab().getOwner();
+//        parentId.appendSubroutine(routineId);
+//        
+//        routineId.setRoutineSymtab(symtabStack.push());
+//        idCtx.entry = routineId;
+//        
+//        Symtab symtab = symtabStack.getLocalSymtab();
+//        symtab.setOwner(routineId);
+//        
+//        if (parameters != null)
+//        {
+//            ArrayList<SymtabEntry> parameterIds = (ArrayList<SymtabEntry>) 
+//                                visit(parameters.parameterDeclarationsList());
+//            routineId.setRoutineParameters(parameterIds);
 //            
-//            if (variableId == null)
+//            for (SymtabEntry parmId : parameterIds)
 //            {
-//                variableId = symtabStack.enterLocal(variableName, VARIABLE);
-//                variableId.setType(typeCtx.type);
-//                
-//                // Assign slot numbers to local variables.
-//                Symtab symtab = variableId.getSymtab();
-//                if (symtab.getNestingLevel() > 1)
-//                {
-//                    variableId.setSlotNumber(symtab.nextSlotNumber());
-//                }
-//                
-//                idCtx.entry = variableId;
+//                parmId.setSlotNumber(symtab.nextSlotNumber());
 //            }
-//            else
-//            {
-//                error.flag(REDECLARED_IDENTIFIER, ctx);
-//            }
-//            
-//            variableId.appendLineNumber(lineNumber);        
 //        }
 //        
+//        if (functionDefinition)
+//        {
+//            SubCParser.TypeIdentifierContext typeIdCtx = 
+//                                                    funcCtx.typeIdentifier();
+//            visit(typeIdCtx);
+//            returnType = typeIdCtx.type;
+//            
+//            if (returnType.getForm() != SCALAR)
+//            {
+//                error.flag(INVALID_RETURN_TYPE, typeIdCtx);
+//                returnType = Predefined.integerType;
+//            }
+//            
+//            routineId.setType(returnType);
+//            idCtx.type = returnType;
+//        }
+//        else
+//        {
+//            idCtx.type = null;
+//        }
+//        
+//        visit(ctx.block().declarations());     
+//        
+//        // Enter the function's associated variable into its symbol table.
+//        if (functionDefinition)
+//        {
+//            SymtabEntry assocVarId = 
+//                                symtabStack.enterLocal(routineName, VARIABLE);
+//            assocVarId.setSlotNumber(symtab.nextSlotNumber());
+//            assocVarId.setType(returnType);
+//        }
+//        
+//        visit(ctx.block().compoundStatement());
+//        routineId.setExecutable(ctx.block().compoundStatement());
+//        
+//        symtabStack.pop();
 //        return null;
 //    }
 
-    @Override 
-    @SuppressWarnings("unchecked")
-    public Object visitRoutineDefinition(
-                                    subCParser.RoutineDefinitionContext ctx) 
-    {
-        subCParser.FunctionHeadContext  funcCtx = ctx.functionHead();
-        subCParser.ProcedureHeadContext procCtx = ctx.procedureHead();
-        subCParser.RoutineIdentifierContext idCtx = null;
-        subCParser.ParametersContext parameters = null;
-        boolean functionDefinition = funcCtx != null;
-        Typespec returnType = null;
-        String routineName;
-        
-        if (functionDefinition)
-        {
-            idCtx = funcCtx.routineIdentifier();
-            parameters = funcCtx.parameters();
-        }
-        else
-        {
-            idCtx = procCtx.routineIdentifier();
-            parameters = procCtx.parameters();
-        }
-        
-        routineName = idCtx.IDENTIFIER().getText().toLowerCase();
-        SymtabEntry routineId = symtabStack.lookupLocal(routineName);
-        
-        if (routineId != null)
-        {
-            error.flag(REDECLARED_IDENTIFIER, 
-                       ctx.getStart().getLine(), routineName);
-            return null;
-        }
+//    @Override 
+//    @SuppressWarnings("unchecked")
+//    public Object visitParameterDeclarationsList(
+//                            SubCParser.ParameterDeclarationsListContext ctx)
+//    {
+//        ArrayList<SymtabEntry> parameterList = new ArrayList<>();
+//        
+//        // Loop over the parameter declarations.
+//        for (SubCParser.ParameterDeclarationsContext dclCtx : 
+//                                                    ctx.parameterDeclarations())
+//        {
+//            ArrayList<SymtabEntry> parameterSublist = 
+//                                        (ArrayList<SymtabEntry>) visit(dclCtx);
+//            parameterList.addAll(parameterSublist);
+//        }
+//        
+//        return parameterList;
+//    }
 
-        routineId = symtabStack.enterLocal(
-                        routineName, functionDefinition ? FUNCTION : PROCEDURE);
-        routineId.setRoutineCode(DECLARED);
-        idCtx.entry = routineId;
-        
-        // Append to the parent routine's list of subroutines.
-        SymtabEntry parentId = symtabStack.getLocalSymtab().getOwner();
-        parentId.appendSubroutine(routineId);
-        
-        routineId.setRoutineSymtab(symtabStack.push());
-        idCtx.entry = routineId;
-        
-        Symtab symtab = symtabStack.getLocalSymtab();
-        symtab.setOwner(routineId);
-        
-        if (parameters != null)
-        {
-            ArrayList<SymtabEntry> parameterIds = (ArrayList<SymtabEntry>) 
-                                visit(parameters.parameterDeclarationsList());
-            routineId.setRoutineParameters(parameterIds);
-            
-            for (SymtabEntry parmId : parameterIds)
-            {
-                parmId.setSlotNumber(symtab.nextSlotNumber());
-            }
-        }
-        
-        if (functionDefinition)
-        {
-            subCParser.TypeIdentifierContext typeIdCtx = 
-                                                    funcCtx.typeIdentifier();
-            visit(typeIdCtx);
-            returnType = typeIdCtx.type;
-            
-            if (returnType.getForm() != SCALAR)
-            {
-                error.flag(INVALID_RETURN_TYPE, typeIdCtx);
-                returnType = Predefined.integerType;
-            }
-            
-            routineId.setType(returnType);
-            idCtx.type = returnType;
-        }
-        else
-        {
-            idCtx.type = null;
-        }
-        
-        visit(ctx.block().declarations());     
-        
-        // Enter the function's associated variable into its symbol table.
-        if (functionDefinition)
-        {
-            SymtabEntry assocVarId = 
-                                symtabStack.enterLocal(routineName, VARIABLE);
-            assocVarId.setSlotNumber(symtab.nextSlotNumber());
-            assocVarId.setType(returnType);
-        }
-        
-        visit(ctx.block().compoundStatement());
-        routineId.setExecutable(ctx.block().compoundStatement());
-        
-        symtabStack.pop();
-        return null;
-    }
-
-    @Override 
-    @SuppressWarnings("unchecked")
-    public Object visitParameterDeclarationsList(
-                            subCParser.ParameterDeclarationsListContext ctx)
-    {
-        ArrayList<SymtabEntry> parameterList = new ArrayList<>();
-        
-        // Loop over the parameter declarations.
-        for (subCParser.ParameterDeclarationsContext dclCtx : 
-                                                    ctx.parameterDeclarations())
-        {
-            ArrayList<SymtabEntry> parameterSublist = 
-                                        (ArrayList<SymtabEntry>) visit(dclCtx);
-            parameterList.addAll(parameterSublist);
-        }
-        
-        return parameterList;
-    }
-
-    @Override 
-    public Object visitParameterDeclarations(
-                                subCParser.ParameterDeclarationsContext ctx) 
-    {
-        Kind kind = ctx.VAR() != null ? REFERENCE_PARAMETER : VALUE_PARAMETER; 
-        subCParser.TypeIdentifierContext typeCtx = ctx.typeIdentifier();
-        
-        visit(typeCtx);
-        Typespec parmType = typeCtx.type;
-        
-        ArrayList<SymtabEntry> parameterSublist = new ArrayList<>();
-        
-        // Loop over the parameter identifiers.
-        subCParser.ParameterIdentifierListContext parmListCtx = 
-                                                ctx.parameterIdentifierList();
-        for (subCParser.ParameterIdentifierContext parmIdCtx : 
-                                            parmListCtx.parameterIdentifier())
-        {
-            int lineNumber = parmIdCtx.getStart().getLine();   
-            String parmName = parmIdCtx.IDENTIFIER().getText().toLowerCase();
-            SymtabEntry parmId = symtabStack.lookupLocal(parmName);
-            
-            if (parmId == null)
-            {
-                parmId = symtabStack.enterLocal(parmName, kind);
-                parmId.setType(parmType);
-                
-                if (   (kind == REFERENCE_PARAMETER) 
-                    && (mode != EXECUTOR)
-                    && (parmType.getForm() == SCALAR))
-                {
-                    error.flag(INVALID_REFERENCE_PARAMETER, parmIdCtx);
-                }
-            }
-            else
-            {
-                error.flag(REDECLARED_IDENTIFIER, parmIdCtx);
-            }
-            
-            parmIdCtx.entry = parmId;
-            parmIdCtx.type  = parmType;
-            
-            parameterSublist.add(parmId);
-            parmId.appendLineNumber(lineNumber);    
-        }
-        
-        return parameterSublist;
-    }
+//    @Override 
+//    public Object visitParameterDeclarations(
+//                                SubCParser.ParameterDeclarationsContext ctx) 
+//    {
+//        Kind kind = ctx.VAR() != null ? REFERENCE_PARAMETER : VALUE_PARAMETER; 
+//        SubCParser.TypeIdentifierContext typeCtx = ctx.typeIdentifier();
+//        
+//        visit(typeCtx);
+//        Typespec parmType = typeCtx.type;
+//        
+//        ArrayList<SymtabEntry> parameterSublist = new ArrayList<>();
+//        
+//        // Loop over the parameter identifiers.
+//        SubCParser.ParameterIdentifierListContext parmListCtx = 
+//                                                ctx.parameterIdentifierList();
+//        for (SubCParser.ParameterIdentifierContext parmIdCtx : 
+//                                            parmListCtx.parameterIdentifier())
+//        {
+//            int lineNumber = parmIdCtx.getStart().getLine();   
+//            String parmName = parmIdCtx.IDENTIFIER().getText().toLowerCase();
+//            SymtabEntry parmId = symtabStack.lookupLocal(parmName);
+//            
+//            if (parmId == null)
+//            {
+//                parmId = symtabStack.enterLocal(parmName, kind);
+//                parmId.setType(parmType);
+//                
+//                if (   (kind == REFERENCE_PARAMETER) 
+//                    && (mode != EXECUTOR)
+//                    && (parmType.getForm() == SCALAR))
+//                {
+//                    error.flag(INVALID_REFERENCE_PARAMETER, parmIdCtx);
+//                }
+//            }
+//            else
+//            {
+//                error.flag(REDECLARED_IDENTIFIER, parmIdCtx);
+//            }
+//            
+//            parmIdCtx.entry = parmId;
+//            parmIdCtx.type  = parmType;
+//            
+//            parameterSublist.add(parmId);
+//            parmId.appendLineNumber(lineNumber);    
+//        }
+//        
+//        return parameterSublist;
+//    }
     
     @Override 
     public Object visitAssignmentStatement(
-                                    subCParser.AssignmentStatementContext ctx) 
+                                    SubCParser.AssignmentStatementContext ctx) 
     {
-        subCParser.LhsContext lhsCtx = ctx.lhs();
-        subCParser.RhsContext rhsCtx = ctx.rhs();
+        SubCParser.LhsContext lhsCtx = ctx.lhs();
+        SubCParser.RhsContext rhsCtx = ctx.rhs();
         
         visitChildren(ctx);
         
         Typespec lhsType = lhsCtx.type;
         Typespec rhsType = rhsCtx.expression().type;
+        
+        System.out.println(lhsType);
+        System.out.println(rhsType.getIdentifier().getValue());
         
         if (!TypeChecker.areAssignmentCompatible(lhsType, rhsType))
         {
@@ -528,214 +397,214 @@ public class Semantics extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitLhs(subCParser.LhsContext ctx) 
+    public Object visitLhs(SubCParser.LhsContext ctx) 
     {
-        subCParser.VariableContext varCtx = ctx.variable();
+        SubCParser.VariableContext varCtx = ctx.variable();
         visit(varCtx);
         ctx.type = varCtx.type;
         
         return null;
     }
 
-    @Override 
-    public Object visitIfStatement(subCParser.IfStatementContext ctx) 
-    {
-        subCParser.ExpressionContext     exprCtx  = ctx.expression();
-        subCParser.TrueStatementContext  trueCtx  = ctx.trueStatement();
-        subCParser.FalseStatementContext falseCtx = ctx.falseStatement();
-        
-        visit(exprCtx);
-        Typespec exprType = exprCtx.type;
-        
-        if (!TypeChecker.isBoolean(exprType))
-        {
-            error.flag(TYPE_MUST_BE_BOOLEAN, exprCtx);
-        }
-        
-        visit(trueCtx);
-        if (falseCtx != null) visit(falseCtx);
-        
-        return null;
-    }
+//    @Override 
+//    public Object visitIfStatement(SubCParser.IfStatementContext ctx) 
+//    {
+//        SubCParser.ExpressionContext     exprCtx  = ctx.expression();
+//        SubCParser.TrueStatementContext  trueCtx  = ctx.trueStatement();
+//        SubCParser.FalseStatementContext falseCtx = ctx.falseStatement();
+//        
+//        visit(exprCtx);
+//        Typespec exprType = exprCtx.type;
+//        
+//        if (!TypeChecker.isBoolean(exprType))
+//        {
+//            error.flag(TYPE_MUST_BE_BOOLEAN, exprCtx);
+//        }
+//        
+//        visit(trueCtx);
+//        if (falseCtx != null) visit(falseCtx);
+//        
+//        return null;
+//    }
 
-    @Override 
-    public Object visitCaseStatement(subCParser.CaseStatementContext ctx) 
-    {
-        subCParser.ExpressionContext exprCtx = ctx.expression();
-        visit(exprCtx);
-        Typespec exprType = exprCtx.type;
-        Form exprTypeForm = exprType.getForm();
-        
-        if (   (   (exprTypeForm != SCALAR) 
-                && (exprTypeForm != ENUMERATION) 
-                && (exprTypeForm != SUBRANGE))
-            || (exprType == Predefined.realType)
-            || (exprType == Predefined.stringType))
-        {
-            error.flag(TYPE_MISMATCH, exprCtx);
-            exprType = Predefined.integerType;
-        }
-        
-        HashSet<Integer> constants = new HashSet<>();
-        subCParser.CaseBranchListContext branchListCtx = ctx.caseBranchList();
-        
-        // Loop over the CASE branches.
-        for (subCParser.CaseBranchContext branchCtx : 
-                                                    branchListCtx.caseBranch())
-        {
-            subCParser.CaseConstantListContext constListCtx = 
-                                                    branchCtx.caseConstantList();
-            subCParser.StatementContext stmtCtx = branchCtx.statement();
-            
-            if (constListCtx != null)
-            {
-                // Loop over the CASE constants in each branch.
-                for (subCParser.CaseConstantContext caseConstCtx : 
-                                                    constListCtx.caseConstant())
-                {
-                    subCParser.ConstantContext constCtx = 
-                                                        caseConstCtx.constant();
-                    Object constValue = visit(constCtx);
-                    
-                    caseConstCtx.type  = constCtx.type;
-                    caseConstCtx.value = 0;
-                    
-                    if (constCtx.type != exprType)
-                    {
-                        error.flag(TYPE_MISMATCH, constCtx);
-                    }
-                    else if (   (constCtx.type == Predefined.integerType)
-                             || (constCtx.type.getForm() == ENUMERATION))
-                    {
-                        caseConstCtx.value = (Integer) constValue;
-                    }
-                    else if (constCtx.type == Predefined.charType)
-                    {
-                        caseConstCtx.value = (Character) constValue;
-                    }
-                    
-                    if (constants.contains(caseConstCtx.value))
-                    {
-                        error.flag(DUPLICATE_CASE_CONSTANT, constCtx);
-                    }
-                    else
-                    {
-                        constants.add(caseConstCtx.value);
-                    }
-                }
-            }
-            
-            if (stmtCtx != null) visit(stmtCtx);
-        }
-        
-        return null;
-    }
+//    @Override 
+//    public Object visitCaseStatement(SubCParser.CaseStatementContext ctx) 
+//    {
+//        SubCParser.ExpressionContext exprCtx = ctx.expression();
+//        visit(exprCtx);
+//        Typespec exprType = exprCtx.type;
+//        Form exprTypeForm = exprType.getForm();
+//        
+//        if (   (   (exprTypeForm != SCALAR) 
+//                && (exprTypeForm != ENUMERATION) 
+//                && (exprTypeForm != SUBRANGE))
+//            || (exprType == Predefined.realType)
+//            || (exprType == Predefined.stringType))
+//        {
+//            error.flag(TYPE_MISMATCH, exprCtx);
+//            exprType = Predefined.integerType;
+//        }
+//        
+//        HashSet<Integer> constants = new HashSet<>();
+//        SubCParser.CaseBranchListContext branchListCtx = ctx.caseBranchList();
+//        
+//        // Loop over the CASE branches.
+//        for (SubCParser.CaseBranchContext branchCtx : 
+//                                                    branchListCtx.caseBranch())
+//        {
+//            SubCParser.CaseConstantListContext constListCtx = 
+//                                                    branchCtx.caseConstantList();
+//            SubCParser.StatementContext stmtCtx = branchCtx.statement();
+//            
+//            if (constListCtx != null)
+//            {
+//                // Loop over the CASE constants in each branch.
+//                for (SubCParser.CaseConstantContext caseConstCtx : 
+//                                                    constListCtx.caseConstant())
+//                {
+//                    SubCParser.ConstantContext constCtx = 
+//                                                        caseConstCtx.constant();
+//                    Object constValue = visit(constCtx);
+//                    
+//                    caseConstCtx.type  = constCtx.type;
+//                    caseConstCtx.value = 0;
+//                    
+//                    if (constCtx.type != exprType)
+//                    {
+//                        error.flag(TYPE_MISMATCH, constCtx);
+//                    }
+//                    else if (   (constCtx.type == Predefined.integerType)
+//                             || (constCtx.type.getForm() == ENUMERATION))
+//                    {
+//                        caseConstCtx.value = (Integer) constValue;
+//                    }
+//                    else if (constCtx.type == Predefined.charType)
+//                    {
+//                        caseConstCtx.value = (Character) constValue;
+//                    }
+//                    
+//                    if (constants.contains(caseConstCtx.value))
+//                    {
+//                        error.flag(DUPLICATE_CASE_CONSTANT, constCtx);
+//                    }
+//                    else
+//                    {
+//                        constants.add(caseConstCtx.value);
+//                    }
+//                }
+//            }
+//            
+//            if (stmtCtx != null) visit(stmtCtx);
+//        }
+//        
+//        return null;
+//    }
 
 
-    @Override 
-    public Object visitWhileStatement(subCParser.WhileStatementContext ctx) 
-    {
-        subCParser.ExpressionContext exprCtx = ctx.expression();
-        visit(exprCtx);
-        Typespec exprType = exprCtx.type;
-        
-        if (!TypeChecker.isBoolean(exprType))
-        {
-            error.flag(TYPE_MUST_BE_BOOLEAN, exprCtx);
-        }
-        
-        visit(ctx.statement());
-        return null;
-    }
+//    @Override 
+//    public Object visitWhileStatement(SubCParser.WhileStatementContext ctx) 
+//    {
+//        SubCParser.ExpressionContext exprCtx = ctx.expression();
+//        visit(exprCtx);
+//        Typespec exprType = exprCtx.type;
+//        
+//        if (!TypeChecker.isBoolean(exprType))
+//        {
+//            error.flag(TYPE_MUST_BE_BOOLEAN, exprCtx);
+//        }
+//        
+//        visit(ctx.statement());
+//        return null;
+//    }
 
-    @Override 
-    public Object visitForStatement(subCParser.ForStatementContext ctx) 
-    {
-        subCParser.VariableContext varCtx = ctx.variable();
-        visit(varCtx);
-        
-        String controlName = varCtx.variableIdentifier().getText().toLowerCase();
-        Typespec controlType = Predefined.integerType;
-        
-        if (varCtx.entry != null)
-        {
-            controlType = varCtx.type;
-            
-            if (   (controlType.getForm() != SCALAR )
-                || (controlType == Predefined.realType)
-                || (controlType == Predefined.stringType)
-                || (varCtx.modifier().size() != 0))
-            {
-                error.flag(INVALID_CONTROL_VARIABLE, varCtx);
-            }
-        }
-        else
-        {
-            error.flag(UNDECLARED_IDENTIFIER, ctx.getStart().getLine(), 
-                       controlName);
-        }
-        
-        subCParser.ExpressionContext startCtx = ctx.expression().get(0);
-        subCParser.ExpressionContext endCtx   = ctx.expression().get(1);
-        
-        visit(startCtx);
-        visit(endCtx);
-        
-        if (startCtx.type != controlType) error.flag(TYPE_MISMATCH, startCtx);
-        if (startCtx.type != endCtx.type) error.flag(TYPE_MISMATCH, endCtx);
-        
-        visit(ctx.statement());
-        return null;
-    }
+//    @Override 
+//    public Object visitForStatement(SubCParser.ForStatementContext ctx) 
+//    {
+//        SubCParser.VariableContext varCtx = ctx.variable();
+//        visit(varCtx);
+//        
+//        String controlName = varCtx.variableIdentifier().getText().toLowerCase();
+//        Typespec controlType = Predefined.integerType;
+//        
+//        if (varCtx.entry != null)
+//        {
+//            controlType = varCtx.type;
+//            
+//            if (   (controlType.getForm() != SCALAR )
+//                || (controlType == Predefined.realType)
+//                || (controlType == Predefined.stringType)
+//                || (varCtx.modifier().size() != 0))
+//            {
+//                error.flag(INVALID_CONTROL_VARIABLE, varCtx);
+//            }
+//        }
+//        else
+//        {
+//            error.flag(UNDECLARED_IDENTIFIER, ctx.getStart().getLine(), 
+//                       controlName);
+//        }
+//        
+//        SubCParser.ExpressionContext startCtx = ctx.expression().get(0);
+//        SubCParser.ExpressionContext endCtx   = ctx.expression().get(1);
+//        
+//        visit(startCtx);
+//        visit(endCtx);
+//        
+//        if (startCtx.type != controlType) error.flag(TYPE_MISMATCH, startCtx);
+//        if (startCtx.type != endCtx.type) error.flag(TYPE_MISMATCH, endCtx);
+//        
+//        visit(ctx.statement());
+//        return null;
+//    }
 
-    @Override 
-    public Object visitProcedureCallStatement(
-                                subCParser.ProcedureCallStatementContext ctx) 
-    {
-        subCParser.ProcedureNameContext nameCtx = ctx.procedureName();
-        subCParser.ArgumentListContext listCtx = ctx.argumentList();
-        String name = ctx.procedureName().getText().toLowerCase();
-        SymtabEntry procedureId = symtabStack.lookup(name);
-        boolean badName = false;
-        
-        if (procedureId == null)
-        {
-            error.flag(UNDECLARED_IDENTIFIER, nameCtx);
-            badName = true;
-        }
-        else if (procedureId.getKind() != PROCEDURE)
-        {
-            error.flag(NAME_MUST_BE_PROCEDURE, nameCtx);
-            badName = true;
-        }
-        
-        // Bad procedure name. Do a simple arguments check and then leave.
-        if (badName)
-        {
-            for (subCParser.ArgumentContext exprCtx : listCtx.argument())
-            {
-                visit(exprCtx);
-            }
-        }
-        
-        // Good procedure name.
-        else
-        {
-            ArrayList<SymtabEntry> parms = procedureId.getRoutineParameters();
-            checkCallArguments(listCtx, parms);
-        }
-        
-        nameCtx.entry = procedureId;
-        return null;
-    }
+//    @Override 
+//    public Object visitProcedureCallStatement(
+//                                SubCParser.ProcedureCallStatementContext ctx) 
+//    {
+//        SubCParser.ProcedureNameContext nameCtx = ctx.procedureName();
+//        SubCParser.ArgumentListContext listCtx = ctx.argumentList();
+//        String name = ctx.procedureName().getText().toLowerCase();
+//        SymtabEntry procedureId = symtabStack.lookup(name);
+//        boolean badName = false;
+//        
+//        if (procedureId == null)
+//        {
+//            error.flag(UNDECLARED_IDENTIFIER, nameCtx);
+//            badName = true;
+//        }
+//        else if (procedureId.getKind() != PROCEDURE)
+//        {
+//            error.flag(NAME_MUST_BE_PROCEDURE, nameCtx);
+//            badName = true;
+//        }
+//        
+//        // Bad procedure name. Do a simple arguments check and then leave.
+//        if (badName)
+//        {
+//            for (SubCParser.ArgumentContext exprCtx : listCtx.argument())
+//            {
+//                visit(exprCtx);
+//            }
+//        }
+//        
+//        // Good procedure name.
+//        else
+//        {
+//            ArrayList<SymtabEntry> parms = procedureId.getRoutineParameters();
+//            checkCallArguments(listCtx, parms);
+//        }
+//        
+//        nameCtx.entry = procedureId;
+//        return null;
+//    }
 
     @Override 
     public Object visitFunctionCallFactor(
-                                    subCParser.FunctionCallFactorContext ctx) 
+                                    SubCParser.FunctionCallFactorContext ctx) 
     {
-        subCParser.FunctionCallContext callCtx = ctx.functionCall();
-        subCParser.FunctionNameContext nameCtx = callCtx.functionName();
-        subCParser.ArgumentListContext listCtx = callCtx.argumentList();
+        SubCParser.FunctionCallContext callCtx = ctx.functionCall();
+        SubCParser.FunctionNameContext nameCtx = callCtx.functionName();
+        SubCParser.ArgumentListContext listCtx = callCtx.argumentList();
         String name = callCtx.functionName().getText().toLowerCase();
         SymtabEntry functionId = symtabStack.lookup(name);
         boolean badName = false;
@@ -756,7 +625,7 @@ public class Semantics extends subCBaseVisitor<Object>
         // Bad function name. Do a simple arguments check and then leave.
         if (badName)
         {
-            for (subCParser.ArgumentContext exprCtx : listCtx.argument())
+            for (SubCParser.ArgumentContext exprCtx : listCtx.argument())
             {
                 visit(exprCtx);
             }
@@ -771,7 +640,7 @@ public class Semantics extends subCBaseVisitor<Object>
         }
         
         nameCtx.entry = functionId;
-        nameCtx.type  = ctx.type;
+//        nameCtx.type  = ctx.type;
 
         return null;
     }
@@ -781,7 +650,7 @@ public class Semantics extends subCBaseVisitor<Object>
      * @param listCtx the ArgumentListContext.
      * @param parameters the arraylist of parameters to fill.
      */
-    private void checkCallArguments(subCParser.ArgumentListContext listCtx,
+    private void checkCallArguments(SubCParser.ArgumentListContext listCtx,
                                     ArrayList<SymtabEntry> parameters)
     {
         int parmsCount = parameters.size();
@@ -796,34 +665,34 @@ public class Semantics extends subCBaseVisitor<Object>
         // Check each argument against the corresponding parameter.
         for (int i = 0; i < parmsCount; i++)
         {
-            subCParser.ArgumentContext argCtx = listCtx.argument().get(i);
-            subCParser.ExpressionContext exprCtx = argCtx.expression();
+            SubCParser.ArgumentContext argCtx = listCtx.argument().get(i);
+            SubCParser.ExpressionContext exprCtx = argCtx.expression();
             visit(exprCtx);
             
             SymtabEntry parmId = parameters.get(i);
             Typespec parmType = parmId.getType();
             Typespec argType  = exprCtx.type;
             
-            // For a VAR parameter, the argument must be a variable
-            // with the same datatype.
-            if (parmId.getKind() == REFERENCE_PARAMETER)
-            {
-                if (expressionIsVariable(exprCtx))
-                {
-                    if (parmType != argType)
-                    {
-                        error.flag(TYPE_MISMATCH, exprCtx);
-                    }
-                }
-                else
-                {
-                    error.flag(ARGUMENT_MUST_BE_VARIABLE, exprCtx);
-                }
-            }
+//            // For a VAR parameter, the argument must be a variable
+//            // with the same datatype.
+//            if (parmId.getKind() == REFERENCE_PARAMETER)
+//            {
+//                if (expressionIsVariable(exprCtx))
+//                {
+//                    if (parmType != argType)
+//                    {
+//                        error.flag(TYPE_MISMATCH, exprCtx);
+//                    }
+//                }
+//                else
+//                {
+//                    error.flag(ARGUMENT_MUST_BE_VARIABLE, exprCtx);
+//                }
+//            }
             
             // For a value parameter, the argument type must be
             // assignment compatible with the parameter type.
-            else if (!TypeChecker.areAssignmentCompatible(parmType, argType))
+            if (!TypeChecker.areAssignmentCompatible(parmType, argType))
             {
                 error.flag(TYPE_MISMATCH, exprCtx);
             }
@@ -835,23 +704,23 @@ public class Semantics extends subCBaseVisitor<Object>
      * @param exprCtx the ExpressionContext.
      * @return true if it's an expression only, else false.
      */
-    private boolean expressionIsVariable(subCParser.ExpressionContext exprCtx)
+    private boolean expressionIsVariable(SubCParser.ExpressionContext exprCtx)
     {
         // Only a single simple expression?
         if (exprCtx.simpleExpression().size() == 1)
         {
-            subCParser.SimpleExpressionContext simpleCtx = 
+            SubCParser.SimpleExpressionContext simpleCtx = 
                                               exprCtx.simpleExpression().get(0);
             // Only a single term?
             if (simpleCtx.term().size() == 1)
             {
-                subCParser.TermContext termCtx = simpleCtx.term().get(0);
+                SubCParser.TermContext termCtx = simpleCtx.term().get(0);
                 
                 // Only a single factor?
                 if (termCtx.factor().size() == 1)
                 {
                     return termCtx.factor().get(0) instanceof 
-                                            subCParser.VariableFactorContext;
+                                            SubCParser.VariableFactorContext;
                 }
             }
         }
@@ -860,9 +729,9 @@ public class Semantics extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitExpression(subCParser.ExpressionContext ctx) 
+    public Object visitExpression(SubCParser.ExpressionContext ctx) 
     {
-        subCParser.SimpleExpressionContext simpleCtx1 =
+        SubCParser.SimpleExpressionContext simpleCtx1 =
                                                 ctx.simpleExpression().get(0);
 
         // First simple expression.
@@ -871,12 +740,12 @@ public class Semantics extends subCBaseVisitor<Object>
         Typespec simpleType1 = simpleCtx1.type;
         ctx.type = simpleType1;
         
-        subCParser.RelOpContext relOpCtx = ctx.relOp();
+        SubCParser.RelOpContext relOpCtx = ctx.relOp();
         
         // Second simple expression?
         if (relOpCtx != null)
         {
-            subCParser.SimpleExpressionContext simpleCtx2 = 
+            SubCParser.SimpleExpressionContext simpleCtx2 = 
                                                 ctx.simpleExpression().get(1);
             visit(simpleCtx2);
             
@@ -886,19 +755,19 @@ public class Semantics extends subCBaseVisitor<Object>
                 error.flag(INCOMPATIBLE_COMPARISON, ctx);
             }
             
-            ctx.type = Predefined.booleanType;
+//            ctx.type = Predefined.booleanType;
         }
         
         return null;
     }
 
     @Override 
-    public Object visitSimpleExpression(subCParser.SimpleExpressionContext ctx) 
+    public Object visitSimpleExpression(SubCParser.SimpleExpressionContext ctx) 
     {
         int count = ctx.term().size();
-        subCParser.SignContext signCtx = ctx.sign();
+        SubCParser.SignContext signCtx = ctx.sign();
         Boolean hasSign = signCtx != null;
-        subCParser.TermContext termCtx1 = ctx.term().get(0);
+        SubCParser.TermContext termCtx1 = ctx.term().get(0);
         
         if (hasSign)
         {
@@ -917,64 +786,64 @@ public class Semantics extends subCBaseVisitor<Object>
         for (int i = 1; i < count; i++)
         {
             String op = ctx.addOp().get(i-1).getText().toLowerCase();
-            subCParser.TermContext termCtx2 = ctx.term().get(i);
+            SubCParser.TermContext termCtx2 = ctx.term().get(i);
             visit(termCtx2);
             Typespec termType2 = termCtx2.type;
             
             // Both operands boolean ==> boolean result. Else type mismatch.
             if (op.equals("or"))
             {
-                if (!TypeChecker.isBoolean(termType1)) 
-                {
-                    error.flag(TYPE_MUST_BE_BOOLEAN, termCtx1);
-                }
-                if (!TypeChecker.isBoolean(termType2)) 
-                {
-                    error.flag(TYPE_MUST_BE_BOOLEAN, termCtx2);
-                }
-                if (hasSign)
-                {
-                    error.flag(INVALID_SIGN, signCtx);
-                }
-                
-                termType2 = Predefined.booleanType;
+//                if (!TypeChecker.isBoolean(termType1)) 
+//                {
+//                    error.flag(TYPE_MUST_BE_BOOLEAN, termCtx1);
+//                }
+//                if (!TypeChecker.isBoolean(termType2)) 
+//                {
+//                    error.flag(TYPE_MUST_BE_BOOLEAN, termCtx2);
+//                }
+//                if (hasSign)
+//                {
+//                    error.flag(INVALID_SIGN, signCtx);
+//                }
+//                
+//                termType2 = Predefined.booleanType;
             }
             else if (op.equals("+"))
             {
                 // Both operands integer ==> integer result
-                if (TypeChecker.areBothInteger(termType1, termType2)) 
-                {
-                    termType2 = Predefined.integerType;
-                }
-
-                // Both real operands ==> real result 
-                // One real and one integer operand ==> real result
-                else if (TypeChecker.isAtLeastOneReal(termType1, termType2)) 
-                {
-                    termType2 = Predefined.realType;
-                }
-                
-                // Both operands string ==> string result
-                else if (TypeChecker.areBothString(termType1, termType2))
-                {
-                    if (hasSign) error.flag(INVALID_SIGN, signCtx);                    
-                    termType2 = Predefined.stringType;
-                }
-
-                // Type mismatch.
-                else
-                {
-                    if (!TypeChecker.isIntegerOrReal(termType1))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx1);
-                        termType2 = Predefined.integerType;
-                    }
-                    if (!TypeChecker.isIntegerOrReal(termType2))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx2);
-                        termType2 = Predefined.integerType;
-                    }
-                }
+//                if (TypeChecker.areBothInteger(termType1, termType2)) 
+//                {
+//                    termType2 = Predefined.integerType;
+//                }
+//
+//                // Both real operands ==> real result 
+//                // One real and one integer operand ==> real result
+//                else if (TypeChecker.isAtLeastOneReal(termType1, termType2)) 
+//                {
+//                    termType2 = Predefined.realType;
+//                }
+//                
+//                // Both operands string ==> string result
+//                else if (TypeChecker.areBothString(termType1, termType2))
+//                {
+//                    if (hasSign) error.flag(INVALID_SIGN, signCtx);                    
+//                    termType2 = Predefined.stringType;
+//                }
+//
+//                // Type mismatch.
+//                else
+//                {
+//                    if (!TypeChecker.isIntegerOrReal(termType1))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx1);
+//                        termType2 = Predefined.integerType;
+//                    }
+//                    if (!TypeChecker.isIntegerOrReal(termType2))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx2);
+//                        termType2 = Predefined.integerType;
+//                    }
+//                }
             }
             else  // -
             {
@@ -986,25 +855,25 @@ public class Semantics extends subCBaseVisitor<Object>
 
                 // Both real operands ==> real result 
                 // One real and one integer operand ==> real result
-                else if (TypeChecker.isAtLeastOneReal(termType1, termType2)) 
-                {
-                    termType2 = Predefined.realType;
-                }
-                
-                // Type mismatch.
-                else
-                {
-                    if (!TypeChecker.isIntegerOrReal(termType1))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx1);
-                        termType2 = Predefined.integerType;
-                    }
-                    if (!TypeChecker.isIntegerOrReal(termType2))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx2);
-                        termType2 = Predefined.integerType;
-                    }
-                }
+//                else if (TypeChecker.isAtLeastOneReal(termType1, termType2)) 
+//                {
+//                    termType2 = Predefined.realType;
+//                }
+//                
+//                // Type mismatch.
+//                else
+//                {
+//                    if (!TypeChecker.isIntegerOrReal(termType1))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx1);
+//                        termType2 = Predefined.integerType;
+//                    }
+//                    if (!TypeChecker.isIntegerOrReal(termType2))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, termCtx2);
+//                        termType2 = Predefined.integerType;
+//                    }
+//                }
             }
             
             termType1 = termType2;
@@ -1015,10 +884,10 @@ public class Semantics extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitTerm(subCParser.TermContext ctx) 
+    public Object visitTerm(SubCParser.TermContext ctx) 
     {
         int count = ctx.factor().size();
-        subCParser.FactorContext factorCtx1 = ctx.factor().get(0);
+        SubCParser.FactorContext factorCtx1 = ctx.factor().get(0);
         
         // First factor.
         visit(factorCtx1);
@@ -1028,7 +897,7 @@ public class Semantics extends subCBaseVisitor<Object>
         for (int i = 1; i < count; i++)
         {
             String op = ctx.mulOp().get(i-1).getText().toLowerCase();
-            subCParser.FactorContext factorCtx2 = ctx.factor().get(i);
+            SubCParser.FactorContext factorCtx2 = ctx.factor().get(i);
             visit(factorCtx2);
             Typespec factorType2 = factorCtx2.type;
             
@@ -1042,49 +911,49 @@ public class Semantics extends subCBaseVisitor<Object>
 
                 // Both real operands ==> real result 
                 // One real and one integer operand ==> real result
-                else if (TypeChecker.isAtLeastOneReal(factorType1, factorType2)) 
-                {
-                    factorType2 = Predefined.realType;
-                }
-                
-                // Type mismatch.
-                else
-                {
-                    if (!TypeChecker.isIntegerOrReal(factorType1))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx1);
-                        factorType2 = Predefined.integerType;
-                    }
-                    if (!TypeChecker.isIntegerOrReal(factorType2))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx2);
-                        factorType2 = Predefined.integerType;
-                    }
-                }
+//                else if (TypeChecker.isAtLeastOneReal(factorType1, factorType2)) 
+//                {
+//                    factorType2 = Predefined.realType;
+//                }
+//                
+//                // Type mismatch.
+//                else
+//                {
+//                    if (!TypeChecker.isIntegerOrReal(factorType1))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx1);
+//                        factorType2 = Predefined.integerType;
+//                    }
+//                    if (!TypeChecker.isIntegerOrReal(factorType2))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx2);
+//                        factorType2 = Predefined.integerType;
+//                    }
+//                }
             }
             else if (op.equals("/"))
             {
-                // All integer and real operand combinations ==> real result
-                if (   TypeChecker.areBothInteger(factorType1, factorType2)
-                    || TypeChecker.isAtLeastOneReal(factorType1, factorType2))
-                {
-                    factorType2 = Predefined.realType;
-                }
-                
-                // Type mismatch.
-                else 
-                {
-                    if (!TypeChecker.isIntegerOrReal(factorType1))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx1);
-                        factorType2 = Predefined.integerType;
-                    }
-                    if (!TypeChecker.isIntegerOrReal(factorType2))
-                    {
-                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx2);
-                        factorType2 = Predefined.integerType;
-                    }
-                }
+//                // All integer and real operand combinations ==> real result
+//                if (   TypeChecker.areBothInteger(factorType1, factorType2)
+//                    || TypeChecker.isAtLeastOneReal(factorType1, factorType2))
+//                {
+//                    factorType2 = Predefined.realType;
+//                }
+//                
+//                // Type mismatch.
+//                else 
+//                {
+//                    if (!TypeChecker.isIntegerOrReal(factorType1))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx1);
+//                        factorType2 = Predefined.integerType;
+//                    }
+//                    if (!TypeChecker.isIntegerOrReal(factorType2))
+//                    {
+//                        error.flag(TYPE_MUST_BE_NUMERIC, factorCtx2);
+//                        factorType2 = Predefined.integerType;
+//                    }
+//                }
             }
             else if (op.equals("div") || op.equals("mod"))
             {
@@ -1102,17 +971,17 @@ public class Semantics extends subCBaseVisitor<Object>
             }
             else if (op.equals("and"))
             {
-                // Both operands boolean ==> boolean result. Else type mismatch.
-                if (!TypeChecker.isBoolean(factorType1))
-                {
-                    error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx1);
-                    factorType2 = Predefined.booleanType;
-                }
-                if (!TypeChecker.isBoolean(factorType2))
-                {
-                    error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx2);
-                    factorType2 = Predefined.booleanType;
-                }
+//                // Both operands boolean ==> boolean result. Else type mismatch.
+//                if (!TypeChecker.isBoolean(factorType1))
+//                {
+//                    error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx1);
+//                    factorType2 = Predefined.booleanType;
+//                }
+//                if (!TypeChecker.isBoolean(factorType2))
+//                {
+//                    error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx2);
+//                    factorType2 = Predefined.booleanType;
+//                }
             }
             
             factorType1 = factorType2;
@@ -1123,9 +992,9 @@ public class Semantics extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitVariableFactor(subCParser.VariableFactorContext ctx) 
+    public Object visitVariableFactor(SubCParser.VariableFactorContext ctx) 
     {
-        subCParser.VariableContext varCtx = ctx.variable();
+        SubCParser.VariableContext varCtx = ctx.variable();
         visit(varCtx);        
         ctx.type  = varCtx.type;
         
@@ -1133,21 +1002,21 @@ public class Semantics extends subCBaseVisitor<Object>
     }
 
     @Override 
-    public Object visitVariable(subCParser.VariableContext ctx) 
+    public Object visitVariable(SubCParser.VariableContext ctx) 
     {
-        subCParser.VariableIdentifierContext varIdCtx = 
+        SubCParser.VariableIdentifierContext varIdCtx = 
                                                     ctx.variableIdentifier();
         
         visit(varIdCtx);
         ctx.entry = varIdCtx.entry;
-        ctx.type  = variableDatatype(ctx, varIdCtx.type);
+//        ctx.type  = variableDatatype(ctx, varIdCtx.type);
 
         return null;
     }
 
     @Override 
     public Object visitVariableIdentifier(
-                                    subCParser.VariableIdentifierContext ctx) 
+                                    SubCParser.VariableIdentifierContext ctx) 
     {
         String variableName = ctx.IDENTIFIER().getText().toLowerCase();
         SymtabEntry variableId = symtabStack.lookup(variableName);
@@ -1163,9 +1032,8 @@ public class Semantics extends subCBaseVisitor<Object>
             switch (kind)
             {
                 case TYPE:
-                case PROGRAM:
                 case PROGRAM_PARAMETER:
-                case PROCEDURE:
+                case FUNCTION:
                 case UNDEFINED:
                     error.flag(INVALID_VARIABLE, ctx);
                     break;
@@ -1188,84 +1056,78 @@ public class Semantics extends subCBaseVisitor<Object>
      * @param varType the variable's datatype without the modifiers.
      * @return the datatype with any modifiers.
      */
-    private Typespec variableDatatype(
-                        subCParser.VariableContext varCtx, Typespec varType)
-    {
-        Typespec type = varType;
-        
-        // Loop over the modifiers.
-        for (subCParser.ModifierContext modCtx : varCtx.modifier())
-        {
-            // Subscripts.
-            if (modCtx.indexList() != null)
-            {
-                subCParser.IndexListContext indexListCtx = modCtx.indexList();
-                
-                // Loop over the subscripts.
-                for (subCParser.IndexContext indexCtx : indexListCtx.index())
-                {
-                    if (type.getForm() == ARRAY)
-                    {
-                        Typespec indexType = type.getArrayIndexType();
-                        subCParser.ExpressionContext exprCtx = 
-                                                        indexCtx.expression();
-                        visit(exprCtx);
-                        
-                        if (indexType.baseType() != exprCtx.type.baseType())
-                        {
-                            error.flag(TYPE_MISMATCH, exprCtx);
-                        }
-                        
-                        // Datatype of the next dimension.
-                        type = type.getArrayElementType();
-                    }
-                    else
-                    {
-                        error.flag(TOO_MANY_SUBSCRIPTS, indexCtx);
-                    }
-                }
-            }
-            else  // Record field.
-            {
-                if (type.getForm() == RECORD)
-                {
-                    Symtab symtab = type.getRecordSymtab();
-                    subCParser.FieldContext fieldCtx = modCtx.field();
-                    String fieldName = 
-                                fieldCtx.IDENTIFIER().getText().toLowerCase();
-                    SymtabEntry fieldId = symtab.lookup(fieldName);
-
-                    // Field of the record type?
-                    if (fieldId != null) 
-                    {
-                        type = fieldId.getType();
-                        fieldCtx.entry = fieldId;
-                        fieldCtx.type = type;
-                        fieldId.appendLineNumber(modCtx.getStart().getLine());
-                    }
-                    else 
-                    {
-                        error.flag(INVALID_FIELD, modCtx);
-                    }
-                }
-                
-                // Not a record variable.
-                else 
-                {
-                    error.flag(INVALID_FIELD, modCtx);
-                }
-            }
-        }
-        
-        return type;
-    }
+//    private Typespec variableDatatype(
+//                        SubCParser.VariableContext varCtx, Typespec varType)
+//    {
+//        Typespec type = varType;
+//        
+//        // Loop over the modifiers.
+//        for (SubCParser.ModifierContext modCtx : varCtx.modifier())
+//        {
+//            if (modCtx.index() != null)
+//            {
+//            	
+//                if (type.getForm() == ARRAY)
+//                {
+//                    Typespec indexType = type.getArrayIndexType();
+//                    SubCParser.ExpressionContext exprCtx = 
+//                                                    indexCtx.expression();
+//                    visit(exprCtx);
+//                    
+//                    if (indexType.baseType() != exprCtx.type.baseType())
+//                    {
+//                        error.flag(TYPE_MISMATCH, exprCtx);
+//                    }
+//                    
+//                    // Datatype of the next dimension.
+//                    type = type.getArrayElementType();
+//                }
+//                else
+//                {
+//                    error.flag(TOO_MANY_SUBSCRIPTS, indexCtx);
+//                }
+//            }
+//            else  // Record field.
+//            {
+//                if (type.getForm() == RECORD)
+//                {
+//                    Symtab symtab = type.getRecordSymtab();
+//                    SubCParser.FieldContext fieldCtx = modCtx.field();
+//                    String fieldName = 
+//                                fieldCtx.IDENTIFIER().getText().toLowerCase();
+//                    SymtabEntry fieldId = symtab.lookup(fieldName);
+//
+//                    // Field of the record type?
+//                    if (fieldId != null) 
+//                    {
+//                        type = fieldId.getType();
+//                        fieldCtx.entry = fieldId;
+//                        fieldCtx.type = type;
+//                        fieldId.appendLineNumber(modCtx.getStart().getLine());
+//                    }
+//                    else 
+//                    {
+//                        error.flag(INVALID_FIELD, modCtx);
+//                    }
+//                }
+//                
+//                // Not a record variable.
+//                else 
+//                {
+//                    error.flag(INVALID_FIELD, modCtx);
+//                }
+//            }
+//        }
+//        
+//        return type;
+//    }
     
     @Override 
-    public Object visitNumberFactor(subCParser.NumberFactorContext ctx) 
+    public Object visitNumberFactor(SubCParser.NumberFactorContext ctx) 
     {
-        subCParser.NumberContext          numberCtx   = ctx.number();
-        subCParser.UnsignedNumberContext  unsignedCtx = numberCtx.unsignedNumber();
-        subCParser.IntegerConstantContext integerCtx  = unsignedCtx.integerConstant();
+        SubCParser.NumberContext          numberCtx   = ctx.number();
+        SubCParser.UnsignedNumberContext  unsignedCtx = numberCtx.unsignedNumber();
+        SubCParser.IntegerConstantContext integerCtx  = unsignedCtx.integerConstant();
 
         ctx.type = (integerCtx != null) ? Predefined.integerType
                                         : Predefined.realType;
@@ -1275,39 +1137,39 @@ public class Semantics extends subCBaseVisitor<Object>
 
     @Override 
     public Object visitCharacterFactor(
-                                    subCParser.CharacterFactorContext ctx) 
+                                    SubCParser.CharacterFactorContext ctx) 
     {
         ctx.type = Predefined.charType;
         return null;
     }
 
     @Override 
-    public Object visitStringFactor(subCParser.StringFactorContext ctx) 
+    public Object visitStringFactor(SubCParser.StringFactorContext ctx) 
     {
         ctx.type = Predefined.stringType;
         return null;
     }
 
-    @Override 
-    public Object visitNotFactor(subCParser.NotFactorContext ctx) 
-    {
-        subCParser.FactorContext factorCtx = ctx.factor();
-        visit(factorCtx);
-        
-        if (factorCtx.type != Predefined.booleanType)
-        {
-            error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx);
-        }
-        
-        ctx.type = Predefined.booleanType;
-        return null;
-    }
+//    @Override 
+//    public Object visitNotFactor(SubCParser.NotFactorContext ctx) 
+//    {
+//        SubCParser.FactorContext factorCtx = ctx.factor();
+//        visit(factorCtx);
+//        
+//        if (factorCtx.type != Predefined.booleanType)
+//        {
+//            error.flag(TYPE_MUST_BE_BOOLEAN, factorCtx);
+//        }
+//        
+//        ctx.type = Predefined.booleanType;
+//        return null;
+//    }
 
     @Override 
     public Object visitParenthesizedFactor(
-                                    subCParser.ParenthesizedFactorContext ctx) 
+                                    SubCParser.ParenthesizedFactorContext ctx) 
     {
-        subCParser.ExpressionContext exprCtx = ctx.expression();
+        SubCParser.ExpressionContext exprCtx = ctx.expression();
         visit(exprCtx);
         ctx.type = exprCtx.type;
 

@@ -2,7 +2,7 @@ package backend.compiler;
 
 import java.util.ArrayList;
 
-import antlr4.subCParser;
+import antlr4.SubCParser;
 import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
 import intermediate.symtab.SymtabEntry.Kind;
@@ -35,7 +35,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for a program.
      * @param ctx the ProgramContext.
      */
-    public void emitProgram(subCParser.ProgramContext ctx)
+    public void emitProgram(SubCParser.ProgramContext ctx)
     {
         programId = ctx.programHeader().programIdentifier().entry;
         Symtab programSymtab = programId.getRoutineSymtab();
@@ -133,7 +133,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for the program body as the main method.
      * @param ctx the ProgramContext.
      */
-    private void emitMainMethod(subCParser.ProgramContext ctx)
+    private void emitMainMethod(SubCParser.ProgramContext ctx)
     {
         emitLine();
         emitComment("MAIN");
@@ -219,7 +219,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for a declared procedure or function
      * @param routineId the symbol table entry of the routine's name.
      */
-    public void emitFunction(subCParser.FunctionDefinitionContext ctx)
+    public void emitFunction(SubCParser.FunctionDefinitionContext ctx)
     {
         SymtabEntry routineId = ctx.procedureHead() != null 
                                 ? ctx.procedureHead().routineIdentifier().entry
@@ -237,8 +237,8 @@ public class ProgramGenerator extends CodeGenerator
         localVariables = new LocalVariables(routineSymtab.getMaxSlotNumber());
 
         // Emit code for the compound statement.
-        subCParser.CompoundStatementContext stmtCtx = 
-            (subCParser.CompoundStatementContext) routineId.getExecutable();
+        SubCParser.CompoundStatementContext stmtCtx = 
+            (SubCParser.CompoundStatementContext) routineId.getExecutable();
         compiler.visit(stmtCtx);
         
         emitRoutineReturn(routineId);
