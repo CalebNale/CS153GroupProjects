@@ -43,7 +43,7 @@ compoundStatement : '{' statementList '}' ;
 
 declarationStatement: TYPE = (INT | STRING | CHAR | DOUBLE)  variable SEMICOLON;
 assignmentStatement : TYPE = (INT | STRING | CHAR | DOUBLE)? lhs '=' rhs SEMICOLON 
-                    | variable ('++' | '--') SEMICOLON
+                    | variable OP = ('++' | '--') SEMICOLON
                     ;
 lhs locals [ Typespec type = null ] 
     : variable ;

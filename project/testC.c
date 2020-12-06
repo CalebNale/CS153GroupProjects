@@ -1,5 +1,3 @@
-
-
 int max(int x, double y){
     if(x < 5){
         switch (x)

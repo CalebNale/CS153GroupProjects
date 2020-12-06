@@ -303,6 +303,19 @@ public class Semantics extends SubCBaseVisitor<Object>
     public Object visitAssignmentStatement(
                                     SubCParser.AssignmentStatementContext ctx)
     {
+    	if(ctx.OP != null) {
+    		
+    		VariableContext varCtx = ctx.variable();
+    		visit(varCtx);
+    		if(varCtx.type != Predefined.integerType) {
+    			 error.flag(INCOMPATIBLE_ASSIGNMENT, varCtx);
+    		}
+    		
+    		
+    		return null;
+    		
+    	}
+    	
     	SubCParser.VariableContext varCtx = ctx.lhs().variable();
         if(ctx.TYPE != null)
         {
@@ -550,17 +563,20 @@ public class Semantics extends SubCBaseVisitor<Object>
         // Bad procedure name. Do a simple arguments check and then leave.
         if (badName)
         {
+        	if(listCtx != null) {
             for (SubCParser.ArgumentContext exprCtx : listCtx.argument())
             {
                 visit(exprCtx);
             }
+        	}
         }
         
         // Good procedure name.
         else
         {
+        	SubCParser.FunctionCallContext callCtx = ctx.functionCall();
             ArrayList<SymtabEntry> parms = procedureId.getRoutineParameters();
-            checkCallArguments(listCtx, parms);
+            checkCallArguments(callCtx,listCtx, parms);
         }
         
         nameCtx.entry = procedureId;
@@ -594,17 +610,19 @@ public class Semantics extends SubCBaseVisitor<Object>
         // Bad function name. Do a simple arguments check and then leave.
         if (badName)
         {
+        	if(listCtx != null) {
             for (SubCParser.ArgumentContext exprCtx : listCtx.argument())
             {
                 visit(exprCtx);
             }
+        	}
         }
         
         // Good function name.
         else
         {
             ArrayList<SymtabEntry> parameters = functionId.getRoutineParameters();
-            checkCallArguments(listCtx, parameters);
+            checkCallArguments(callCtx, listCtx, parameters);
             ctx.type = functionId.getType();
         }
         
@@ -619,7 +637,7 @@ public class Semantics extends SubCBaseVisitor<Object>
      * @param listCtx the ArgumentListContext.
      * @param parameters the arraylist of parameters to fill.
      */
-    private void checkCallArguments(SubCParser.ArgumentListContext listCtx,
+    private void checkCallArguments(SubCParser.FunctionCallContext callCtx,SubCParser.ArgumentListContext listCtx,
                                     ArrayList<SymtabEntry> parameters)
     {
         int parmsCount = parameters.size();
@@ -627,7 +645,7 @@ public class Semantics extends SubCBaseVisitor<Object>
         
         if (parmsCount != argsCount)
         {
-            error.flag(ARGUMENT_COUNT_MISMATCH, listCtx);
+            error.flag(ARGUMENT_COUNT_MISMATCH, callCtx);
             return;
         }
         

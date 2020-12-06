@@ -1211,6 +1211,7 @@ public class SubCParser extends Parser {
 
 	public static class AssignmentStatementContext extends ParserRuleContext {
 		public Token TYPE;
+		public Token OP;
 		public LhsContext lhs() {
 			return getRuleContext(LhsContext.class,0);
 		}
@@ -1290,9 +1291,10 @@ public class SubCParser extends Parser {
 				setState(215);
 				variable();
 				setState(216);
+				((AssignmentStatementContext)_localctx).OP = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==T__6 || _la==T__7) ) {
-				_errHandler.recoverInline(this);
+					((AssignmentStatementContext)_localctx).OP = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
