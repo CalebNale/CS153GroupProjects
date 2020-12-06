@@ -65,7 +65,7 @@ public class Semantics extends SubCBaseVisitor<Object>
         visit(ctx.functionDefinitions());
         visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
-//        CrossReferencer crossReferencer = new CrossReferencer();
+        CrossReferencer crossReferencer = new CrossReferencer();
 //        crossReferencer.print(symtabStack);
 
         return null;
