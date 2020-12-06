@@ -72,7 +72,7 @@ forStatement : FOR '(' forInitialization forControl forIncrementStatement ')' co
 forInitialization : assignmentStatement;
 forControl  : expression SEMICOLON;
 forIncrementStatement : lhs '=' rhs
-                      | variable ('++' | '--')
+                      | variable OP = ('++' | '--')
                       ;
 
 printStatement   : PRINT '(' formatString (',' writeArguments)? ')' SEMICOLON ;

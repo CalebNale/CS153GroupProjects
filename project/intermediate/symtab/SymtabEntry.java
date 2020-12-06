@@ -259,6 +259,7 @@ public class SymtabEntry
     			: 	typespec == Predefined.integerType ? "int"
 				:	typespec == Predefined.realType    ? "real"
 				:   typespec == Predefined.charType    ? "char"
+				:	typespec == Predefined.booleanType ? "bool"
 				:	"undefined";
     		
     	

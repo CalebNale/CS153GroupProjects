@@ -1759,6 +1759,7 @@ public class SubCParser extends Parser {
 	}
 
 	public static class ForIncrementStatementContext extends ParserRuleContext {
+		public Token OP;
 		public LhsContext lhs() {
 			return getRuleContext(LhsContext.class,0);
 		}
@@ -1799,9 +1800,10 @@ public class SubCParser extends Parser {
 				setState(310);
 				variable();
 				setState(311);
+				((ForIncrementStatementContext)_localctx).OP = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==T__6 || _la==T__7) ) {
-				_errHandler.recoverInline(this);
+					((ForIncrementStatementContext)_localctx).OP = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;

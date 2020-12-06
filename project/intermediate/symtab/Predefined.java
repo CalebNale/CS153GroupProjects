@@ -26,6 +26,7 @@ public class Predefined
     public static Typespec realType;
     public static Typespec charType;
     public static Typespec stringType;
+    public static Typespec booleanType;
     public static Typespec voidType;
     public static Typespec undefinedType;
 
@@ -78,12 +79,19 @@ public class Predefined
         stringType.setIdentifier(stringId);
         stringId.setType(stringType);
         
-     // Type string.
-        stringId = symTabStack.enterLocal("void", TYPE);
-        stringType = new Typespec(SCALAR);
-        stringType.setIdentifier(voidId);
-        stringId.setType(voidType);
+        
+        // Type string.
+        booleanId = symTabStack.enterLocal("bool", TYPE);
+        booleanType = new Typespec(SCALAR);
+        booleanType.setIdentifier(booleanId);
+        booleanId.setType(booleanType);
 
+        // Type void.
+        voidId = symTabStack.enterLocal("void", TYPE);
+        voidType = new Typespec(SCALAR);
+        voidType.setIdentifier(voidId);
+        voidId.setType(voidType);
+       
         // Undefined type.
         undefinedType = new Typespec(SCALAR);
     }

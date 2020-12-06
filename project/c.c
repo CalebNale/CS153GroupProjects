@@ -1,25 +1,18 @@
 
-int ff(){
-
+void ff(int x){
+	return;
 }
 
-int fun(string ee){
-    int x;
-    x = 2;
+int max(int x, int y, string str, char c, double d){
+
+	return x;
 }
 
-double ffd(int s, int y){
-    int x; 
-    x = 3;
-}
 
 
 int main()
 {
-    int x;
-    x = 5;
-
-    string str;
-    str = "hello";
-
+int x = 3;
+	ff(x);
+	max(3,4,"str",'c');
 }
