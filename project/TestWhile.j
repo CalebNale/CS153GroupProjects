@@ -47,13 +47,16 @@
 	astore_1
 
 ;
-; 005 inti=0;
+; 005 inti;
 ;
 	getstatic	TestWhile/i I
+;
+; 006 i=0;
+;
 	iconst_0
 	putstatic	TestWhile/i I
 ;
-; 006 while(i<3){print("Bob");i=i+1;}
+; 007 while(i<3){print("Bob");i=i+1;}
 ;
 L001:
 	getstatic	TestWhile/i I
@@ -66,14 +69,13 @@ L003:
 L004:
 	ifeq	L002
 ;
-; 008 print("Bob");
+; 009 print("Bob");
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
 	invokevirtual	java/io/PrintStream.println()V
 ;
-; 009 i=i+1;
+; 010 i=i+1;
 ;
-	getstatic	TestWhile/i I
 	getstatic	TestWhile/i I
 	iconst_1
 	iadd

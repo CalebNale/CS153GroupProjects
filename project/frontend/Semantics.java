@@ -93,39 +93,34 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitDeclarationStatement(
                                 SubCParser.DeclarationStatementContext ctx) 
-    { 
-    	
-            int lineNumber = ctx.getStart().getLine();      
-            SubCParser.VariableContext var = ctx.variable();
-            String variableName = var.variableIdentifier().IDENTIFIER().getText().toLowerCase();
-            String s = ctx.TYPE.getText();
-            var.type = getType(s);
-         
-            
-            SymtabEntry variableId = symtabStack.lookupLocal(variableName);
-            
-            if (variableId == null)
+    {
+
+        SubCParser.VariableContext varCtx = ctx.variable();
+        int lineNumber = varCtx.getStart().getLine();
+        String variableName = varCtx.variableIdentifier().IDENTIFIER().getText().toLowerCase();
+        SymtabEntry variableId = symtabStack.lookupLocal(variableName);
+        if (variableId == null)
+        {
+            variableId = symtabStack.enterLocal(variableName, VARIABLE);
+            Typespec varType = getType(ctx.TYPE.getText());
+
+
+            variableId.setType(varType);
+
+            // Assign slot numbers to local variables.
+            Symtab symtab = variableId.getSymtab();
+            if (symtab.getNestingLevel() > 1)
             {
-                variableId = symtabStack.enterLocal(variableName, VARIABLE);
-                variableId.setType(var.type);
-                
-                // Assign slot numbers to local variables.
-                Symtab symtab = variableId.getSymtab();
-                if (symtab.getNestingLevel() > 1)
-                {
-                    variableId.setSlotNumber(symtab.nextSlotNumber());
-                }
-                
-                var.variableIdentifier().entry = variableId;
+                variableId.setSlotNumber(symtab.nextSlotNumber());
             }
-            else
-            {
-                error.flag(REDECLARED_IDENTIFIER, ctx);
-            }
-            
-            variableId.appendLineNumber(lineNumber);   
-            
-        
+            varCtx.entry = variableId;
+        }
+        else
+        {
+            error.flag(REDECLARED_IDENTIFIER, ctx);
+        }
+
+        variableId.appendLineNumber(lineNumber);
         return null;
     }
   

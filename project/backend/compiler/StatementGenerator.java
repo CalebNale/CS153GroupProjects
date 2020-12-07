@@ -48,7 +48,6 @@ public class StatementGenerator extends CodeGenerator
         Typespec exprType = exprCtx.type;
 
 
-        compiler.visit(varCtx);
 
         
         // Emit code to evaluate the expression.
