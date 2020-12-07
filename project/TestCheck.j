@@ -2,6 +2,7 @@
 .super java/lang/Object
 
 .field private static _sysin Ljava/util/Scanner;
+.field private static i I
 
 ;
 ; Runtime input scanner
@@ -118,10 +119,10 @@ L001:
 
 .var 0 is name Ljava/lang/String;
 ;
-; 023 print("Name is: %s\n",name);
+; 023 print("Name is: %s",name);
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Name is: %s\n"
+	ldc	"Name is: %s"
 	iconst_1
 	anewarray	java/lang/Object
 	dup
@@ -143,16 +144,10 @@ L001:
 .method private static output()V
 
 ;
-; 027 printmyname("rahulg");
+; 027 printmyname("call within a function!\n");
 ;
-	ldc	"rahulg"
+	ldc	"call within a function!\n"
 	invokestatic	TestCheck/printmyname(Ljava/lang/String;)V
-;
-; 028 print("printing something...");
-;
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"printing something..."
-	invokevirtual	java/io/PrintStream/print(Ljava/lang/String;)V
 
 	return
 
@@ -166,7 +161,7 @@ L001:
 .method private static makestring()Ljava/lang/String;
 
 ;
-; 032 return"hello, there";
+; 031 return"hello, there";
 ;
 	ldc	"hello, there"
 
@@ -185,28 +180,28 @@ L001:
 
 .var 0 is ch C
 ;
-; 036 switch(ch){case'a':return'a';break;case'd':return'd';break;default:r ...
+; 035 switch(ch){case'a':return'a';break;case'd':return'd';break;default:r ...
 ;
 	iload_0
 	lookupswitch
 	  97: L013
 	  100: L014
 	  default: L015
-L014:
-;
-; 042 return'd';
-;
-	bipush	100
-	goto	L016
 L013:
 ;
-; 039 return'a';
+; 038 return'a';
 ;
 	bipush	97
 	goto	L016
+L014:
+;
+; 041 return'd';
+;
+	bipush	100
+	goto	L016
 L015:
 ;
-; 045 return'b';
+; 044 return'b';
 ;
 	bipush	98
 L016:
@@ -214,6 +209,59 @@ L016:
 	istore_1
 	iload_1
 	ireturn
+
+.limit locals 2
+.limit stack 15
+.end method
+
+;
+; FUNCTION loopcheck
+;
+.method private static loopcheck()V
+
+;
+; 050 intx=0;
+;
+	iconst_0
+	istore_1
+;
+; 051 while(x<5){print("%d x",x);x=x+1;}
+;
+L017:
+	iload_1
+	iconst_5
+	if_icmplt	L019
+	iconst_0
+	goto	L020
+L019:
+	iconst_1
+L020:
+	ifeq	L018
+;
+; 052 print("%d x",x);
+;
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"%d x"
+	iconst_1
+	anewarray	java/lang/Object
+	dup
+	iconst_0
+	iload_1
+	invokestatic	java/lang/Integer/valueOf(I)Ljava/lang/Integer;
+	aastore
+	invokevirtual	java/io/PrintStream/printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
+	pop
+;
+; 053 x=x+1;
+;
+	iload_1
+	iconst_1
+	iadd
+	istore_1
+	goto	L017
+L018:
+
+	return
 
 .limit locals 2
 .limit stack 15
@@ -232,10 +280,10 @@ L016:
 	astore_1
 
 ;
-; 052 print("Max Value is: %d\n",max(2,4,3));
+; 059 print("Max Value should be 4: %d\n",max(2,4,3));
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Max Value is: %d\n"
+	ldc	"Max Value should be 4: %d\n"
 	iconst_1
 	anewarray	java/lang/Object
 	dup
@@ -249,15 +297,15 @@ L016:
 	invokevirtual	java/io/PrintStream/printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 ;
-; 053 printmyname("FreeAssange");
+; 060 printmyname("FreeAssange\n");
 ;
-	ldc	"FreeAssange"
+	ldc	"FreeAssange\n"
 	invokestatic	TestCheck/printmyname(Ljava/lang/String;)V
 ;
-; 054 print("Char is: %c\n",getchar('c'));
+; 061 print("Char should be b: %c\n",getchar('c'));
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"Char is: %c\n"
+	ldc	"Char should be b: %c\n"
 	iconst_1
 	anewarray	java/lang/Object
 	dup
@@ -269,9 +317,49 @@ L016:
 	invokevirtual	java/io/PrintStream/printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
 ;
-; 055 output();
+; 062 output();
 ;
 	invokestatic	TestCheck/output()V
+;
+; 063 loopcheck();
+;
+	invokestatic	TestCheck/loopcheck()V
+;
+; 064 print("\n");
+;
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	"\n"
+	invokevirtual	java/io/PrintStream/print(Ljava/lang/String;)V
+;
+; 065 for(inti=0;i<5;i=i+1){printmyname("hello,");print(" say something... ...
+;
+	iconst_0
+	putstatic	TestCheck/i I
+L021:
+	getstatic	TestCheck/i I
+	iconst_5
+	if_icmplt	L022
+	goto	L023
+L022:
+;
+; 066 printmyname("hello,");
+;
+	ldc	"hello,"
+	invokestatic	TestCheck/printmyname(Ljava/lang/String;)V
+;
+; 067 print(" say something...\n");
+;
+	getstatic	java/lang/System/out Ljava/io/PrintStream;
+	ldc	" say something...\n"
+	invokevirtual	java/io/PrintStream/print(Ljava/lang/String;)V
+	getstatic	TestCheck/i I
+	getstatic	TestCheck/i I
+	iconst_1
+	iadd
+	putstatic	TestCheck/i I
+	pop
+	goto	L021
+L023:
 
 	invokestatic	java/time/Instant/now()Ljava/time/Instant;
 	astore_2
