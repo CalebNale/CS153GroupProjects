@@ -1,6 +1,9 @@
-// Generated from C:/Users/Neil Majumdar/Downloads/Final\SubC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
+    import java.util.HashMap;
+    import intermediate.symtab.SymtabEntry;
+    import intermediate.type.Typespec;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -8,7 +11,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link antlr4.SubCListener},
+ * This class provides an empty implementation of {@link SubCListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
@@ -18,763 +21,763 @@ public class SubCBaseListener implements SubCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(antlr4.SubCParser.ProgramContext ctx) { }
+	@Override public void enterProgram(SubCParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgram(antlr4.SubCParser.ProgramContext ctx) { }
+	@Override public void exitProgram(SubCParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgramHeader(antlr4.SubCParser.ProgramHeaderContext ctx) { }
+	@Override public void enterProgramHeader(SubCParser.ProgramHeaderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgramHeader(antlr4.SubCParser.ProgramHeaderContext ctx) { }
+	@Override public void exitProgramHeader(SubCParser.ProgramHeaderContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgramIdentifier(antlr4.SubCParser.ProgramIdentifierContext ctx) { }
+	@Override public void enterProgramIdentifier(SubCParser.ProgramIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgramIdentifier(antlr4.SubCParser.ProgramIdentifierContext ctx) { }
+	@Override public void exitProgramIdentifier(SubCParser.ProgramIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMainProgram(antlr4.SubCParser.MainProgramContext ctx) { }
+	@Override public void enterMainProgram(SubCParser.MainProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMainProgram(antlr4.SubCParser.MainProgramContext ctx) { }
+	@Override public void exitMainProgram(SubCParser.MainProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionName(antlr4.SubCParser.FunctionNameContext ctx) { }
+	@Override public void enterFunctionName(SubCParser.FunctionNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionName(antlr4.SubCParser.FunctionNameContext ctx) { }
+	@Override public void exitFunctionName(SubCParser.FunctionNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionDefinitions(antlr4.SubCParser.FunctionDefinitionsContext ctx) { }
+	@Override public void enterFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionDefinitions(antlr4.SubCParser.FunctionDefinitionsContext ctx) { }
+	@Override public void exitFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionDefinition(antlr4.SubCParser.FunctionDefinitionContext ctx) { }
+	@Override public void enterFunctionDefinition(SubCParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionDefinition(antlr4.SubCParser.FunctionDefinitionContext ctx) { }
+	@Override public void exitFunctionDefinition(SubCParser.FunctionDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameterList(antlr4.SubCParser.ParameterListContext ctx) { }
+	@Override public void enterParameterList(SubCParser.ParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameterList(antlr4.SubCParser.ParameterListContext ctx) { }
+	@Override public void exitParameterList(SubCParser.ParameterListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameter(antlr4.SubCParser.ParameterContext ctx) { }
+	@Override public void enterParameter(SubCParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameter(antlr4.SubCParser.ParameterContext ctx) { }
+	@Override public void exitParameter(SubCParser.ParameterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameterIdentifier(antlr4.SubCParser.ParameterIdentifierContext ctx) { }
+	@Override public void enterParameterIdentifier(SubCParser.ParameterIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameterIdentifier(antlr4.SubCParser.ParameterIdentifierContext ctx) { }
+	@Override public void exitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionCallStatement(antlr4.SubCParser.FunctionCallStatementContext ctx) { }
+	@Override public void enterFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionCallStatement(antlr4.SubCParser.FunctionCallStatementContext ctx) { }
+	@Override public void exitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionCall(antlr4.SubCParser.FunctionCallContext ctx) { }
+	@Override public void enterFunctionCall(SubCParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionCall(antlr4.SubCParser.FunctionCallContext ctx) { }
+	@Override public void exitFunctionCall(SubCParser.FunctionCallContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgumentList(antlr4.SubCParser.ArgumentListContext ctx) { }
+	@Override public void enterArgumentList(SubCParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgumentList(antlr4.SubCParser.ArgumentListContext ctx) { }
+	@Override public void exitArgumentList(SubCParser.ArgumentListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgument(antlr4.SubCParser.ArgumentContext ctx) { }
+	@Override public void enterArgument(SubCParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgument(antlr4.SubCParser.ArgumentContext ctx) { }
+	@Override public void exitArgument(SubCParser.ArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnStatement(antlr4.SubCParser.ReturnStatementContext ctx) { }
+	@Override public void enterReturnStatement(SubCParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturnStatement(antlr4.SubCParser.ReturnStatementContext ctx) { }
+	@Override public void exitReturnStatement(SubCParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatement(antlr4.SubCParser.StatementContext ctx) { }
+	@Override public void enterStatement(SubCParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStatement(antlr4.SubCParser.StatementContext ctx) { }
+	@Override public void exitStatement(SubCParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatementList(antlr4.SubCParser.StatementListContext ctx) { }
+	@Override public void enterStatementList(SubCParser.StatementListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStatementList(antlr4.SubCParser.StatementListContext ctx) { }
+	@Override public void exitStatementList(SubCParser.StatementListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCompoundStatement(antlr4.SubCParser.CompoundStatementContext ctx) { }
+	@Override public void enterCompoundStatement(SubCParser.CompoundStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCompoundStatement(antlr4.SubCParser.CompoundStatementContext ctx) { }
+	@Override public void exitCompoundStatement(SubCParser.CompoundStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclarationStatement(antlr4.SubCParser.DeclarationStatementContext ctx) { }
+	@Override public void enterDeclarationStatement(SubCParser.DeclarationStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclarationStatement(antlr4.SubCParser.DeclarationStatementContext ctx) { }
+	@Override public void exitDeclarationStatement(SubCParser.DeclarationStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignmentStatement(antlr4.SubCParser.AssignmentStatementContext ctx) { }
+	@Override public void enterAssignmentStatement(SubCParser.AssignmentStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignmentStatement(antlr4.SubCParser.AssignmentStatementContext ctx) { }
+	@Override public void exitAssignmentStatement(SubCParser.AssignmentStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLhs(antlr4.SubCParser.LhsContext ctx) { }
+	@Override public void enterLhs(SubCParser.LhsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLhs(antlr4.SubCParser.LhsContext ctx) { }
+	@Override public void exitLhs(SubCParser.LhsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRhs(antlr4.SubCParser.RhsContext ctx) { }
+	@Override public void enterRhs(SubCParser.RhsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRhs(antlr4.SubCParser.RhsContext ctx) { }
+	@Override public void exitRhs(SubCParser.RhsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfStatement(antlr4.SubCParser.IfStatementContext ctx) { }
+	@Override public void enterIfStatement(SubCParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfStatement(antlr4.SubCParser.IfStatementContext ctx) { }
+	@Override public void exitIfStatement(SubCParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTrueStatement(antlr4.SubCParser.TrueStatementContext ctx) { }
+	@Override public void enterTrueStatement(SubCParser.TrueStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTrueStatement(antlr4.SubCParser.TrueStatementContext ctx) { }
+	@Override public void exitTrueStatement(SubCParser.TrueStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFalseStatement(antlr4.SubCParser.FalseStatementContext ctx) { }
+	@Override public void enterFalseStatement(SubCParser.FalseStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFalseStatement(antlr4.SubCParser.FalseStatementContext ctx) { }
+	@Override public void exitFalseStatement(SubCParser.FalseStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSwitchStatement(antlr4.SubCParser.SwitchStatementContext ctx) { }
+	@Override public void enterSwitchStatement(SubCParser.SwitchStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSwitchStatement(antlr4.SubCParser.SwitchStatementContext ctx) { }
+	@Override public void exitSwitchStatement(SubCParser.SwitchStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSwitchBranchList(antlr4.SubCParser.SwitchBranchListContext ctx) { }
+	@Override public void enterSwitchBranchList(SubCParser.SwitchBranchListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSwitchBranchList(antlr4.SubCParser.SwitchBranchListContext ctx) { }
+	@Override public void exitSwitchBranchList(SubCParser.SwitchBranchListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCaseBranch(antlr4.SubCParser.CaseBranchContext ctx) { }
+	@Override public void enterCaseBranch(SubCParser.CaseBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCaseBranch(antlr4.SubCParser.CaseBranchContext ctx) { }
+	@Override public void exitCaseBranch(SubCParser.CaseBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCaseConstantList(antlr4.SubCParser.CaseConstantListContext ctx) { }
+	@Override public void enterCaseConstantList(SubCParser.CaseConstantListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCaseConstantList(antlr4.SubCParser.CaseConstantListContext ctx) { }
+	@Override public void exitCaseConstantList(SubCParser.CaseConstantListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCaseCompound(antlr4.SubCParser.CaseCompoundContext ctx) { }
+	@Override public void enterCaseCompound(SubCParser.CaseCompoundContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCaseCompound(antlr4.SubCParser.CaseCompoundContext ctx) { }
+	@Override public void exitCaseCompound(SubCParser.CaseCompoundContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDefaultBranch(antlr4.SubCParser.DefaultBranchContext ctx) { }
+	@Override public void enterDefaultBranch(SubCParser.DefaultBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDefaultBranch(antlr4.SubCParser.DefaultBranchContext ctx) { }
+	@Override public void exitDefaultBranch(SubCParser.DefaultBranchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCaseConstant(antlr4.SubCParser.CaseConstantContext ctx) { }
+	@Override public void enterCaseConstant(SubCParser.CaseConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCaseConstant(antlr4.SubCParser.CaseConstantContext ctx) { }
+	@Override public void exitCaseConstant(SubCParser.CaseConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhileStatement(antlr4.SubCParser.WhileStatementContext ctx) { }
+	@Override public void enterWhileStatement(SubCParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhileStatement(antlr4.SubCParser.WhileStatementContext ctx) { }
+	@Override public void exitWhileStatement(SubCParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForStatement(antlr4.SubCParser.ForStatementContext ctx) { }
+	@Override public void enterForStatement(SubCParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForStatement(antlr4.SubCParser.ForStatementContext ctx) { }
+	@Override public void exitForStatement(SubCParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForInitialization(antlr4.SubCParser.ForInitializationContext ctx) { }
+	@Override public void enterForInitialization(SubCParser.ForInitializationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForInitialization(antlr4.SubCParser.ForInitializationContext ctx) { }
+	@Override public void exitForInitialization(SubCParser.ForInitializationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForControl(antlr4.SubCParser.ForControlContext ctx) { }
+	@Override public void enterForControl(SubCParser.ForControlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForControl(antlr4.SubCParser.ForControlContext ctx) { }
+	@Override public void exitForControl(SubCParser.ForControlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForIncrementStatement(antlr4.SubCParser.ForIncrementStatementContext ctx) { }
+	@Override public void enterForIncrementStatement(SubCParser.ForIncrementStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForIncrementStatement(antlr4.SubCParser.ForIncrementStatementContext ctx) { }
+	@Override public void exitForIncrementStatement(SubCParser.ForIncrementStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrintStatement(antlr4.SubCParser.PrintStatementContext ctx) { }
+	@Override public void enterPrintStatement(SubCParser.PrintStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrintStatement(antlr4.SubCParser.PrintStatementContext ctx) { }
+	@Override public void exitPrintStatement(SubCParser.PrintStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFormatString(antlr4.SubCParser.FormatStringContext ctx) { }
+	@Override public void enterFormatString(SubCParser.FormatStringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFormatString(antlr4.SubCParser.FormatStringContext ctx) { }
+	@Override public void exitFormatString(SubCParser.FormatStringContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWriteArguments(antlr4.SubCParser.WriteArgumentsContext ctx) { }
+	@Override public void enterWriteArguments(SubCParser.WriteArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWriteArguments(antlr4.SubCParser.WriteArgumentsContext ctx) { }
+	@Override public void exitWriteArguments(SubCParser.WriteArgumentsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWriteArgument(antlr4.SubCParser.WriteArgumentContext ctx) { }
+	@Override public void enterWriteArgument(SubCParser.WriteArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWriteArgument(antlr4.SubCParser.WriteArgumentContext ctx) { }
+	@Override public void exitWriteArgument(SubCParser.WriteArgumentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(antlr4.SubCParser.ExpressionContext ctx) { }
+	@Override public void enterExpression(SubCParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(antlr4.SubCParser.ExpressionContext ctx) { }
+	@Override public void exitExpression(SubCParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSimpleExpression(antlr4.SubCParser.SimpleExpressionContext ctx) { }
+	@Override public void enterSimpleExpression(SubCParser.SimpleExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSimpleExpression(antlr4.SubCParser.SimpleExpressionContext ctx) { }
+	@Override public void exitSimpleExpression(SubCParser.SimpleExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTerm(antlr4.SubCParser.TermContext ctx) { }
+	@Override public void enterTerm(SubCParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTerm(antlr4.SubCParser.TermContext ctx) { }
+	@Override public void exitTerm(SubCParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableFactor(antlr4.SubCParser.VariableFactorContext ctx) { }
+	@Override public void enterVariableFactor(SubCParser.VariableFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableFactor(antlr4.SubCParser.VariableFactorContext ctx) { }
+	@Override public void exitVariableFactor(SubCParser.VariableFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumberFactor(antlr4.SubCParser.NumberFactorContext ctx) { }
+	@Override public void enterNumberFactor(SubCParser.NumberFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumberFactor(antlr4.SubCParser.NumberFactorContext ctx) { }
+	@Override public void exitNumberFactor(SubCParser.NumberFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCharacterFactor(antlr4.SubCParser.CharacterFactorContext ctx) { }
+	@Override public void enterCharacterFactor(SubCParser.CharacterFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCharacterFactor(antlr4.SubCParser.CharacterFactorContext ctx) { }
+	@Override public void exitCharacterFactor(SubCParser.CharacterFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStringFactor(antlr4.SubCParser.StringFactorContext ctx) { }
+	@Override public void enterStringFactor(SubCParser.StringFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStringFactor(antlr4.SubCParser.StringFactorContext ctx) { }
+	@Override public void exitStringFactor(SubCParser.StringFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctionCallFactor(antlr4.SubCParser.FunctionCallFactorContext ctx) { }
+	@Override public void enterFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunctionCallFactor(antlr4.SubCParser.FunctionCallFactorContext ctx) { }
+	@Override public void exitFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotFactor(antlr4.SubCParser.NotFactorContext ctx) { }
+	@Override public void enterNotFactor(SubCParser.NotFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNotFactor(antlr4.SubCParser.NotFactorContext ctx) { }
+	@Override public void exitNotFactor(SubCParser.NotFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParenthesizedFactor(antlr4.SubCParser.ParenthesizedFactorContext ctx) { }
+	@Override public void enterParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParenthesizedFactor(antlr4.SubCParser.ParenthesizedFactorContext ctx) { }
+	@Override public void exitParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableIdentifier(antlr4.SubCParser.VariableIdentifierContext ctx) { }
+	@Override public void enterVariableIdentifier(SubCParser.VariableIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableIdentifier(antlr4.SubCParser.VariableIdentifierContext ctx) { }
+	@Override public void exitVariableIdentifier(SubCParser.VariableIdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariable(antlr4.SubCParser.VariableContext ctx) { }
+	@Override public void enterVariable(SubCParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariable(antlr4.SubCParser.VariableContext ctx) { }
+	@Override public void exitVariable(SubCParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstant(antlr4.SubCParser.ConstantContext ctx) { }
+	@Override public void enterConstant(SubCParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstant(antlr4.SubCParser.ConstantContext ctx) { }
+	@Override public void exitConstant(SubCParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSign(antlr4.SubCParser.SignContext ctx) { }
+	@Override public void enterSign(SubCParser.SignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSign(antlr4.SubCParser.SignContext ctx) { }
+	@Override public void exitSign(SubCParser.SignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumber(antlr4.SubCParser.NumberContext ctx) { }
+	@Override public void enterNumber(SubCParser.NumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumber(antlr4.SubCParser.NumberContext ctx) { }
+	@Override public void exitNumber(SubCParser.NumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterUnsignedNumber(antlr4.SubCParser.UnsignedNumberContext ctx) { }
+	@Override public void enterUnsignedNumber(SubCParser.UnsignedNumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitUnsignedNumber(antlr4.SubCParser.UnsignedNumberContext ctx) { }
+	@Override public void exitUnsignedNumber(SubCParser.UnsignedNumberContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntegerConstant(antlr4.SubCParser.IntegerConstantContext ctx) { }
+	@Override public void enterIntegerConstant(SubCParser.IntegerConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntegerConstant(antlr4.SubCParser.IntegerConstantContext ctx) { }
+	@Override public void exitIntegerConstant(SubCParser.IntegerConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRealConstant(antlr4.SubCParser.RealConstantContext ctx) { }
+	@Override public void enterRealConstant(SubCParser.RealConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRealConstant(antlr4.SubCParser.RealConstantContext ctx) { }
+	@Override public void exitRealConstant(SubCParser.RealConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCharacterConstant(antlr4.SubCParser.CharacterConstantContext ctx) { }
+	@Override public void enterCharacterConstant(SubCParser.CharacterConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCharacterConstant(antlr4.SubCParser.CharacterConstantContext ctx) { }
+	@Override public void exitCharacterConstant(SubCParser.CharacterConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStringConstant(antlr4.SubCParser.StringConstantContext ctx) { }
+	@Override public void enterStringConstant(SubCParser.StringConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStringConstant(antlr4.SubCParser.StringConstantContext ctx) { }
+	@Override public void exitStringConstant(SubCParser.StringConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRelOp(antlr4.SubCParser.RelOpContext ctx) { }
+	@Override public void enterRelOp(SubCParser.RelOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRelOp(antlr4.SubCParser.RelOpContext ctx) { }
+	@Override public void exitRelOp(SubCParser.RelOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAddOp(antlr4.SubCParser.AddOpContext ctx) { }
+	@Override public void enterAddOp(SubCParser.AddOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAddOp(antlr4.SubCParser.AddOpContext ctx) { }
+	@Override public void exitAddOp(SubCParser.AddOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMulOp(antlr4.SubCParser.MulOpContext ctx) { }
+	@Override public void enterMulOp(SubCParser.MulOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

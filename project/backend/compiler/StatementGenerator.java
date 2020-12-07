@@ -123,14 +123,22 @@ public class StatementGenerator extends CodeGenerator
             emitLabel(x,cases.get(x));
         }
         emitLabel("default", defaultLabel);
+        Label breakLabel = new Label();
 
         for(Map.Entry<Label, SubCParser.CaseBranchContext> entry : branches.entrySet()){
             emitLabel(entry.getKey());
             compiler.visit(entry.getValue());
-            emit(GOTO, defaultLabel);
+            if(entry.getValue().caseCompound().BREAK() != null) {
+            	emit(GOTO, breakLabel);
+            }
+            
         }
 
         emitLabel(defaultLabel);
+        SubCParser.DefaultBranchContext defCtx = ctx.switchBranchList().defaultBranch();
+        compiler.visit(defCtx.caseCompound());
+        
+        emitLabel(breakLabel);
     }
     
     /**
