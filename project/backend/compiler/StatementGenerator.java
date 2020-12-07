@@ -274,17 +274,18 @@ public class StatementGenerator extends CodeGenerator
         // WRITELN with no arguments.
         if (argsCtx == null) 
         {
-            emit(INVOKEVIRTUAL, "java/io/PrintStream.println()V");
+        	emit(LDC, format.getText());
+            emit(INVOKEVIRTUAL, "java/io/PrintStream/print(Ljava/lang/String;)V");
             localStack.decrease(1);
         }
             
         // Generate code for the arguments.
         else
         {
-            int exprCount = argsCtx.children.size();
+            int exprCount = argsCtx.children.size();           
             
             // Load the format string.
-            emit(LDC, format.toString());
+            emit (LDC, format.getText());
             
             // Emit the arguments array.
             if (exprCount > 0)
