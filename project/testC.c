@@ -49,7 +49,7 @@ char getchar(char ch){
 void loopcheck(){
     int x = 0;
     while(x < 5){
-        print("%d x", x);
+        print("%d ", x);
         x = x + 1;
     }
 }
