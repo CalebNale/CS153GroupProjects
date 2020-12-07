@@ -18,7 +18,7 @@ public class Typespec
     
     public enum Form
     {
-        SCALAR,ARRAY;
+        SCALAR,ARRAY,VOID;
 
         public String toString() { return super.toString().toLowerCase(); }
     }

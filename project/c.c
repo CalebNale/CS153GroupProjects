@@ -1,18 +1,56 @@
-Program Test;
+Program TestCheck;
+
+int max(int x, int y, int z){
+    if(x > y){
+        if(x > z){
+            return x;
+        }
+        else{
+            return z;
+        }
+    }
+    else{
+        if(y > z){
+            return y;
+        }
+        else{
+            return z;
+        }
+    }
+}
+
+void printmyname(string name){
+    print("Name is: %s\n",name);
+}
+
+void output(){
+    printmyname("rahulg");
+    print("printing something...");
+}
+
+string makestring(){
+    return "hello, there";
+}
+
+char getchar(char ch){
+    switch (ch)
+    {
+    case 'a':
+        return 'a';
+        break;
+    case 'd':
+        return 'd';
+        break;
+    default:
+        return 'b';
+        break;
+    }
+}
 
 int main()
 {
-   int x = 13;
-   switch(x){
-   case 10:
-   	print("hello %d \n",x);
-   	break;
-   	
-	case 3,4,5:
-   	print("2");
-   	break;
-   
-   	default:
-   		print("default");
-   }
+    print("Max Value is: %d\n", max(2,4,3));
+    printmyname("FreeAssange");
+    print("Char is: %c\n", getchar('c'));
+    output();
 }

@@ -88,7 +88,7 @@ public class Predefined
 
         // Type void.
         voidId = symTabStack.enterLocal("void", TYPE);
-        voidType = new Typespec(SCALAR);
+        voidType = new Typespec(VOID);
         voidType.setIdentifier(voidId);
         voidId.setType(voidType);
        

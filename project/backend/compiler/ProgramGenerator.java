@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import antlr4.SubCParser;
+import intermediate.symtab.Predefined;
 import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
 import intermediate.symtab.SymtabEntry.Kind;
@@ -214,7 +215,7 @@ public class ProgramGenerator extends CodeGenerator
         emit(RETURN);
         emitLine();
 
-        emitDirective(LIMIT_LOCALS, localVariables.count());
+        emitDirective(LIMIT_LOCALS, 10);
         emitDirective(LIMIT_STACK,  15);
         emitDirective(END_METHOD);
         
@@ -275,14 +276,8 @@ public class ProgramGenerator extends CodeGenerator
         buffer.append(typeDescriptor(routineId));
 
         emitLine();
-        if (routineId.getKind() == FUNCTION) 
-        {
-            emitComment("PROCEDURE " + routineName);
-        }
-        else
-        {
-            emitComment("FUNCTION " + routineName);
-        }
+        emitComment("FUNCTION " + routineName);
+        
               
         emitDirective(METHOD_PRIVATE_STATIC, buffer.toString());
     }
@@ -304,7 +299,7 @@ public class ProgramGenerator extends CodeGenerator
         {
             Kind kind = id.getKind();
 
-            if ((kind == VARIABLE) || (kind == VALUE_PARAMETER)) 
+            if (kind == VALUE_PARAMETER)
             {
                 int slot = id.getSlotNumber();
                 emitDirective(VAR, slot + " is " + id.getName(),
@@ -321,11 +316,9 @@ public class ProgramGenerator extends CodeGenerator
     {
         emitLine();
 
-        // Function: Return the value in the implied function variable.
-        if (routineId.getKind() == FUNCTION) 
-        {
-            Typespec type = routineId.getType();
+        Typespec type = routineId.getType();
 
+        if(type != Predefined.voidType){
             // Get the slot number of the function variable.
             String varName = routineId.getName();
             SymtabEntry varId = routineId.getRoutineSymtab().lookup(varName);

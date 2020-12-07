@@ -713,6 +713,7 @@ public class CodeGenerator
         if      (pascalType == Predefined.integerType) str = "I";
         else if (pascalType == Predefined.realType)    str = "F";
         else if (pascalType == Predefined.charType)    str = "C";
+        else if (pascalType == Predefined.voidType)    str = "V";
         else  str = "Ljava/lang/String;";
 
         buffer.append(str);
