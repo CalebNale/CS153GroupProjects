@@ -52,7 +52,11 @@ public class ProgramGenerator extends CodeGenerator
         emitConstructor();
         //emitSubroutines(ctx.block().declarations().routinesPart());
         if(ctx.functionDefinitions().functionDefinition().size() != 0)
-           emitFunction(ctx.functionDefinitions().functionDefinition(0));
+        {
+            for(SubCParser.FunctionDefinitionContext functCtx : ctx.functionDefinitions().functionDefinition())
+            emitFunction(functCtx);
+        }
+
         emitMainMethod(ctx);
     }
     
@@ -325,6 +329,7 @@ public class ProgramGenerator extends CodeGenerator
             // Get the slot number of the function variable.
             String varName = routineId.getName();
             SymtabEntry varId = routineId.getRoutineSymtab().lookup(varName);
+            emitStoreLocal(type, varId.getSlotNumber());
             emitLoadLocal(type, varId.getSlotNumber());
             emitReturnValue(type);
         }
