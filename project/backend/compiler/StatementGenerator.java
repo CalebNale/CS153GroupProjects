@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import antlr4.*;
+import antlr4.SubCParser;
 import intermediate.symtab.*;
 import intermediate.type.*;
 import intermediate.type.Typespec.Form;
@@ -46,17 +47,9 @@ public class StatementGenerator extends CodeGenerator
         Typespec varType  = varCtx.type;
         Typespec exprType = exprCtx.type;
 
-        // The last modifier, if any, is the variable's last subscript or field.
-        int modifierCount = varCtx.modifier().size();
-        SubCParser.ModifierContext lastModCtx = modifierCount == 0
-                            ? null : varCtx.modifier().get(modifierCount - 1);
 
-        // The target variable has subscripts and/or fields.
-        if (modifierCount > 0) 
-        {
-            lastModCtx = varCtx.modifier().get(modifierCount - 1);
-            compiler.visit(varCtx);
-        }
+        compiler.visit(varCtx);
+
         
         // Emit code to evaluate the expression.
         compiler.visit(exprCtx);
@@ -67,13 +60,9 @@ public class StatementGenerator extends CodeGenerator
         
         // Emit code to store the expression value into the target variable.
         // The target variable has no subscripts or fields.
-        if (lastModCtx == null) emitStoreValue(varId, varId.getType());
+        emitStoreValue(varId, varId.getType());
 
-        // The target variable is an array element.
-        else
-        {
-            emitStoreValue(null, varType);
-        }
+
     }
 
     /**
@@ -116,11 +105,11 @@ public class StatementGenerator extends CodeGenerator
         emit(LOOKUPSWITCH);
         ArrayList<Integer> caseConsts = new ArrayList<>();
         HashMap<Integer, Label> cases = new HashMap<>();
-        HashMap<Label, CaseBranchContext> branches = new HashMap<>();
-        for(CaseBranchContext branch : ctx.switchBranchList().caseBranch()){
+        HashMap<Label, SubCParser.CaseBranchContext> branches = new HashMap<>();
+        for(SubCParser.CaseBranchContext branch : ctx.switchBranchList().caseBranch()){
             if(branch.caseConstantList() != null){
                 Label newLabel = new Label();
-                for(CaseConstantContext constant:  branch.caseConstantList().caseConstant())
+                for(SubCParser.CaseConstantContext constant:  branch.caseConstantList().caseConstant())
                 {
                     caseConsts.add(constant.value);
                     cases.put(constant.value,newLabel);
@@ -136,7 +125,7 @@ public class StatementGenerator extends CodeGenerator
         }
         emitLabel("default", defaultLabel);
 
-        for(Map.Entry<Label,CaseBranchContext> entry : branches.entrySet()){
+        for(Map.Entry<Label, SubCParser.CaseBranchContext> entry : branches.entrySet()){
             emitLabel(entry.getKey());
             compiler.visit(entry.getValue());
             emit(GOTO, defaultLabel);

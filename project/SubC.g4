@@ -7,7 +7,10 @@ grammar SubC;
     import intermediate.type.Typespec;
 }
 
-program: functionDefinitions mainProgram  ;
+program: programHeader functionDefinitions mainProgram  ;
+programHeader: PROGRAM programIdentifier ';' ;
+programIdentifier locals [ SymtabEntry entry = null ]
+   : IDENTIFIER ;
 mainProgram: INT MAIN '(' parameterList? ')' compoundStatement;
 
 functionName locals [ Typespec type = null, SymtabEntry entry = null ]
@@ -143,6 +146,7 @@ RETURN    : 'return';
 DOUBLE    : 'double' ;
 VOID      : 'void' ;
 BREAK     : 'break';
+PROGRAM   : 'Program';
 
 IDENTIFIER : [a-zA-Z][a-zA-Z0-9]* ;
 INTEGER    : [0-9]+ ;

@@ -1,3 +1,5 @@
+import backend.compiler.Compiler;
+import intermediate.symtab.SymtabEntry;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -93,8 +95,8 @@ public class SubC
          }
 
         // // Pass 3: Translation.
-        // switch (mode)
-        // {
+        switch (mode)
+        {
         //     case EXECUTOR:
         //     {
         //         // Pass 3: Execute the Pascal program.
@@ -117,18 +119,18 @@ public class SubC
         //         break;
         //     }
                 
-        //     case COMPILER:
-        //     {
+             case COMPILER:
+             {
         //         // Pass 3: Compile the Pascal program.
-        //         System.out.printf("\nPASS 3 Compilation: ");
-        //         SymtabEntry programId = pass2.getProgramId();
-        //         Compiler pass3 = new Compiler(programId);
-        //         pass3.visit(tree);
+                 System.out.printf("\nPASS 3 Compilation: ");
+                 SymtabEntry programId = pass2.getProgramId();
+                 Compiler pass3 = new Compiler(programId);
+                 pass3.visit(tree);
                 
-        //         System.out.printf("Object file \"%s\" created.\n",
-        //                           pass3.getObjectFileName());
-        //         break;
-        //     }
-        // }
+                 System.out.printf("Object file \"%s\" created.\n",
+                                   pass3.getObjectFileName());
+                 break;
+             }
+         }
     }
 }

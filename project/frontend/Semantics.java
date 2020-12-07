@@ -15,6 +15,7 @@ import intermediate.util.*;
 
 import static frontend.SemanticErrorHandler.Code.*;
 import static intermediate.symtab.SymtabEntry.Kind.*;
+import static intermediate.symtab.SymtabEntry.Kind.PROGRAM;
 import static intermediate.symtab.SymtabEntry.Routine.*;
 import static intermediate.type.Typespec.Form.*;
 import static intermediate.util.BackendMode.*;
@@ -62,12 +63,29 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitProgram(SubCParser.ProgramContext ctx) 
     { 
+        visit(ctx.programHeader());
         visit(ctx.functionDefinitions());
         visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
-        CrossReferencer crossReferencer = new CrossReferencer();
-//        crossReferencer.print(symtabStack);
+        //CrossReferencer crossReferencer = new CrossReferencer();
+        //crossReferencer.print(symtabStack);
 
+        return null;
+    }
+
+    @Override
+    public Object visitProgramHeader(SubCParser.ProgramHeaderContext ctx)
+    {
+        SubCParser.ProgramIdentifierContext idCtx = ctx.programIdentifier();
+        String programName = idCtx.IDENTIFIER().getText();  // don't shift case
+
+        programId = symtabStack.enterLocal(programName, PROGRAM);
+        programId.setRoutineSymtab(symtabStack.push());
+
+        symtabStack.setProgramId(programId);
+        symtabStack.getLocalSymtab().setOwner(programId);
+
+        idCtx.entry = programId;
         return null;
     }
     

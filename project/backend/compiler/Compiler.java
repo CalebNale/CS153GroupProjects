@@ -58,9 +58,17 @@ public class Compiler extends SubCBaseVisitor<Object>
      * @return the name.
      */
     public String getObjectFileName() { return code.getObjectFileName(); }
-    
 
-    @Override 
+
+    @Override
+    public Object visitProgram(SubCParser.ProgramContext ctx)
+    {
+        createNewGenerators(code);
+        programCode.emitProgram(ctx);
+        return null;
+    }
+
+    @Override
     public Object visitFunctionDefinition(
                                     SubCParser.FunctionDefinitionContext ctx) 
     {

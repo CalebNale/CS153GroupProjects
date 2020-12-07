@@ -28,7 +28,7 @@ public class SymtabEntry
     public enum Kind
     {
         CONSTANT, VARIABLE, TYPE, VALUE_PARAMETER, PROGRAM_PARAMETER, FUNCTION, UNDEFINED,
-        CLOSEDSCOPE;
+        CLOSEDSCOPE, PROGRAM;
         
         public String toString() { return super.toString().toLowerCase(); }
     }
@@ -88,7 +88,7 @@ public class SymtabEntry
             case VALUE_PARAMETER:
                 info = new ValueInfo();
                 break;
-                
+            case PROGRAM:
             case FUNCTION:
                 info = new RoutineInfo();
                 ((RoutineInfo) info).parameters  = new ArrayList<SymtabEntry>();

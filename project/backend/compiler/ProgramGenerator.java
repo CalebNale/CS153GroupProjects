@@ -35,7 +35,7 @@ public class ProgramGenerator extends CodeGenerator
      * Emit code for a program.
      * @param ctx the ProgramContext.
      */
-    public void emitProgram(SubCParser.ProgramContext ctx)
+   public void emitProgram(SubCParser.ProgramContext ctx)
     {
         programId = ctx.programHeader().programIdentifier().entry;
         Symtab programSymtab = programId.getRoutineSymtab();
@@ -49,7 +49,7 @@ public class ProgramGenerator extends CodeGenerator
         emitProgramVariables();
         emitInputScanner();
         emitConstructor();
-        emitSubroutines(ctx.block().declarations().routinesPart());
+        //emitSubroutines(ctx.block().declarations().routinesPart());
         
         emitMainMethod(ctx);
     }
@@ -149,7 +149,7 @@ public class ProgramGenerator extends CodeGenerator
 
         // Emit code for the compound statement.
         emitLine();
-        compiler.visit(ctx.block().compoundStatement());
+        compiler.visit(ctx.mainProgram().compoundStatement());
         
         emitMainEpilogue();
     }
@@ -221,9 +221,7 @@ public class ProgramGenerator extends CodeGenerator
      */
     public void emitFunction(SubCParser.FunctionDefinitionContext ctx)
     {
-        SymtabEntry routineId = ctx.procedureHead() != null 
-                                ? ctx.procedureHead().routineIdentifier().entry
-                                : ctx.functionHead().routineIdentifier().entry;
+        SymtabEntry routineId = ctx.functionName().entry;
         Symtab routineSymtab = routineId.getRoutineSymtab();
 
         emitRoutineHeader(routineId);

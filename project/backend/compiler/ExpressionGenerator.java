@@ -279,18 +279,7 @@ public class ExpressionGenerator extends CodeGenerator
         // Load the scalar value or structure address.
         Typespec variableType = emitLoadVariable(varCtx);
         
-        // Load an array element's or record field's value.
-        int modifierCount = varCtx.modifier().size();
-        if (modifierCount > 0)
-        {
-            SubCParser.ModifierContext lastModCtx =
-                                    varCtx.modifier().get(modifierCount - 1);
-            
-//            if (lastModCtx.indexList() != null)
-//            {
-//                emitLoadArrayElementValue(variableType);
-//            }
-        }
+
     }
 
     /**
@@ -303,25 +292,11 @@ public class ExpressionGenerator extends CodeGenerator
     {
         SymtabEntry variableId = varCtx.entry;
         Typespec variableType = variableId.getType();
-        int modifierCount = varCtx.modifier().size();
+
         
         // Scalar value or structure address.
         emitLoadValue(variableId);
 
-        // Loop over subscript and field modifiers.
-        for (int i = 0; i < modifierCount; ++i)
-        {
-            SubCParser.ModifierContext modCtx = varCtx.modifier().get(i);
-            boolean lastModifier = i == modifierCount - 1;
-
-            // Subscript
-//            if (modCtx.indexList() != null) 
-//            {
-//                variableType = emitLoadArrayElementAccess(
-//                                modCtx.indexList(), variableType, lastModifier);
-//            }
-            
-        }
 
         return variableType;
     }
