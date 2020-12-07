@@ -2,7 +2,7 @@
 .super java/lang/Object
 
 .field private static _sysin Ljava/util/Scanner;
-.field private static x I
+.field private static i I
 
 ;
 ; Runtime input scanner
@@ -47,52 +47,38 @@
 	astore_1
 
 ;
-; 005 intx=13;
+; 006 for(inti=10;i>0;i=i-1){print("%d ",i);}
 ;
-	bipush	13
-	putstatic	Test/x I
-;
-; 006 switch(x){case10:print("hello %d \n",x);break;case3,4,5:print("2");b ...
-;
-	getstatic	Test/x I
-	lookupswitch
-	  3: L002
-	  4: L002
-	  5: L002
-	  10: L001
-	  default: L003
+	bipush	10
+	putstatic	Test/i I
+L001:
+	getstatic	Test/i I
+	iconst_0
+	if_icmpgt	L002
+	goto	L003
 L002:
 ;
-; 012 print("2");
+; 007 print("%d ",i);
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"2"
-	invokevirtual	java/io/PrintStream/print(Ljava/lang/String;)V
-	goto	L004
-L001:
-;
-; 008 print("hello %d \n",x);
-;
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"hello %d \n"
+	ldc	"%d "
 	iconst_1
 	anewarray	java/lang/Object
 	dup
 	iconst_0
-	getstatic	Test/x I
+	getstatic	Test/i I
 	invokestatic	java/lang/Integer/valueOf(I)Ljava/lang/Integer;
 	aastore
 	invokevirtual	java/io/PrintStream/printf(Ljava/lang/String;[Ljava/lang/Object;)Ljava/io/PrintStream;
 	pop
-	goto	L004
+	getstatic	Test/i I
+	getstatic	Test/i I
+	iconst_1
+	isub
+	putstatic	Test/i I
+	pop
+	goto	L001
 L003:
-;
-; 016 print("default");
-;
-	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"default"
-	invokevirtual	java/io/PrintStream/print(Ljava/lang/String;)V
-L004:
 
 	invokestatic	java/time/Instant/now()Ljava/time/Instant;
 	astore_2

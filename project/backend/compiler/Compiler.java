@@ -232,5 +232,9 @@ public class Compiler extends SubCBaseVisitor<Object>
         statementCode.emitPrint(ctx);
         return null;
     }
+    
+    public String getProgramName() {
+    	return this.programName;
+    }
 
 }

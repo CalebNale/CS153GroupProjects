@@ -122,6 +122,98 @@ public class ExpressionGenerator extends CodeGenerator
         }
     }
     
+    
+    public void emitforControlExpression(SubCParser.ExpressionContext ctx)
+    {
+        SubCParser.SimpleExpressionContext simpleCtx1 = 
+                                                ctx.simpleExpression().get(0);
+        SubCParser.RelOpContext relOpCtx = ctx.relOp();
+        Typespec type1 = simpleCtx1.type;
+        emitSimpleExpression(simpleCtx1);
+        
+        // More than one simple expression?
+        if (relOpCtx != null)
+        {
+            String op = relOpCtx.getText();
+            SubCParser.SimpleExpressionContext simpleCtx2 = 
+                                                ctx.simpleExpression().get(1);
+            Typespec type2 = simpleCtx2.type;
+
+            boolean integerMode   = false;
+            boolean realMode      = false;
+            boolean characterMode = false;
+
+            if (   (type1 == Predefined.integerType)
+                && (type2 == Predefined.integerType)) 
+            {
+                integerMode = true;
+            }
+            else if (   (type1 == Predefined.realType) 
+                     || (type2 == Predefined.realType))
+            {
+                realMode = true;
+            }
+            else if (   (type1 == Predefined.charType) 
+                     && (type2 == Predefined.charType))
+            {
+                characterMode = true;
+            }
+
+            Label trueLabel = new Label();
+            Label exitLabel = new Label();
+
+            if (integerMode || characterMode) 
+            {
+                emitSimpleExpression(simpleCtx2);
+                
+                if      (op.equals("==" )) emit(IF_ICMPEQ, trueLabel);
+                else if (op.equals("!=")) emit(IF_ICMPNE, trueLabel);
+                else if (op.equals("<" )) emit(IF_ICMPLT, trueLabel);
+                else if (op.equals("<=")) emit(IF_ICMPLE, trueLabel);
+                else if (op.equals(">" )) emit(IF_ICMPGT, trueLabel);
+                else if (op.equals(">=")) emit(IF_ICMPGE, trueLabel);
+            }
+            else if (realMode)
+            {
+                if (type1 == Predefined.integerType) emit(I2F);
+                emitSimpleExpression(simpleCtx2);
+                if (type2 == Predefined.integerType) emit(I2F);
+                
+                emit(FCMPG);
+
+                if      (op.equals("==" )) emit(IFEQ, trueLabel);
+                else if (op.equals("!=")) emit(IFNE, trueLabel);
+                else if (op.equals("<" )) emit(IFLT, trueLabel);
+                else if (op.equals("<=")) emit(IFLE, trueLabel);
+                else if (op.equals(">" )) emit(IFGT, trueLabel);
+                else if (op.equals(">=")) emit(IFGE, trueLabel);
+            }
+            else  // stringMode
+            {
+                emitSimpleExpression(simpleCtx2);
+                emit(INVOKEVIRTUAL,
+                     "java/lang/String.compareTo(Ljava/lang/String;)I");
+                localStack.decrease(1);
+                
+                if      (op.equals("==" )) emit(IFEQ, trueLabel);
+                else if (op.equals("!=")) emit(IFNE, trueLabel);
+                else if (op.equals("<" )) emit(IFLT, trueLabel);
+                else if (op.equals("<=")) emit(IFLE, trueLabel);
+                else if (op.equals(">" )) emit(IFGT, trueLabel);
+                else if (op.equals(">=")) emit(IFGE, trueLabel);
+            }
+
+            emit(ICONST_0); // false
+            emit(GOTO, exitLabel);
+            emitLabel(trueLabel);
+            emit(ICONST_1); // true
+            emitLabel(exitLabel);
+            
+            localStack.decrease(1);  // only one branch will be taken
+        }
+    }
+    
+    
     /**
      * Emit code for a simple expression.
      * @param ctx the SimpleExpressionContext.

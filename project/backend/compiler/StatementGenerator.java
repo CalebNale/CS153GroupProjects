@@ -151,7 +151,7 @@ public class StatementGenerator extends CodeGenerator
         Label loopExitLabel = new Label();
 
         emitLabel(loopTopLabel);
-        compiler.visit(ctx.expression());
+        compiler.visit(ctx.expression());        
         emit(IFEQ, loopExitLabel);
         compiler.visit(ctx.compoundStatement());
         emit(GOTO, loopTopLabel);
@@ -164,45 +164,51 @@ public class StatementGenerator extends CodeGenerator
      */
     public void emitFor(SubCParser.ForStatementContext ctx)
     {
-        Instruction pop = POP;// instuction to incriment the top value on stack
-        Instruction ldc = LDC;// instuction to incriment the top value on stack
-        Instruction add = IADD;// instuction to incriment the top value on stack
-//        boolean incriment = ctx.TO() !=null; // are we counting up or 
-//        SubCParser.VariableContext varCtx = ctx.variable();
-//        SymtabEntry entry = varCtx.entry;
-//        Label loopTopLabel  = new Label(); // label at the beginning
-//        Label loopExitLabel = new Label();// label to jump out from
-//        emitComment("A for loop is starting here");
-//        compiler.visit(ctx.forInitialization); // get the first part of the expression, the assignment statement
-//        emitStoreValue(entry, entry.getType());
-//        emitLabel(loopTopLabel); // print out the first loop lable
-//        compiler.visit(ctx.expression(1)); // get the first part of the expression, the assignment statement
-//        emitLoadValue(entry);
-//        if(incriment)
-//            emit(IF_ICMPLT, loopExitLabel);// check to see if the variables are equal. if they are, then jump out of the loop
-//        else
-//            emit(IF_ICMPGT, loopExitLabel);
-//
-//
-//        compiler.visit(ctx.compoundStatement()); // if we are still going, visit the context
-//        if(incriment == true) { // if not, inciment or decrement the number
-//            //emit(pop); // get the compare value off of the stack
-//            emit(ldc,1); // add a i to the stack
-//            emitLoadValue(entry);
-//            emit(add); // add the values
-//            emitStoreValue(entry, entry.getType());
-//        }
-//        else {
-//            //emit(pop);
-//            emit(ldc,-1); // use -1 if decrimenting
-//            emitLoadValue(entry);
-//            emit(add);
-//            emitStoreValue(entry, entry.getType());
-//        }
-//        emit(GOTO, loopTopLabel); // then jump back up to the loop
-//
-//        emitLabel(loopExitLabel); // jump here to exit the loop
-//        emitComment("The for loop is ending here");
+    	
+    	compiler.visit(ctx.forInitialization().assignmentStatement());
+    	
+    	Label cmpLabel = new Label();
+    	emitLabel(cmpLabel);
+    	
+    	SubCParser.ExpressionContext expCtx1 = ctx.forControl().expression();
+    	SubCParser.SimpleExpressionContext simpleCtx1 = expCtx1.simpleExpression().get(0);
+		SubCParser.RelOpContext relOpCtx = expCtx1.relOp();
+			
+		compiler.visit(simpleCtx1);
+			
+		String op = relOpCtx.getText();
+		SubCParser.SimpleExpressionContext simpleCtx2 = 
+								expCtx1.simpleExpression().get(1);
+			
+		Label trueLabel = new Label();
+		compiler.visit(simpleCtx2);
+
+//		compiler.visit(simpleCtx2);
+		if      (op.equals("==" )) emit(IF_ICMPEQ, trueLabel);
+		else if (op.equals("!=")) emit(IF_ICMPNE, trueLabel);
+		else if (op.equals("<" )) emit(IF_ICMPLT, trueLabel);
+		else if (op.equals("<=")) emit(IF_ICMPLE, trueLabel);
+		else if (op.equals(">" )) emit(IF_ICMPGT, trueLabel);
+		else if (op.equals(">=")) emit(IF_ICMPGE, trueLabel);
+		
+		Label exitLabel = new Label();
+		emit(GOTO, exitLabel);
+			 
+		
+		emitLabel(trueLabel);
+		
+		compiler.visit(ctx.compoundStatement());
+		SubCParser.ForIncrementStatementContext incCtx = ctx.forIncrementStatement();
+		compiler.visit(incCtx);
+		String name = compiler.getProgramName() + "/" + incCtx.lhs().variable().entry.getName();
+		emit(PUTSTATIC,name,"I");
+		emit(POP);
+		emit(GOTO, cmpLabel);
+
+	     emitLabel(exitLabel);
+	     
+	     localStack.decrease(1); 
+    	
     }
     
     /**
