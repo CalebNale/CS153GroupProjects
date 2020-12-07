@@ -1,6 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "/Users/rahulg510/Documents/code/cs153/ANTLR-4.7.2/antlr-4.8-complete.jar"
-    ]
-}
