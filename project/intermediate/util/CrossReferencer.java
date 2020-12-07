@@ -51,7 +51,7 @@ public class CrossReferencer
      * Print a cross-reference table for a routine.
      * @param routineId the routine identifier's symbol table entry.
      */
-    private void printRoutine(SymtabEntry routineId)
+    public void printRoutine(SymtabEntry routineId)
     {
         Kind kind = routineId.getKind();
         System.out.println("\n*** " + kind.toString().toUpperCase() +
@@ -62,12 +62,6 @@ public class CrossReferencer
         Symtab symtab = routineId.getRoutineSymtab();
         printSymtab(symtab);
 
-        // Print any procedures and functions defined in the routine.
-        ArrayList<SymtabEntry> subroutineIds = routineId.getSubroutines();
-        if (subroutineIds != null) 
-        {
-            for (SymtabEntry rtnId : subroutineIds) printRoutine(rtnId);
-        }
     }
 
     /**
@@ -87,7 +81,7 @@ public class CrossReferencer
      * @param symtab the symbol table.
      * @param recordTypes the list to fill with RECORD type specifications.
      */
-    private void printSymtab(Symtab symtab)
+    public void printSymtab(Symtab symtab)
     {
         ArrayList<SymtabEntry> sorted = symtab.sortedEntries();
 

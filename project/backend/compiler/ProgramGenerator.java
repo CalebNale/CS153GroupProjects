@@ -37,7 +37,7 @@ public class ProgramGenerator extends CodeGenerator
      */
     public void emitProgram(SubCParser.ProgramContext ctx)
     {
-        programId = ctx.programHeader().programIdentifier().entry;
+        programId = ctx.entry;
         Symtab programSymtab = programId.getRoutineSymtab();
         
         localVariables = new LocalVariables(programLocalsCount);

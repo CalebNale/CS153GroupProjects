@@ -62,11 +62,24 @@ public class Semantics extends SubCBaseVisitor<Object>
     @Override 
     public Object visitProgram(SubCParser.ProgramContext ctx) 
     { 
+        String programName = "program";  // don't shift case
+        
         visit(ctx.functionDefinitions());
+        
+        SymtabStack stack = symtabStack;
+        
+        programId = symtabStack.enterLocal(programName, PROGRAM);
+        programId.setRoutineSymtab(symtabStack.push());
+        
+        symtabStack.setProgramId(programId);
+        symtabStack.getLocalSymtab().setOwner(programId);
+        
+        ctx.entry = programId;
+        
         visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
         CrossReferencer crossReferencer = new CrossReferencer();
-//        crossReferencer.print(symtabStack);
+        crossReferencer.print(stack);
 
         return null;
     }
@@ -236,6 +249,9 @@ public class Semantics extends SubCBaseVisitor<Object>
         visit(ctx.compoundStatement());
         routineId.setExecutable(ctx.compoundStatement());
 
+        CrossReferencer crossReferencer = new CrossReferencer();
+        crossReferencer.printSymtab(symtab);
+        
         symtabStack.pop();
         return null;
     }

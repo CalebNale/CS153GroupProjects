@@ -138,6 +138,7 @@ public class SubCParser extends Parser {
 	}
 
 	public static class ProgramContext extends ParserRuleContext {
+		public SymtabEntry entry = null;
 		public FunctionDefinitionsContext functionDefinitions() {
 			return getRuleContext(FunctionDefinitionsContext.class,0);
 		}

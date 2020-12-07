@@ -28,7 +28,7 @@ public class SymtabEntry
     public enum Kind
     {
         CONSTANT, VARIABLE, TYPE, VALUE_PARAMETER, PROGRAM_PARAMETER, FUNCTION, UNDEFINED,
-        CLOSEDSCOPE;
+        CLOSEDSCOPE, PROGRAM;
         
         public String toString() { return super.toString().toLowerCase(); }
     }
@@ -63,7 +63,6 @@ public class SymtabEntry
         private Routine code;                        // routine code
         private Symtab symtab;                       // routine's symbol table
         private ArrayList<SymtabEntry> parameters;   // routine's formal parameters
-        private ArrayList<SymtabEntry> subroutines;  // symtab entries of subroutines
         private Object executable;                   // routine's executable code
     }
     
@@ -89,10 +88,10 @@ public class SymtabEntry
                 info = new ValueInfo();
                 break;
                 
+            case PROGRAM:
             case FUNCTION:
                 info = new RoutineInfo();
                 ((RoutineInfo) info).parameters  = new ArrayList<SymtabEntry>();
-                ((RoutineInfo) info).subroutines = new ArrayList<SymtabEntry>();
                 break;
             
             default: break;
@@ -219,23 +218,7 @@ public class SymtabEntry
         ((RoutineInfo) info).parameters = parameters;
     }
 
-    /**
-     * Get the arraylist of symbol table entries of the nested subroutines.
-     * @return the arraylist.
-     */
-    public ArrayList<SymtabEntry> getSubroutines() 
-    { 
-        return ((RoutineInfo) info).subroutines; 
-    }
 
-    /**
-     * Append to the arraylist of symbol table entries of the nested subroutines.
-     * @parm subroutineId the symbol table entry of the subroutine to append.
-     */
-    public void appendSubroutine(SymtabEntry subroutineId)
-    {
-        ((RoutineInfo) info).subroutines.add(subroutineId);
-    }
     
     /**
      * Get the routine's executable code.

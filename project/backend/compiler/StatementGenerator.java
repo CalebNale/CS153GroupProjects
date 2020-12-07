@@ -47,16 +47,16 @@ public class StatementGenerator extends CodeGenerator
         Typespec exprType = exprCtx.type;
 
         // The last modifier, if any, is the variable's last subscript or field.
-        int modifierCount = varCtx.modifier().size();
-        SubCParser.ModifierContext lastModCtx = modifierCount == 0
-                            ? null : varCtx.modifier().get(modifierCount - 1);
+//        int modifierCount = varCtx.modifier().size();
+//        SubCParser.ModifierContext lastModCtx = modifierCount == 0
+//                            ? null : varCtx.modifier().get(modifierCount - 1);
 
         // The target variable has subscripts and/or fields.
-        if (modifierCount > 0) 
-        {
-            lastModCtx = varCtx.modifier().get(modifierCount - 1);
-            compiler.visit(varCtx);
-        }
+//        if (modifierCount > 0) 
+//        {
+//            lastModCtx = varCtx.modifier().get(modifierCount - 1);
+//            compiler.visit(varCtx);
+//        }
         
         // Emit code to evaluate the expression.
         compiler.visit(exprCtx);
@@ -67,7 +67,7 @@ public class StatementGenerator extends CodeGenerator
         
         // Emit code to store the expression value into the target variable.
         // The target variable has no subscripts or fields.
-        if (lastModCtx == null) emitStoreValue(varId, varId.getType());
+//        if (lastModCtx == null) emitStoreValue(varId, varId.getType());
 
         // The target variable is an array element.
         else
@@ -112,11 +112,11 @@ public class StatementGenerator extends CodeGenerator
      */
     public void emitSwitch(SubCParser.SwitchStatementContext ctx)
     {
-        compiler.visit(ctx.expression());
+   /*     compiler.visit(ctx.expression());
         emit(LOOKUPSWITCH);
         ArrayList<Integer> caseConsts = new ArrayList<>();
         HashMap<Integer, Label> cases = new HashMap<>();
-        HashMap<Label, CaseBranchContext> branches = new HashMap<>();
+        HashMap<Label, caseBranchContext> branches = new HashMap<>();
         for(CaseBranchContext branch : ctx.switchBranchList().caseBranch()){
             if(branch.caseConstantList() != null){
                 Label newLabel = new Label();
@@ -143,6 +143,7 @@ public class StatementGenerator extends CodeGenerator
         }
 
         emitLabel(defaultLabel);
+     */
     }
     
     /**

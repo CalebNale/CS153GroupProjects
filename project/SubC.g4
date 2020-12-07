@@ -7,7 +7,8 @@ grammar SubC;
     import intermediate.type.Typespec;
 }
 
-program: functionDefinitions mainProgram  ;
+program locals [ SymtabEntry entry = null ] :
+    functionDefinitions mainProgram  ;
 mainProgram: INT MAIN '(' parameterList? ')' compoundStatement;
 
 functionName locals [ Typespec type = null, SymtabEntry entry = null ]
