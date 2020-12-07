@@ -215,13 +215,13 @@ public class StatementGenerator extends CodeGenerator
      * Emit code for a procedure call statement.
      * @param ctx the ProcedureCallStatementContext.
      */
-    public void emitFunctionCall(SubCParser.FunctionCallStatementContext ctx)
+    public void emitFunctionCall(SubCParser.FunctionCallContext ctx)
     {
         String argTypes = "";
-        SymtabEntry routineId = ctx.functionCall().functionName().entry;
+        SymtabEntry routineId = ctx.functionName().entry;
 		ArrayList<SymtabEntry> paramIds = routineId.getRoutineParameters();
         int i = 0;
-        if(ctx.functionCall().argumentList() != null)
+        if(ctx.argumentList() != null)
         {
             for(SymtabEntry param : paramIds)
             {
@@ -230,7 +230,7 @@ public class StatementGenerator extends CodeGenerator
 
             }
 
-            for (SubCParser.ArgumentContext argCtx : ctx.functionCall().argumentList().argument())
+            for (SubCParser.ArgumentContext argCtx : ctx.argumentList().argument())
             {
                 SubCParser.ExpressionContext exprCtx = argCtx.expression();
                 compiler.visit(exprCtx);
@@ -241,18 +241,18 @@ public class StatementGenerator extends CodeGenerator
 
 
         }
-
-        emit(INVOKESTATIC, programName + "/" + ctx.functionCall().functionName().IDENTIFIER().getText() + "("
-                + argTypes + ")V");
+        String returnType = typeDescriptor(routineId);
+        emit(INVOKESTATIC, programName + "/" + ctx.functionName().IDENTIFIER().getText() + "("
+                + argTypes + ")" + returnType);
     }
     
     /**
      * Emit code for a function call statement.
      * @param ctx the FunctionCallContext.
      */
-    public void emitFunctionCall(SubCParser.FunctionCallContext ctx)
+    public void emitFunctionCall(SubCParser.FunctionCallStatementContext ctx)
     {
-        /***** Complete this method. *****/
+        emitFunctionCall(ctx.functionCall());
     }
     
     /**

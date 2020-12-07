@@ -67,8 +67,8 @@ public class Semantics extends SubCBaseVisitor<Object>
         visit(ctx.functionDefinitions());
         visit(ctx.mainProgram().compoundStatement());
         // Print the cross-reference table.
-        //CrossReferencer crossReferencer = new CrossReferencer();
-        //crossReferencer.print(symtabStack);
+//        CrossReferencer crossReferencer = new CrossReferencer();
+//        crossReferencer.print(symtabStack);
 
         return null;
     }
@@ -230,16 +230,8 @@ public class Semantics extends SubCBaseVisitor<Object>
             }
         }
         
-            
-        if (returnType.getForm() != SCALAR)
-        {
-            error.flag(INVALID_RETURN_TYPE, ctx);
-            returnType = Predefined.integerType;
-        }
-        
         routineId.setType(returnType);
         idCtx.type = returnType;
-
 
         SymtabEntry assocVarId = 
                             symtabStack.enterLocal(routineName, VARIABLE);
