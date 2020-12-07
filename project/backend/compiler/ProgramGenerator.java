@@ -1,6 +1,7 @@
 package backend.compiler;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import antlr4.SubCParser;
 import intermediate.symtab.Symtab;
@@ -50,7 +51,8 @@ public class ProgramGenerator extends CodeGenerator
         emitInputScanner();
         emitConstructor();
         //emitSubroutines(ctx.block().declarations().routinesPart());
-        
+        if(ctx.functionDefinitions().functionDefinition().size() != 0)
+           emitFunction(ctx.functionDefinitions().functionDefinition(0));
         emitMainMethod(ctx);
     }
     
