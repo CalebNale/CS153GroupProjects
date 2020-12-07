@@ -94,33 +94,7 @@ public class SubC
         	 System.out.printf("\nPass 2 semantic: There were no semantic errors.\n");
          }
 
-        // // Pass 3: Translation.
-        switch (mode)
-        {
-        //     case EXECUTOR:
-        //     {
-        //         // Pass 3: Execute the Pascal program.
-        //         System.out.printf("\nPASS 3 Execution:\n\n");
-        //         SymtabEntry programId = pass2.getProgramId();
-        //         Executor pass3 = new Executor(programId);
-        //         pass3.visit(tree);
-        //         break;
-        //     }
-            
-        //     case CONVERTER:
-        //     {
-        //         // Convert from Pascal to Java.
-        //         System.out.printf("\nPASS 3 Convert to Java: ");
-        //         Converter pass3 = new Converter();
-        //         pass3.visit(tree);
-                
-        //         System.out.printf("Object file \"%s\" created.\n",
-        //                           pass3.getObjectFileName());
-        //         break;
-        //     }
-                
-             case COMPILER:
-             {
+
         //         // Pass 3: Compile the Pascal program.
                  System.out.printf("\nPASS 3 Compilation: ");
                  SymtabEntry programId = pass2.getProgramId();
@@ -129,8 +103,6 @@ public class SubC
                 
                  System.out.printf("Object file \"%s\" created.\n",
                                    pass3.getObjectFileName());
-                 break;
-             }
-         }
+          
     }
 }

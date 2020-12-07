@@ -1,16 +1,18 @@
-// Generated from C:/Users/Neil Majumdar/Downloads/Final\SubC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
     import java.util.HashMap;
-
-	import intermediate.symtab.SymtabEntry;
+    import intermediate.symtab.SymtabEntry;
     import intermediate.type.Typespec;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-	import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SubCParser extends Parser {
@@ -153,7 +155,7 @@ public class SubCParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_program; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SubCListener) ((SubCListener)listener).enterProgram(this);
+			if ( listener instanceof SubCListener ) ((SubCListener)listener).enterProgram(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
@@ -161,7 +163,7 @@ public class SubCParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SubCVisitor) return ((SubCVisitor<? extends T>)visitor).visitProgram(this);
+			if ( visitor instanceof SubCVisitor ) return ((SubCVisitor<? extends T>)visitor).visitProgram(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -432,7 +434,7 @@ public class SubCParser extends Parser {
 			setState(140);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
-			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
@@ -1667,7 +1669,7 @@ public class SubCParser extends Parser {
 	}
 
 	public static class SwitchStatementContext extends ParserRuleContext {
-		public HashMap<Integer, StatementContext> jumpTable = null;
+		public HashMap<Integer, SubCParser.StatementContext> jumpTable = null;
 		public TerminalNode SWITCH() { return getToken(SubCParser.SWITCH, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);

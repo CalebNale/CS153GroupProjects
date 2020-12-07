@@ -1,404 +1,407 @@
-// Generated from C:/Users/Neil Majumdar/Downloads/Final\SubC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
+    import java.util.HashMap;
+    import intermediate.symtab.SymtabEntry;
+    import intermediate.type.Typespec;
 
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
  * This interface defines a complete generic visitor for a parse tree produced
- * by {@link antlr4.SubCParser}.
+ * by {@link SubCParser}.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
 public interface SubCVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#program}.
+	 * Visit a parse tree produced by {@link SubCParser#program}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(antlr4.SubCParser.ProgramContext ctx);
+	T visitProgram(SubCParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#programHeader}.
+	 * Visit a parse tree produced by {@link SubCParser#programHeader}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgramHeader(antlr4.SubCParser.ProgramHeaderContext ctx);
+	T visitProgramHeader(SubCParser.ProgramHeaderContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#programIdentifier}.
+	 * Visit a parse tree produced by {@link SubCParser#programIdentifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgramIdentifier(antlr4.SubCParser.ProgramIdentifierContext ctx);
+	T visitProgramIdentifier(SubCParser.ProgramIdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#mainProgram}.
+	 * Visit a parse tree produced by {@link SubCParser#mainProgram}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMainProgram(antlr4.SubCParser.MainProgramContext ctx);
+	T visitMainProgram(SubCParser.MainProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#functionName}.
+	 * Visit a parse tree produced by {@link SubCParser#functionName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionName(antlr4.SubCParser.FunctionNameContext ctx);
+	T visitFunctionName(SubCParser.FunctionNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#functionDefinitions}.
+	 * Visit a parse tree produced by {@link SubCParser#functionDefinitions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDefinitions(antlr4.SubCParser.FunctionDefinitionsContext ctx);
+	T visitFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#functionDefinition}.
+	 * Visit a parse tree produced by {@link SubCParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionDefinition(antlr4.SubCParser.FunctionDefinitionContext ctx);
+	T visitFunctionDefinition(SubCParser.FunctionDefinitionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#parameterList}.
+	 * Visit a parse tree produced by {@link SubCParser#parameterList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameterList(antlr4.SubCParser.ParameterListContext ctx);
+	T visitParameterList(SubCParser.ParameterListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#parameter}.
+	 * Visit a parse tree produced by {@link SubCParser#parameter}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameter(antlr4.SubCParser.ParameterContext ctx);
+	T visitParameter(SubCParser.ParameterContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#parameterIdentifier}.
+	 * Visit a parse tree produced by {@link SubCParser#parameterIdentifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParameterIdentifier(antlr4.SubCParser.ParameterIdentifierContext ctx);
+	T visitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#functionCallStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#functionCallStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallStatement(antlr4.SubCParser.FunctionCallStatementContext ctx);
+	T visitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#functionCall}.
+	 * Visit a parse tree produced by {@link SubCParser#functionCall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCall(antlr4.SubCParser.FunctionCallContext ctx);
+	T visitFunctionCall(SubCParser.FunctionCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#argumentList}.
+	 * Visit a parse tree produced by {@link SubCParser#argumentList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgumentList(antlr4.SubCParser.ArgumentListContext ctx);
+	T visitArgumentList(SubCParser.ArgumentListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#argument}.
+	 * Visit a parse tree produced by {@link SubCParser#argument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgument(antlr4.SubCParser.ArgumentContext ctx);
+	T visitArgument(SubCParser.ArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#returnStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#returnStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitReturnStatement(antlr4.SubCParser.ReturnStatementContext ctx);
+	T visitReturnStatement(SubCParser.ReturnStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#statement}.
+	 * Visit a parse tree produced by {@link SubCParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(antlr4.SubCParser.StatementContext ctx);
+	T visitStatement(SubCParser.StatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#statementList}.
+	 * Visit a parse tree produced by {@link SubCParser#statementList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatementList(antlr4.SubCParser.StatementListContext ctx);
+	T visitStatementList(SubCParser.StatementListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#compoundStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#compoundStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCompoundStatement(antlr4.SubCParser.CompoundStatementContext ctx);
+	T visitCompoundStatement(SubCParser.CompoundStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#declarationStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#declarationStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclarationStatement(antlr4.SubCParser.DeclarationStatementContext ctx);
+	T visitDeclarationStatement(SubCParser.DeclarationStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#assignmentStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#assignmentStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssignmentStatement(antlr4.SubCParser.AssignmentStatementContext ctx);
+	T visitAssignmentStatement(SubCParser.AssignmentStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#lhs}.
+	 * Visit a parse tree produced by {@link SubCParser#lhs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLhs(antlr4.SubCParser.LhsContext ctx);
+	T visitLhs(SubCParser.LhsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#rhs}.
+	 * Visit a parse tree produced by {@link SubCParser#rhs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRhs(antlr4.SubCParser.RhsContext ctx);
+	T visitRhs(SubCParser.RhsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#ifStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#ifStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfStatement(antlr4.SubCParser.IfStatementContext ctx);
+	T visitIfStatement(SubCParser.IfStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#trueStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#trueStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTrueStatement(antlr4.SubCParser.TrueStatementContext ctx);
+	T visitTrueStatement(SubCParser.TrueStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#falseStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#falseStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFalseStatement(antlr4.SubCParser.FalseStatementContext ctx);
+	T visitFalseStatement(SubCParser.FalseStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#switchStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#switchStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSwitchStatement(antlr4.SubCParser.SwitchStatementContext ctx);
+	T visitSwitchStatement(SubCParser.SwitchStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#switchBranchList}.
+	 * Visit a parse tree produced by {@link SubCParser#switchBranchList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSwitchBranchList(antlr4.SubCParser.SwitchBranchListContext ctx);
+	T visitSwitchBranchList(SubCParser.SwitchBranchListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#caseBranch}.
+	 * Visit a parse tree produced by {@link SubCParser#caseBranch}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseBranch(antlr4.SubCParser.CaseBranchContext ctx);
+	T visitCaseBranch(SubCParser.CaseBranchContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#caseConstantList}.
+	 * Visit a parse tree produced by {@link SubCParser#caseConstantList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseConstantList(antlr4.SubCParser.CaseConstantListContext ctx);
+	T visitCaseConstantList(SubCParser.CaseConstantListContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#caseCompound}.
+	 * Visit a parse tree produced by {@link SubCParser#caseCompound}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseCompound(antlr4.SubCParser.CaseCompoundContext ctx);
+	T visitCaseCompound(SubCParser.CaseCompoundContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#defaultBranch}.
+	 * Visit a parse tree produced by {@link SubCParser#defaultBranch}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDefaultBranch(antlr4.SubCParser.DefaultBranchContext ctx);
+	T visitDefaultBranch(SubCParser.DefaultBranchContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#caseConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#caseConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCaseConstant(antlr4.SubCParser.CaseConstantContext ctx);
+	T visitCaseConstant(SubCParser.CaseConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#whileStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#whileStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhileStatement(antlr4.SubCParser.WhileStatementContext ctx);
+	T visitWhileStatement(SubCParser.WhileStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#forStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#forStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForStatement(antlr4.SubCParser.ForStatementContext ctx);
+	T visitForStatement(SubCParser.ForStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#forInitialization}.
+	 * Visit a parse tree produced by {@link SubCParser#forInitialization}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForInitialization(antlr4.SubCParser.ForInitializationContext ctx);
+	T visitForInitialization(SubCParser.ForInitializationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#forControl}.
+	 * Visit a parse tree produced by {@link SubCParser#forControl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForControl(antlr4.SubCParser.ForControlContext ctx);
+	T visitForControl(SubCParser.ForControlContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#forIncrementStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#forIncrementStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitForIncrementStatement(antlr4.SubCParser.ForIncrementStatementContext ctx);
+	T visitForIncrementStatement(SubCParser.ForIncrementStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#printStatement}.
+	 * Visit a parse tree produced by {@link SubCParser#printStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrintStatement(antlr4.SubCParser.PrintStatementContext ctx);
+	T visitPrintStatement(SubCParser.PrintStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#formatString}.
+	 * Visit a parse tree produced by {@link SubCParser#formatString}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFormatString(antlr4.SubCParser.FormatStringContext ctx);
+	T visitFormatString(SubCParser.FormatStringContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#writeArguments}.
+	 * Visit a parse tree produced by {@link SubCParser#writeArguments}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWriteArguments(antlr4.SubCParser.WriteArgumentsContext ctx);
+	T visitWriteArguments(SubCParser.WriteArgumentsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#writeArgument}.
+	 * Visit a parse tree produced by {@link SubCParser#writeArgument}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWriteArgument(antlr4.SubCParser.WriteArgumentContext ctx);
+	T visitWriteArgument(SubCParser.WriteArgumentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#expression}.
+	 * Visit a parse tree produced by {@link SubCParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(antlr4.SubCParser.ExpressionContext ctx);
+	T visitExpression(SubCParser.ExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#simpleExpression}.
+	 * Visit a parse tree produced by {@link SubCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSimpleExpression(antlr4.SubCParser.SimpleExpressionContext ctx);
+	T visitSimpleExpression(SubCParser.SimpleExpressionContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#term}.
+	 * Visit a parse tree produced by {@link SubCParser#term}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTerm(antlr4.SubCParser.TermContext ctx);
+	T visitTerm(SubCParser.TermContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code variableFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableFactor(antlr4.SubCParser.VariableFactorContext ctx);
+	T visitVariableFactor(SubCParser.VariableFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code numberFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumberFactor(antlr4.SubCParser.NumberFactorContext ctx);
+	T visitNumberFactor(SubCParser.NumberFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code characterFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharacterFactor(antlr4.SubCParser.CharacterFactorContext ctx);
+	T visitCharacterFactor(SubCParser.CharacterFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code stringFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringFactor(antlr4.SubCParser.StringFactorContext ctx);
+	T visitStringFactor(SubCParser.StringFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code functionCallFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionCallFactor(antlr4.SubCParser.FunctionCallFactorContext ctx);
+	T visitFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code notFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNotFactor(antlr4.SubCParser.NotFactorContext ctx);
+	T visitNotFactor(SubCParser.NotFactorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenthesizedFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParenthesizedFactor(antlr4.SubCParser.ParenthesizedFactorContext ctx);
+	T visitParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#variableIdentifier}.
+	 * Visit a parse tree produced by {@link SubCParser#variableIdentifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableIdentifier(antlr4.SubCParser.VariableIdentifierContext ctx);
+	T visitVariableIdentifier(SubCParser.VariableIdentifierContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#variable}.
+	 * Visit a parse tree produced by {@link SubCParser#variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariable(antlr4.SubCParser.VariableContext ctx);
+	T visitVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#constant}.
+	 * Visit a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstant(antlr4.SubCParser.ConstantContext ctx);
+	T visitConstant(SubCParser.ConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#sign}.
+	 * Visit a parse tree produced by {@link SubCParser#sign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSign(antlr4.SubCParser.SignContext ctx);
+	T visitSign(SubCParser.SignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#number}.
+	 * Visit a parse tree produced by {@link SubCParser#number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitNumber(antlr4.SubCParser.NumberContext ctx);
+	T visitNumber(SubCParser.NumberContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#unsignedNumber}.
+	 * Visit a parse tree produced by {@link SubCParser#unsignedNumber}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUnsignedNumber(antlr4.SubCParser.UnsignedNumberContext ctx);
+	T visitUnsignedNumber(SubCParser.UnsignedNumberContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#integerConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#integerConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntegerConstant(antlr4.SubCParser.IntegerConstantContext ctx);
+	T visitIntegerConstant(SubCParser.IntegerConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#realConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#realConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRealConstant(antlr4.SubCParser.RealConstantContext ctx);
+	T visitRealConstant(SubCParser.RealConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#characterConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#characterConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCharacterConstant(antlr4.SubCParser.CharacterConstantContext ctx);
+	T visitCharacterConstant(SubCParser.CharacterConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#stringConstant}.
+	 * Visit a parse tree produced by {@link SubCParser#stringConstant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStringConstant(antlr4.SubCParser.StringConstantContext ctx);
+	T visitStringConstant(SubCParser.StringConstantContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#relOp}.
+	 * Visit a parse tree produced by {@link SubCParser#relOp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitRelOp(antlr4.SubCParser.RelOpContext ctx);
+	T visitRelOp(SubCParser.RelOpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#addOp}.
+	 * Visit a parse tree produced by {@link SubCParser#addOp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAddOp(antlr4.SubCParser.AddOpContext ctx);
+	T visitAddOp(SubCParser.AddOpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link antlr4.SubCParser#mulOp}.
+	 * Visit a parse tree produced by {@link SubCParser#mulOp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
