@@ -1,687 +1,668 @@
-// Generated from C:/Users/Neil Majumdar/Downloads/Final\SubC.g4 by ANTLR 4.8
+// Generated from SubC.g4 by ANTLR 4.8
 
     package antlr4;
+    import java.util.HashMap;
+    import intermediate.symtab.SymtabEntry;
+    import intermediate.type.Typespec;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
  * This interface defines a complete listener for a parse tree produced by
- * {@link antlr4.SubCParser}.
+ * {@link SubCParser}.
  */
 public interface SubCListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#program}.
+	 * Enter a parse tree produced by {@link SubCParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgram(antlr4.SubCParser.ProgramContext ctx);
+	void enterProgram(SubCParser.ProgramContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#program}.
+	 * Exit a parse tree produced by {@link SubCParser#program}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgram(antlr4.SubCParser.ProgramContext ctx);
+	void exitProgram(SubCParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#programHeader}.
+	 * Enter a parse tree produced by {@link SubCParser#programHeader}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgramHeader(antlr4.SubCParser.ProgramHeaderContext ctx);
+	void enterProgramHeader(SubCParser.ProgramHeaderContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#programHeader}.
+	 * Exit a parse tree produced by {@link SubCParser#programHeader}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgramHeader(antlr4.SubCParser.ProgramHeaderContext ctx);
+	void exitProgramHeader(SubCParser.ProgramHeaderContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#programIdentifier}.
+	 * Enter a parse tree produced by {@link SubCParser#programIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void enterProgramIdentifier(antlr4.SubCParser.ProgramIdentifierContext ctx);
+	void enterProgramIdentifier(SubCParser.ProgramIdentifierContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#programIdentifier}.
+	 * Exit a parse tree produced by {@link SubCParser#programIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void exitProgramIdentifier(antlr4.SubCParser.ProgramIdentifierContext ctx);
+	void exitProgramIdentifier(SubCParser.ProgramIdentifierContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#mainProgram}.
+	 * Enter a parse tree produced by {@link SubCParser#mainProgram}.
 	 * @param ctx the parse tree
 	 */
-	void enterMainProgram(antlr4.SubCParser.MainProgramContext ctx);
+	void enterMainProgram(SubCParser.MainProgramContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#mainProgram}.
+	 * Exit a parse tree produced by {@link SubCParser#mainProgram}.
 	 * @param ctx the parse tree
 	 */
-	void exitMainProgram(antlr4.SubCParser.MainProgramContext ctx);
+	void exitMainProgram(SubCParser.MainProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#functionName}.
+	 * Enter a parse tree produced by {@link SubCParser#functionName}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionName(antlr4.SubCParser.FunctionNameContext ctx);
+	void enterFunctionName(SubCParser.FunctionNameContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#functionName}.
+	 * Exit a parse tree produced by {@link SubCParser#functionName}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionName(antlr4.SubCParser.FunctionNameContext ctx);
+	void exitFunctionName(SubCParser.FunctionNameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#functionDefinitions}.
+	 * Enter a parse tree produced by {@link SubCParser#functionDefinitions}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDefinitions(antlr4.SubCParser.FunctionDefinitionsContext ctx);
+	void enterFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#functionDefinitions}.
+	 * Exit a parse tree produced by {@link SubCParser#functionDefinitions}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDefinitions(antlr4.SubCParser.FunctionDefinitionsContext ctx);
+	void exitFunctionDefinitions(SubCParser.FunctionDefinitionsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#functionDefinition}.
+	 * Enter a parse tree produced by {@link SubCParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionDefinition(antlr4.SubCParser.FunctionDefinitionContext ctx);
+	void enterFunctionDefinition(SubCParser.FunctionDefinitionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#functionDefinition}.
+	 * Exit a parse tree produced by {@link SubCParser#functionDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionDefinition(antlr4.SubCParser.FunctionDefinitionContext ctx);
+	void exitFunctionDefinition(SubCParser.FunctionDefinitionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#parameterList}.
+	 * Enter a parse tree produced by {@link SubCParser#parameterList}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameterList(antlr4.SubCParser.ParameterListContext ctx);
+	void enterParameterList(SubCParser.ParameterListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#parameterList}.
+	 * Exit a parse tree produced by {@link SubCParser#parameterList}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameterList(antlr4.SubCParser.ParameterListContext ctx);
+	void exitParameterList(SubCParser.ParameterListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#parameter}.
+	 * Enter a parse tree produced by {@link SubCParser#parameter}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameter(antlr4.SubCParser.ParameterContext ctx);
+	void enterParameter(SubCParser.ParameterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#parameter}.
+	 * Exit a parse tree produced by {@link SubCParser#parameter}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameter(antlr4.SubCParser.ParameterContext ctx);
+	void exitParameter(SubCParser.ParameterContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#parameterIdentifier}.
+	 * Enter a parse tree produced by {@link SubCParser#parameterIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameterIdentifier(antlr4.SubCParser.ParameterIdentifierContext ctx);
+	void enterParameterIdentifier(SubCParser.ParameterIdentifierContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#parameterIdentifier}.
+	 * Exit a parse tree produced by {@link SubCParser#parameterIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameterIdentifier(antlr4.SubCParser.ParameterIdentifierContext ctx);
+	void exitParameterIdentifier(SubCParser.ParameterIdentifierContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#functionCallStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#functionCallStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCallStatement(antlr4.SubCParser.FunctionCallStatementContext ctx);
+	void enterFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#functionCallStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#functionCallStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCallStatement(antlr4.SubCParser.FunctionCallStatementContext ctx);
+	void exitFunctionCallStatement(SubCParser.FunctionCallStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#functionCall}.
+	 * Enter a parse tree produced by {@link SubCParser#functionCall}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCall(antlr4.SubCParser.FunctionCallContext ctx);
+	void enterFunctionCall(SubCParser.FunctionCallContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#functionCall}.
+	 * Exit a parse tree produced by {@link SubCParser#functionCall}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCall(antlr4.SubCParser.FunctionCallContext ctx);
+	void exitFunctionCall(SubCParser.FunctionCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#randomCall}.
+	 * Enter a parse tree produced by {@link SubCParser#argumentList}.
 	 * @param ctx the parse tree
 	 */
-	void enterRandomCall(antlr4.SubCParser.RandomCallContext ctx);
+	void enterArgumentList(SubCParser.ArgumentListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#randomCall}.
+	 * Exit a parse tree produced by {@link SubCParser#argumentList}.
 	 * @param ctx the parse tree
 	 */
-	void exitRandomCall(antlr4.SubCParser.RandomCallContext ctx);
+	void exitArgumentList(SubCParser.ArgumentListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#argumentList}.
+	 * Enter a parse tree produced by {@link SubCParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void enterArgumentList(antlr4.SubCParser.ArgumentListContext ctx);
+	void enterArgument(SubCParser.ArgumentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#argumentList}.
+	 * Exit a parse tree produced by {@link SubCParser#argument}.
 	 * @param ctx the parse tree
 	 */
-	void exitArgumentList(antlr4.SubCParser.ArgumentListContext ctx);
+	void exitArgument(SubCParser.ArgumentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#argument}.
+	 * Enter a parse tree produced by {@link SubCParser#returnStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterArgument(antlr4.SubCParser.ArgumentContext ctx);
+	void enterReturnStatement(SubCParser.ReturnStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#argument}.
+	 * Exit a parse tree produced by {@link SubCParser#returnStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitArgument(antlr4.SubCParser.ArgumentContext ctx);
+	void exitReturnStatement(SubCParser.ReturnStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#returnStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterReturnStatement(antlr4.SubCParser.ReturnStatementContext ctx);
+	void enterStatement(SubCParser.StatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#returnStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitReturnStatement(antlr4.SubCParser.ReturnStatementContext ctx);
+	void exitStatement(SubCParser.StatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#statement}.
+	 * Enter a parse tree produced by {@link SubCParser#statementList}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatement(antlr4.SubCParser.StatementContext ctx);
+	void enterStatementList(SubCParser.StatementListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#statement}.
+	 * Exit a parse tree produced by {@link SubCParser#statementList}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatement(antlr4.SubCParser.StatementContext ctx);
+	void exitStatementList(SubCParser.StatementListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#statementList}.
+	 * Enter a parse tree produced by {@link SubCParser#compoundStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatementList(antlr4.SubCParser.StatementListContext ctx);
+	void enterCompoundStatement(SubCParser.CompoundStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#statementList}.
+	 * Exit a parse tree produced by {@link SubCParser#compoundStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatementList(antlr4.SubCParser.StatementListContext ctx);
+	void exitCompoundStatement(SubCParser.CompoundStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#compoundStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#declarationStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterCompoundStatement(antlr4.SubCParser.CompoundStatementContext ctx);
+	void enterDeclarationStatement(SubCParser.DeclarationStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#compoundStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#declarationStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitCompoundStatement(antlr4.SubCParser.CompoundStatementContext ctx);
+	void exitDeclarationStatement(SubCParser.DeclarationStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#declarationStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#assignmentStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclarationStatement(antlr4.SubCParser.DeclarationStatementContext ctx);
+	void enterAssignmentStatement(SubCParser.AssignmentStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#declarationStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#assignmentStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclarationStatement(antlr4.SubCParser.DeclarationStatementContext ctx);
+	void exitAssignmentStatement(SubCParser.AssignmentStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#assignmentStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#lhs}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignmentStatement(antlr4.SubCParser.AssignmentStatementContext ctx);
+	void enterLhs(SubCParser.LhsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#assignmentStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#lhs}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignmentStatement(antlr4.SubCParser.AssignmentStatementContext ctx);
+	void exitLhs(SubCParser.LhsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#lhs}.
+	 * Enter a parse tree produced by {@link SubCParser#rhs}.
 	 * @param ctx the parse tree
 	 */
-	void enterLhs(antlr4.SubCParser.LhsContext ctx);
+	void enterRhs(SubCParser.RhsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#lhs}.
+	 * Exit a parse tree produced by {@link SubCParser#rhs}.
 	 * @param ctx the parse tree
 	 */
-	void exitLhs(antlr4.SubCParser.LhsContext ctx);
+	void exitRhs(SubCParser.RhsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#rhs}.
+	 * Enter a parse tree produced by {@link SubCParser#ifStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterRhs(antlr4.SubCParser.RhsContext ctx);
+	void enterIfStatement(SubCParser.IfStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#rhs}.
+	 * Exit a parse tree produced by {@link SubCParser#ifStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitRhs(antlr4.SubCParser.RhsContext ctx);
+	void exitIfStatement(SubCParser.IfStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#ifStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#trueStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterIfStatement(antlr4.SubCParser.IfStatementContext ctx);
+	void enterTrueStatement(SubCParser.TrueStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#ifStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#trueStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitIfStatement(antlr4.SubCParser.IfStatementContext ctx);
+	void exitTrueStatement(SubCParser.TrueStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#trueStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#falseStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterTrueStatement(antlr4.SubCParser.TrueStatementContext ctx);
+	void enterFalseStatement(SubCParser.FalseStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#trueStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#falseStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitTrueStatement(antlr4.SubCParser.TrueStatementContext ctx);
+	void exitFalseStatement(SubCParser.FalseStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#falseStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#switchStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterFalseStatement(antlr4.SubCParser.FalseStatementContext ctx);
+	void enterSwitchStatement(SubCParser.SwitchStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#falseStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#switchStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitFalseStatement(antlr4.SubCParser.FalseStatementContext ctx);
+	void exitSwitchStatement(SubCParser.SwitchStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#switchStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#switchBranchList}.
 	 * @param ctx the parse tree
 	 */
-	void enterSwitchStatement(antlr4.SubCParser.SwitchStatementContext ctx);
+	void enterSwitchBranchList(SubCParser.SwitchBranchListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#switchStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#switchBranchList}.
 	 * @param ctx the parse tree
 	 */
-	void exitSwitchStatement(antlr4.SubCParser.SwitchStatementContext ctx);
+	void exitSwitchBranchList(SubCParser.SwitchBranchListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#switchBranchList}.
+	 * Enter a parse tree produced by {@link SubCParser#caseBranch}.
 	 * @param ctx the parse tree
 	 */
-	void enterSwitchBranchList(antlr4.SubCParser.SwitchBranchListContext ctx);
+	void enterCaseBranch(SubCParser.CaseBranchContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#switchBranchList}.
+	 * Exit a parse tree produced by {@link SubCParser#caseBranch}.
 	 * @param ctx the parse tree
 	 */
-	void exitSwitchBranchList(antlr4.SubCParser.SwitchBranchListContext ctx);
+	void exitCaseBranch(SubCParser.CaseBranchContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#caseBranch}.
+	 * Enter a parse tree produced by {@link SubCParser#caseConstantList}.
 	 * @param ctx the parse tree
 	 */
-	void enterCaseBranch(antlr4.SubCParser.CaseBranchContext ctx);
+	void enterCaseConstantList(SubCParser.CaseConstantListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#caseBranch}.
+	 * Exit a parse tree produced by {@link SubCParser#caseConstantList}.
 	 * @param ctx the parse tree
 	 */
-	void exitCaseBranch(antlr4.SubCParser.CaseBranchContext ctx);
+	void exitCaseConstantList(SubCParser.CaseConstantListContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#caseConstantList}.
+	 * Enter a parse tree produced by {@link SubCParser#caseCompound}.
 	 * @param ctx the parse tree
 	 */
-	void enterCaseConstantList(antlr4.SubCParser.CaseConstantListContext ctx);
+	void enterCaseCompound(SubCParser.CaseCompoundContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#caseConstantList}.
+	 * Exit a parse tree produced by {@link SubCParser#caseCompound}.
 	 * @param ctx the parse tree
 	 */
-	void exitCaseConstantList(antlr4.SubCParser.CaseConstantListContext ctx);
+	void exitCaseCompound(SubCParser.CaseCompoundContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#caseCompound}.
+	 * Enter a parse tree produced by {@link SubCParser#defaultBranch}.
 	 * @param ctx the parse tree
 	 */
-	void enterCaseCompound(antlr4.SubCParser.CaseCompoundContext ctx);
+	void enterDefaultBranch(SubCParser.DefaultBranchContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#caseCompound}.
+	 * Exit a parse tree produced by {@link SubCParser#defaultBranch}.
 	 * @param ctx the parse tree
 	 */
-	void exitCaseCompound(antlr4.SubCParser.CaseCompoundContext ctx);
+	void exitDefaultBranch(SubCParser.DefaultBranchContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#defaultBranch}.
+	 * Enter a parse tree produced by {@link SubCParser#caseConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterDefaultBranch(antlr4.SubCParser.DefaultBranchContext ctx);
+	void enterCaseConstant(SubCParser.CaseConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#defaultBranch}.
+	 * Exit a parse tree produced by {@link SubCParser#caseConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitDefaultBranch(antlr4.SubCParser.DefaultBranchContext ctx);
+	void exitCaseConstant(SubCParser.CaseConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#caseConstant}.
+	 * Enter a parse tree produced by {@link SubCParser#whileStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterCaseConstant(antlr4.SubCParser.CaseConstantContext ctx);
+	void enterWhileStatement(SubCParser.WhileStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#caseConstant}.
+	 * Exit a parse tree produced by {@link SubCParser#whileStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitCaseConstant(antlr4.SubCParser.CaseConstantContext ctx);
+	void exitWhileStatement(SubCParser.WhileStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#whileStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#forStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhileStatement(antlr4.SubCParser.WhileStatementContext ctx);
+	void enterForStatement(SubCParser.ForStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#whileStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#forStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhileStatement(antlr4.SubCParser.WhileStatementContext ctx);
+	void exitForStatement(SubCParser.ForStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#forStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#forInitialization}.
 	 * @param ctx the parse tree
 	 */
-	void enterForStatement(antlr4.SubCParser.ForStatementContext ctx);
+	void enterForInitialization(SubCParser.ForInitializationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#forStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#forInitialization}.
 	 * @param ctx the parse tree
 	 */
-	void exitForStatement(antlr4.SubCParser.ForStatementContext ctx);
+	void exitForInitialization(SubCParser.ForInitializationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#forInitialization}.
+	 * Enter a parse tree produced by {@link SubCParser#forControl}.
 	 * @param ctx the parse tree
 	 */
-	void enterForInitialization(antlr4.SubCParser.ForInitializationContext ctx);
+	void enterForControl(SubCParser.ForControlContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#forInitialization}.
+	 * Exit a parse tree produced by {@link SubCParser#forControl}.
 	 * @param ctx the parse tree
 	 */
-	void exitForInitialization(antlr4.SubCParser.ForInitializationContext ctx);
+	void exitForControl(SubCParser.ForControlContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#forControl}.
+	 * Enter a parse tree produced by {@link SubCParser#forIncrementStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterForControl(antlr4.SubCParser.ForControlContext ctx);
+	void enterForIncrementStatement(SubCParser.ForIncrementStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#forControl}.
+	 * Exit a parse tree produced by {@link SubCParser#forIncrementStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitForControl(antlr4.SubCParser.ForControlContext ctx);
+	void exitForIncrementStatement(SubCParser.ForIncrementStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#forIncrementStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#printStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterForIncrementStatement(antlr4.SubCParser.ForIncrementStatementContext ctx);
+	void enterPrintStatement(SubCParser.PrintStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#forIncrementStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#printStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitForIncrementStatement(antlr4.SubCParser.ForIncrementStatementContext ctx);
+	void exitPrintStatement(SubCParser.PrintStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#printStatement}.
+	 * Enter a parse tree produced by {@link SubCParser#formatString}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrintStatement(antlr4.SubCParser.PrintStatementContext ctx);
+	void enterFormatString(SubCParser.FormatStringContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#printStatement}.
+	 * Exit a parse tree produced by {@link SubCParser#formatString}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrintStatement(antlr4.SubCParser.PrintStatementContext ctx);
+	void exitFormatString(SubCParser.FormatStringContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#formatString}.
+	 * Enter a parse tree produced by {@link SubCParser#writeArguments}.
 	 * @param ctx the parse tree
 	 */
-	void enterFormatString(antlr4.SubCParser.FormatStringContext ctx);
+	void enterWriteArguments(SubCParser.WriteArgumentsContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#formatString}.
+	 * Exit a parse tree produced by {@link SubCParser#writeArguments}.
 	 * @param ctx the parse tree
 	 */
-	void exitFormatString(antlr4.SubCParser.FormatStringContext ctx);
+	void exitWriteArguments(SubCParser.WriteArgumentsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#writeArguments}.
+	 * Enter a parse tree produced by {@link SubCParser#writeArgument}.
 	 * @param ctx the parse tree
 	 */
-	void enterWriteArguments(antlr4.SubCParser.WriteArgumentsContext ctx);
+	void enterWriteArgument(SubCParser.WriteArgumentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#writeArguments}.
+	 * Exit a parse tree produced by {@link SubCParser#writeArgument}.
 	 * @param ctx the parse tree
 	 */
-	void exitWriteArguments(antlr4.SubCParser.WriteArgumentsContext ctx);
+	void exitWriteArgument(SubCParser.WriteArgumentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#writeArgument}.
+	 * Enter a parse tree produced by {@link SubCParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterWriteArgument(antlr4.SubCParser.WriteArgumentContext ctx);
+	void enterExpression(SubCParser.ExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#writeArgument}.
+	 * Exit a parse tree produced by {@link SubCParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitWriteArgument(antlr4.SubCParser.WriteArgumentContext ctx);
+	void exitExpression(SubCParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#expression}.
+	 * Enter a parse tree produced by {@link SubCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(antlr4.SubCParser.ExpressionContext ctx);
+	void enterSimpleExpression(SubCParser.SimpleExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#expression}.
+	 * Exit a parse tree produced by {@link SubCParser#simpleExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(antlr4.SubCParser.ExpressionContext ctx);
+	void exitSimpleExpression(SubCParser.SimpleExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#simpleExpression}.
+	 * Enter a parse tree produced by {@link SubCParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void enterSimpleExpression(antlr4.SubCParser.SimpleExpressionContext ctx);
+	void enterTerm(SubCParser.TermContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#simpleExpression}.
+	 * Exit a parse tree produced by {@link SubCParser#term}.
 	 * @param ctx the parse tree
 	 */
-	void exitSimpleExpression(antlr4.SubCParser.SimpleExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void enterTerm(antlr4.SubCParser.TermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#term}.
-	 * @param ctx the parse tree
-	 */
-	void exitTerm(antlr4.SubCParser.TermContext ctx);
+	void exitTerm(SubCParser.TermContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code variableFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariableFactor(antlr4.SubCParser.VariableFactorContext ctx);
+	void enterVariableFactor(SubCParser.VariableFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code variableFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariableFactor(antlr4.SubCParser.VariableFactorContext ctx);
+	void exitVariableFactor(SubCParser.VariableFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code numberFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumberFactor(antlr4.SubCParser.NumberFactorContext ctx);
+	void enterNumberFactor(SubCParser.NumberFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code numberFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumberFactor(antlr4.SubCParser.NumberFactorContext ctx);
+	void exitNumberFactor(SubCParser.NumberFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code characterFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterCharacterFactor(antlr4.SubCParser.CharacterFactorContext ctx);
+	void enterCharacterFactor(SubCParser.CharacterFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code characterFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitCharacterFactor(antlr4.SubCParser.CharacterFactorContext ctx);
+	void exitCharacterFactor(SubCParser.CharacterFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code stringFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterStringFactor(antlr4.SubCParser.StringFactorContext ctx);
+	void enterStringFactor(SubCParser.StringFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code stringFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitStringFactor(antlr4.SubCParser.StringFactorContext ctx);
+	void exitStringFactor(SubCParser.StringFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code functionCallFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionCallFactor(antlr4.SubCParser.FunctionCallFactorContext ctx);
+	void enterFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code functionCallFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionCallFactor(antlr4.SubCParser.FunctionCallFactorContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code randomCallFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
-	 * @param ctx the parse tree
-	 */
-	void enterRandomCallFactor(antlr4.SubCParser.RandomCallFactorContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code randomCallFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
-	 * @param ctx the parse tree
-	 */
-	void exitRandomCallFactor(antlr4.SubCParser.RandomCallFactorContext ctx);
+	void exitFunctionCallFactor(SubCParser.FunctionCallFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code notFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterNotFactor(antlr4.SubCParser.NotFactorContext ctx);
+	void enterNotFactor(SubCParser.NotFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code notFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitNotFactor(antlr4.SubCParser.NotFactorContext ctx);
+	void exitNotFactor(SubCParser.NotFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code parenthesizedFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterParenthesizedFactor(antlr4.SubCParser.ParenthesizedFactorContext ctx);
+	void enterParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code parenthesizedFactor}
-	 * labeled alternative in {@link antlr4.SubCParser#factor}.
+	 * labeled alternative in {@link SubCParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitParenthesizedFactor(antlr4.SubCParser.ParenthesizedFactorContext ctx);
+	void exitParenthesizedFactor(SubCParser.ParenthesizedFactorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#variableIdentifier}.
+	 * Enter a parse tree produced by {@link SubCParser#variableIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariableIdentifier(antlr4.SubCParser.VariableIdentifierContext ctx);
+	void enterVariableIdentifier(SubCParser.VariableIdentifierContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#variableIdentifier}.
+	 * Exit a parse tree produced by {@link SubCParser#variableIdentifier}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariableIdentifier(antlr4.SubCParser.VariableIdentifierContext ctx);
+	void exitVariableIdentifier(SubCParser.VariableIdentifierContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#variable}.
+	 * Enter a parse tree produced by {@link SubCParser#variable}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariable(antlr4.SubCParser.VariableContext ctx);
+	void enterVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#variable}.
+	 * Exit a parse tree produced by {@link SubCParser#variable}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariable(antlr4.SubCParser.VariableContext ctx);
+	void exitVariable(SubCParser.VariableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#constant}.
+	 * Enter a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstant(antlr4.SubCParser.ConstantContext ctx);
+	void enterConstant(SubCParser.ConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#constant}.
+	 * Exit a parse tree produced by {@link SubCParser#constant}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstant(antlr4.SubCParser.ConstantContext ctx);
+	void exitConstant(SubCParser.ConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#sign}.
+	 * Enter a parse tree produced by {@link SubCParser#sign}.
 	 * @param ctx the parse tree
 	 */
-	void enterSign(antlr4.SubCParser.SignContext ctx);
+	void enterSign(SubCParser.SignContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#sign}.
+	 * Exit a parse tree produced by {@link SubCParser#sign}.
 	 * @param ctx the parse tree
 	 */
-	void exitSign(antlr4.SubCParser.SignContext ctx);
+	void exitSign(SubCParser.SignContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#number}.
+	 * Enter a parse tree produced by {@link SubCParser#number}.
 	 * @param ctx the parse tree
 	 */
-	void enterNumber(antlr4.SubCParser.NumberContext ctx);
+	void enterNumber(SubCParser.NumberContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#number}.
+	 * Exit a parse tree produced by {@link SubCParser#number}.
 	 * @param ctx the parse tree
 	 */
-	void exitNumber(antlr4.SubCParser.NumberContext ctx);
+	void exitNumber(SubCParser.NumberContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#unsignedNumber}.
+	 * Enter a parse tree produced by {@link SubCParser#unsignedNumber}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnsignedNumber(antlr4.SubCParser.UnsignedNumberContext ctx);
+	void enterUnsignedNumber(SubCParser.UnsignedNumberContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#unsignedNumber}.
+	 * Exit a parse tree produced by {@link SubCParser#unsignedNumber}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnsignedNumber(antlr4.SubCParser.UnsignedNumberContext ctx);
+	void exitUnsignedNumber(SubCParser.UnsignedNumberContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#integerConstant}.
+	 * Enter a parse tree produced by {@link SubCParser#integerConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterIntegerConstant(antlr4.SubCParser.IntegerConstantContext ctx);
+	void enterIntegerConstant(SubCParser.IntegerConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#integerConstant}.
+	 * Exit a parse tree produced by {@link SubCParser#integerConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitIntegerConstant(antlr4.SubCParser.IntegerConstantContext ctx);
+	void exitIntegerConstant(SubCParser.IntegerConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#realConstant}.
+	 * Enter a parse tree produced by {@link SubCParser#realConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterRealConstant(antlr4.SubCParser.RealConstantContext ctx);
+	void enterRealConstant(SubCParser.RealConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#realConstant}.
+	 * Exit a parse tree produced by {@link SubCParser#realConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitRealConstant(antlr4.SubCParser.RealConstantContext ctx);
+	void exitRealConstant(SubCParser.RealConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#characterConstant}.
+	 * Enter a parse tree produced by {@link SubCParser#characterConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterCharacterConstant(antlr4.SubCParser.CharacterConstantContext ctx);
+	void enterCharacterConstant(SubCParser.CharacterConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#characterConstant}.
+	 * Exit a parse tree produced by {@link SubCParser#characterConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitCharacterConstant(antlr4.SubCParser.CharacterConstantContext ctx);
+	void exitCharacterConstant(SubCParser.CharacterConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#stringConstant}.
+	 * Enter a parse tree produced by {@link SubCParser#stringConstant}.
 	 * @param ctx the parse tree
 	 */
-	void enterStringConstant(antlr4.SubCParser.StringConstantContext ctx);
+	void enterStringConstant(SubCParser.StringConstantContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#stringConstant}.
+	 * Exit a parse tree produced by {@link SubCParser#stringConstant}.
 	 * @param ctx the parse tree
 	 */
-	void exitStringConstant(antlr4.SubCParser.StringConstantContext ctx);
+	void exitStringConstant(SubCParser.StringConstantContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#relOp}.
+	 * Enter a parse tree produced by {@link SubCParser#relOp}.
 	 * @param ctx the parse tree
 	 */
-	void enterRelOp(antlr4.SubCParser.RelOpContext ctx);
+	void enterRelOp(SubCParser.RelOpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#relOp}.
+	 * Exit a parse tree produced by {@link SubCParser#relOp}.
 	 * @param ctx the parse tree
 	 */
-	void exitRelOp(antlr4.SubCParser.RelOpContext ctx);
+	void exitRelOp(SubCParser.RelOpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#addOp}.
+	 * Enter a parse tree produced by {@link SubCParser#addOp}.
 	 * @param ctx the parse tree
 	 */
-	void enterAddOp(antlr4.SubCParser.AddOpContext ctx);
+	void enterAddOp(SubCParser.AddOpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#addOp}.
+	 * Exit a parse tree produced by {@link SubCParser#addOp}.
 	 * @param ctx the parse tree
 	 */
-	void exitAddOp(antlr4.SubCParser.AddOpContext ctx);
+	void exitAddOp(SubCParser.AddOpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link antlr4.SubCParser#mulOp}.
+	 * Enter a parse tree produced by {@link SubCParser#mulOp}.
 	 * @param ctx the parse tree
 	 */
-	void enterMulOp(antlr4.SubCParser.MulOpContext ctx);
+	void enterMulOp(SubCParser.MulOpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link antlr4.SubCParser#mulOp}.
+	 * Exit a parse tree produced by {@link SubCParser#mulOp}.
 	 * @param ctx the parse tree
 	 */
 	void exitMulOp(SubCParser.MulOpContext ctx);

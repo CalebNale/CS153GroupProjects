@@ -171,7 +171,6 @@ public class ProgramGenerator extends CodeGenerator
         emitDirective(VAR, "1 is _start Ljava/time/Instant;");
         emitDirective(VAR, "2 is _end Ljava/time/Instant;");
         emitDirective(VAR, "3 is _elapsed J");
-        emitDirective(VAR, "4 is rand Ljava/util/Random;");
         
         // Runtime timer.
         emitLine();

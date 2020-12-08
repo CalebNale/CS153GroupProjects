@@ -254,14 +254,6 @@ public class StatementGenerator extends CodeGenerator
     {
         emitFunctionCall(ctx.functionCall());
     }
-
-    public void emitRandomCall(SubCParser.RandomCallContext ctx)
-    {
-        emit(NEW, "java/util/Random");
-        emit(INVOKESPECIAL, "java/util/Random/<init>()V");
-        emit(BIPUSH, 10);
-        emit(INVOKEVIRTUAL, "java/util/Random/nextInt(I)I");
-    }
     
     /**
      * Emit a call to a procedure or a function.

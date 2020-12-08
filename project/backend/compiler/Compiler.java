@@ -139,14 +139,6 @@ public class Compiler extends SubCBaseVisitor<Object>
         return null;
     }
 
-    @Override
-    public Object visitRandomCall(SubCParser.RandomCallContext ctx)
-    {
-        ctx.type = Predefined.integerType;
-        statementCode.emitRandomCall(ctx);
-        return null;
-    }
-
     @Override 
     public Object visitExpression(SubCParser.ExpressionContext ctx) 
     {
