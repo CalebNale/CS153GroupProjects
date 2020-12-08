@@ -25,6 +25,8 @@ parameterIdentifier   locals [ Typespec type = null, SymtabEntry entry = null ]
 
 functionCallStatement : functionCall SEMICOLON ;
 functionCall : functionName '(' argumentList? ')' ;
+
+randomCall locals[Typespec type = Predefined.integerType]: RAND '('')' ;
 argumentList : argument ( ',' argument)* ;
 argument     : expression ;
 returnStatement: RETURN (expression | functionCall)? SEMICOLON ;
@@ -98,6 +100,7 @@ factor              locals [ Typespec type = null ]
     | characterConstant    # characterFactor
     | stringConstant       # stringFactor
     | functionCall         # functionCallFactor
+    | randomCall           # randomCallFactor
     | NOT factor           # notFactor
     | '(' expression ')'   # parenthesizedFactor
     ;
@@ -143,6 +146,7 @@ STRING    : 'string' ;
 CHAR      : 'char' ;
 MAIN      : 'main';
 RETURN    : 'return';
+RAND      : 'rand';
 DOUBLE    : 'double' ;
 VOID      : 'void' ;
 BREAK     : 'break';

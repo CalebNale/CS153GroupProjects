@@ -187,17 +187,17 @@ L001:
 	  97: L013
 	  100: L014
 	  default: L015
-L013:
-;
-; 038 return'a';
-;
-	bipush	97
-	goto	L016
 L014:
 ;
 ; 041 return'd';
 ;
 	bipush	100
+	goto	L016
+L013:
+;
+; 038 return'a';
+;
+	bipush	97
 	goto	L016
 L015:
 ;
@@ -225,7 +225,7 @@ L016:
 	iconst_0
 	istore_1
 ;
-; 051 while(x<5){print("%d x",x);x=x+1;}
+; 051 while(x<5){print("%d ",x);x=x+1;}
 ;
 L017:
 	iload_1
@@ -238,10 +238,10 @@ L019:
 L020:
 	ifeq	L018
 ;
-; 052 print("%d x",x);
+; 052 print("%d ",x);
 ;
 	getstatic	java/lang/System/out Ljava/io/PrintStream;
-	ldc	"%d x"
+	ldc	"%d "
 	iconst_1
 	anewarray	java/lang/Object
 	dup
@@ -275,6 +275,7 @@ L018:
 .var 1 is _start Ljava/time/Instant;
 .var 2 is _end Ljava/time/Instant;
 .var 3 is _elapsed J
+.var 4 is rand Ljava/util/Random;
 
 	invokestatic	java/time/Instant/now()Ljava/time/Instant;
 	astore_1

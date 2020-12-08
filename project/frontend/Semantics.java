@@ -358,7 +358,12 @@ public class Semantics extends SubCBaseVisitor<Object>
         
         Typespec lhsType = lhsCtx.type;
         Typespec rhsType = rhsCtx.expression().type;
-        
+
+        SubCParser.FactorContext rdCtx = rhsCtx.expression().simpleExpression(0).term(0).factor(0);
+        if(rdCtx.getRuleContext().getText().equals("rand()"))
+        {
+            rhsType = Predefined.integerType;
+        }
         if (!TypeChecker.areAssignmentCompatible(lhsType, rhsType))
         {
             error.flag(INCOMPATIBLE_ASSIGNMENT, rhsCtx);
